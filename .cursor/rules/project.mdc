@@ -1,0 +1,19 @@
+---
+description: Project-wide coding rules
+globs: ["**/*"]
+alwaysApply: true
+---
+
+- Always start with a short implementation plan before editing files.
+- Never refactor unrelated modules.
+- Prefer minimal diffs.
+- Preserve legacy translator behavior unless explicitly asked to change it.
+- Do not break existing docs under /docs.
+- For backend tasks, keep implementation under /engine unless the task is explicitly about /legacy.
+- When modifying legacy translator, prefer adding a CLI wrapper instead of rewriting the GUI.
+- After code changes, explain changed files and provide run/test commands.
+- Respond in Vietnamese for all explanations, plans, summaries, and review notes.
+- Keep code, file names, commands, identifiers, and JSON keys in English unless explicitly requested otherwise.
+- Always start with a short implementation plan before editing files.
+- Never refactor unrelated modules.
+- Prefer minimal diffs.

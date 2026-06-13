@@ -1,0 +1,12 @@
+# Align with legacy/dich_v4/dich for ProcessOptions / OpenAI client
+openai>=1.99.1
+pydantic>=2.8.2
+
+# Local ASR (engine/run_transcribe_stage.py)
+faster-whisper>=1.0.0
+
+# TTS (engine/run_tts_stage.py — edge-tts MVP)
+edge-tts>=6.1.0
+
+# TTS (production: Azure Speech)
+azure-cognitiveservices-speech>=1.41.1

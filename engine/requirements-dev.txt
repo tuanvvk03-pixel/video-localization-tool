@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# Test runners (unittest stdlib works without extras; pytest is optional)
+pytest>=8.0.0

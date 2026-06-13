@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VL Studio</title>
+  <link rel="stylesheet" href="/theme.css" />
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <!-- Global ambient particles, behind everything -->
+  <div class="bg-wind" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Login gate: the app is locked until signed in -->
+  <div class="gate" id="loginGate" hidden>
+    <div id="gateHost"></div>
+  </div>
+
+  <!-- App shell (revealed after sign-in) -->
+  <div class="app" id="appShell" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">VL</div>
+        <div class="name">VL Studio<small data-i18n="topbar.eyebrow">Lồng tiếng &amp; phụ đề</small></div>
+      </div>
+
+      <div class="modeswitch" role="tablist">
+        <button type="button" class="on" data-dest="work">
+          <span aria-hidden="true">&#10024;</span> <span data-i18n="mode.work">Lồng tiếng</span>
+        </button>
+        <button type="button" data-dest="download">
+          <span aria-hidden="true">&#8681;</span> <span data-i18n="mode.download">Tải video</span>
+        </button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="minutes" id="minutesPill" hidden><span class="dot"></span> <span id="minutesText"></span></div>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="vi">VI</option>
+        <option value="en">EN</option>
+      </select>
+      <button type="button" class="iconbtn" id="btnSettings" data-i18n-title="rail.app_settings" title="Cài đặt">&#9881;</button>
+      <button type="button" class="acct" id="btnAccount">
+        <span id="acctName" data-i18n="rail.account">Tài khoản</span>
+        <span class="av" id="acctAvatar">VL</span>
+      </button>
+    </header>
+
+    <section class="content" id="screen-root"></section>
+  </div>
+
+  <!-- Hidden compat input read by the import step (workspace root override) -->
+  <input id="workspaceRootInput" type="hidden" />
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

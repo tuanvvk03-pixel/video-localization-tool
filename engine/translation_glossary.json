@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "language_pair": "zh->vi",
+  "notes": "Example glossary for subtitle translation quality. Edit to fit your series/domain.",
+  "characters": [
+    {
+      "name_source": "丁",
+      "name_vi": "Đinh",
+      "aliases_source": ["Ding", "Xiao Ding"],
+      "aliases_vi": ["Đinh", "Tiểu Đinh"]
+    }
+  ],
+  "address_terms": [
+    {
+      "source": "爸爸",
+      "display_vi": "Bố",
+      "voice_vi": "bố",
+      "notes": "Keep consistent family address term"
+    },
+    {
+      "source": "妈妈",
+      "display_vi": "Mẹ",
+      "voice_vi": "mẹ"
+    }
+  ],
+  "preferred_translations": [
+    {
+      "source": "小火车",
+      "display_vi": "tàu đồ chơi",
+      "voice_vi": "tàu đồ chơi",
+      "avoid_vi": ["chạy tàu nhỏ"]
+    }
+  ],
+  "protected_named_entities": [
+    {
+      "text": "Lin",
+      "type": "person",
+      "rule": "Do not translate or paraphrase; keep as a name."
+    }
+  ],
+  "forbidden_literal_patterns": [
+    {
+      "pattern": "mèo\\s+[A-Z][a-z]+",
+      "reason": "Avoid literal 'cat <Name>' artifacts like 'mèo Ding'. Use proper name handling."
+    },
+    {
+      "pattern": "nhà\\s+[A-Z][a-z]+\\s+cư",
+      "reason": "Avoid broken literal chunks like 'nhà Lin cư...'"
+    }
+  ]
+}
+

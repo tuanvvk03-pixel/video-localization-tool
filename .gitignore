@@ -1,0 +1,71 @@
+.venv/
+.venv-*/
+# stray duplicate venv folder (remove locally if present)
+.venv-1/
+
+# Local agent + scratch data (never tracked)
+.claude/
+/Projects/
+# Downloaded source videos (multi-GB; never tracked)
+/yt/
+
+# Frontend toolchain (built output desktop/static/next/*.js IS committed so the
+# Python server serves it without a build; node_modules/cache/sourcemaps not).
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/node_modules/.vite/
+desktop/static/next/*.map
+desktop/static/next/**/*.map
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+.DS_Store
+Thumbs.db
+
+.env
+app_settings.json
+
+workspace/
+
+# Bundled build-time binaries (ffmpeg, yt-dlp) — fetched by scripts/fetch_build_binaries.py
+packaging/bin/
+dist/
+build/
+
+# Default URL-download output folder at repo root (Phase L dev / PyInstaller cwd)
+/Downloads/
+legacy/dich_v4/dich/data/cache/
+legacy/dich_v4/dich/data/projects/
+legacy/dich_v4/dich/data/projects_library/demo_job_clean/
+legacy/dich_v4/dich/data/projects_library/demo_job_fresh/
+
+*.log
+run.log
+**/run.log
+.locks/
+**/.locks/
+*.lock.json
+
+# Local test media (videos for manual testing; never tracked)
+/test/
+
+# Playwright E2E artifacts
+frontend/test-results/
+frontend/playwright-report/
+frontend/.playwright/
+
+# Runtime job workspaces (per-run output)
+/Job/
+
+# Managed-mode session cookies (do not commit)
+.cloud_session.json

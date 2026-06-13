@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VL Studio — Mockup giao diện mới</title>
+<style>
+  :root{
+    --brand-1:#593E67; --brand-2:#84495F; --brand-3:#B85B56; --brand-4:#DE741C; --brand-5:#FEA837;
+    --bg-0:#0F1115; --bg-1:#171A21; --bg-2:#1D212A; --bg-3:#232833;
+    --line:#2B3240; --line-soft:#232A36;
+    --text-1:#F4F1ED; --text-2:#C7C0B9; --text-3:#8B92A1;
+    --danger:#B85B56;
+    --shadow-lg:0 32px 72px -22px rgba(0,0,0,.62); --shadow-md:0 8px 24px rgba(0,0,0,.22);
+    --r-xl:22px; --r-lg:16px; --r-md:12px; --r-sm:10px;
+    --grad:linear-gradient(135deg,var(--brand-4),var(--brand-5));
+    --grad-deep:linear-gradient(135deg,var(--brand-1),var(--brand-3));
+    --ease:cubic-bezier(.4,.14,.2,1); --dur:.45s;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:"Inter",system-ui,"Segoe UI",sans-serif;
+    background:radial-gradient(1200px 640px at 72% -10%,rgba(89,62,103,.42),transparent 60%),
+               radial-gradient(1000px 600px at 10% 12%,rgba(184,91,86,.16),transparent 55%),
+               radial-gradient(900px 700px at 88% 92%,rgba(222,116,28,.10),transparent 60%),
+               linear-gradient(180deg,var(--bg-0),#0b0d11);
+    color:var(--text-1); -webkit-font-smoothing:antialiased;
+  }
+  /* Global ambient particles — drift across the whole window, behind everything */
+  .bg-wind{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .bg-wind span{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--brand-5);
+    opacity:0;filter:blur(.5px);box-shadow:0 0 10px var(--brand-5)}
+  .bg-wind span:nth-child(1){top:14%;animation:gdrift 26s linear infinite}
+  .bg-wind span:nth-child(2){top:28%;animation:gdrift 32s linear infinite 4s}
+  .bg-wind span:nth-child(3){top:40%;animation:gdrift 29s linear infinite 9s;background:var(--brand-3);box-shadow:0 0 10px var(--brand-3)}
+  .bg-wind span:nth-child(4){top:53%;animation:gdrift 35s linear infinite 2s}
+  .bg-wind span:nth-child(5){top:62%;animation:gdrift 27s linear infinite 13s}
+  .bg-wind span:nth-child(6){top:71%;animation:gdrift 33s linear infinite 6s;background:var(--brand-3);box-shadow:0 0 10px var(--brand-3)}
+  .bg-wind span:nth-child(7){top:82%;animation:gdrift 30s linear infinite 17s}
+  .bg-wind span:nth-child(8){top:90%;animation:gdrift 24s linear infinite 11s}
+  .bg-wind span:nth-child(9){top:20%;animation:gdrift 38s linear infinite 20s;opacity:0}
+  .bg-wind span:nth-child(10){top:47%;animation:gdrift 22s linear infinite 15s}
+  @keyframes gdrift{0%{transform:translate(-6vw,0) scale(.5);opacity:0}10%{opacity:.85}
+    52%{transform:translate(50vw,-6vh) scale(1);opacity:.9}90%{opacity:.6}
+    100%{transform:translate(112vw,-12vh) scale(.5);opacity:0}}
+  .app{position:relative;z-index:1;max-width:1180px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+
+  /* Login gate — must sign in before the app is usable */
+  .gate{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;
+    background:rgba(8,10,13,.55);backdrop-filter:blur(3px)}
+  .gate.hidden{display:none}
+
+  /* top bar with mode switch */
+  .topbar{display:flex;align-items:center;gap:18px;padding:18px 28px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mark{width:38px;height:38px;border-radius:11px;background:var(--grad);
+    display:grid;place-items:center;font-weight:800;color:#1a1207;box-shadow:0 6px 18px rgba(222,116,28,.4)}
+  .brand .name{font-weight:700;font-size:17px;letter-spacing:.2px}
+  .brand .name small{display:block;font-weight:500;font-size:11px;color:var(--text-3);letter-spacing:.5px}
+  .modeswitch{display:flex;gap:4px;padding:4px;background:var(--bg-1);border:1px solid var(--line);border-radius:999px}
+  .modeswitch button{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:999px;border:none;
+    background:transparent;color:var(--text-2);font-size:13.5px;font-weight:600;cursor:pointer;transition:.18s}
+  .modeswitch button.on{background:var(--grad);color:#1a1207;box-shadow:0 4px 14px rgba(222,116,28,.35)}
+  .spacer{flex:1}
+  .minutes{display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;
+    background:rgba(254,168,55,.1);border:1px solid rgba(254,168,55,.25);color:var(--brand-5);font-size:13px;font-weight:600}
+  .minutes .dot{width:7px;height:7px;border-radius:50%;background:var(--brand-5);box-shadow:0 0 8px var(--brand-5)}
+  .acct{display:flex;align-items:center;gap:9px;padding:5px 6px 5px 13px;border-radius:999px;
+    background:var(--bg-2);border:1px solid var(--line);cursor:pointer;font-size:13px;color:var(--text-2)}
+  .acct .av{width:28px;height:28px;border-radius:50%;background:var(--grad-deep);display:grid;place-items:center;
+    font-size:12px;font-weight:700;color:#fff}
+
+  /* demo switcher */
+  .demobar{display:flex;gap:7px;flex-wrap:wrap;padding:4px 28px 14px;align-items:center}
+  .demobar .lbl{font-size:11px;color:var(--text-3);margin-right:6px;text-transform:uppercase;letter-spacing:.08em}
+  .demobar button{padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:var(--bg-1);
+    color:var(--text-2);font-size:12.5px;cursor:pointer;transition:.15s}
+  .demobar button:hover{border-color:var(--brand-4);color:var(--text-1)}
+  .demobar button.on{background:var(--grad);border-color:transparent;color:#1a1207;font-weight:700}
+
+  .canvas{flex:1;padding:6px 28px 40px}
+  .screen{display:none}
+  .screen.on{display:block;animation:fade .3s var(--ease)}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* stepper */
+  .stepper{display:flex;align-items:center;margin:6px 0 22px}
+  .step{display:flex;align-items:center;gap:11px;flex:1}
+  .step .node{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;
+    background:var(--bg-2);border:1px solid var(--line);color:var(--text-3);flex:none}
+  .step .meta b{font-size:13.5px;color:var(--text-2);font-weight:600;display:block}
+  .step .meta span{font-size:11px;color:var(--text-3)}
+  .step .bar{flex:1;height:2px;background:var(--line);margin:0 12px;border-radius:2px}
+  .step.done .node{background:rgba(254,168,55,.15);border-color:transparent;color:var(--brand-5)}
+  .step.done .meta b{color:var(--text-1)}
+  .step.active .node{background:var(--grad);border-color:transparent;color:#1a1207;box-shadow:0 4px 16px rgba(222,116,28,.4)}
+  .step.active .meta b{color:var(--text-1)} .step.active .meta span{color:var(--brand-5)}
+
+  .card{background:linear-gradient(180deg,var(--bg-2),var(--bg-1));border:1px solid var(--line);
+    border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow-md)}
+  h2.scr-title{margin:0 0 3px;font-size:21px}
+  p.scr-sub{margin:0 0 18px;color:var(--text-3);font-size:13.5px}
+  .btn{padding:11px 20px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--bg-2);
+    color:var(--text-1);font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  .btn:hover{border-color:var(--brand-4)} .btn.primary{background:var(--grad);border-color:transparent;color:#1a1207}
+  .btn.primary:hover{filter:brightness(1.06)} .btn.ghost{background:transparent}
+  .actions{display:flex;justify-content:space-between;margin-top:22px} .muted{color:var(--text-3)} .small{font-size:12px}
+  .input{padding:11px 13px;border-radius:var(--r-sm);background:var(--bg-1);border:1px solid var(--line);
+    color:var(--text-1);font-size:14px;outline:none;width:100%}
+  .input:focus{border-color:var(--brand-4);box-shadow:0 0 0 2px rgba(222,116,28,.18)}
+  .tag{display:inline-block;padding:3px 9px;border-radius:999px;background:rgba(254,168,55,.12);color:var(--brand-5);font-size:11px;font-weight:600}
+
+  /* step 1 video */
+  .drop{border:1.5px dashed var(--line);border-radius:var(--r-md);padding:38px;text-align:center;background:rgba(255,255,255,.012);transition:.15s}
+  .drop:hover{border-color:var(--brand-4);background:rgba(222,116,28,.05)}
+  .drop .ic{font-size:34px;opacity:.8} .drop h3{margin:10px 0 4px;font-size:16px}
+  .hintbar{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:16px;font-size:12.5px;color:var(--text-3)}
+  .hintbar a{color:var(--brand-5);cursor:pointer;font-weight:600}
+  .vidcard{display:flex;gap:13px;align-items:center;margin-top:18px;padding:13px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--line)}
+  .vidcard .thumb{width:104px;height:60px;border-radius:8px;background:var(--grad-deep);flex:none;position:relative}
+  .vidcard .thumb::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;color:#fff;opacity:.85}
+  .vidcard .info b{font-size:14px} .vidcard .info div{font-size:12px;color:var(--text-3);margin-top:3px}
+
+  /* ===== step 2: translate — "working" state ===== */
+  .work{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 0 6px}
+  .orb{position:relative;width:120px;height:120px;margin:6px 0 18px}
+  .orb .core{position:absolute;inset:24px;border-radius:50%;background:var(--grad);
+    box-shadow:0 0 40px rgba(222,116,28,.55),inset 0 0 22px rgba(255,255,255,.25);animation:breathe 2.4s var(--ease) infinite}
+  .orb .ring{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;
+    border-top-color:var(--brand-5);border-right-color:rgba(254,168,55,.35);animation:spin 1.4s linear infinite}
+  .orb .ring.r2{inset:10px;border-top-color:var(--brand-3);border-right-color:transparent;animation-duration:2.2s;animation-direction:reverse;opacity:.7}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes breathe{0%,100%{transform:scale(.92);opacity:.9}50%{transform:scale(1.04);opacity:1}}
+  .work h2{margin:0 0 4px;font-size:20px}
+  .work .dots::after{content:'';animation:dots 1.4s steps(1,end) infinite}
+  @keyframes dots{0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}}
+  .work .sub{color:var(--text-3);font-size:13px;margin:0}
+  .barwrap{width:min(460px,100%);margin:18px 0 4px}
+  .progress{height:8px;border-radius:999px;background:var(--bg-3);overflow:hidden}
+  .progress>i{display:block;height:100%;width:62%;background:var(--grad);border-radius:999px;
+    box-shadow:0 0 12px rgba(254,168,55,.6);transition:width .4s}
+  .barwrap .lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text-3);margin-top:7px}
+  .chipline{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0 2px}
+  .chip{padding:5px 12px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line);font-size:12px;color:var(--text-2)}
+  .chip b{color:var(--brand-5)}
+  .stream{width:min(560px,100%);margin:20px auto 0;text-align:left;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+  .stream .row{display:grid;grid-template-columns:58px 1fr 1fr;gap:12px;padding:11px 14px;font-size:13px;border-top:1px solid var(--line-soft);align-items:center}
+  .stream .row:first-child{border-top:none;background:var(--bg-2);color:var(--text-3);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}
+  .stream .t{color:var(--text-3);font-variant-numeric:tabular-nums} .stream .vi{color:var(--brand-5)}
+  .sk{height:11px;border-radius:5px;background:linear-gradient(90deg,rgba(255,255,255,.05) 25%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.05) 75%);
+    background-size:200% 100%;animation:shimmer 1.3s linear infinite}
+  @keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+
+  /* step 3 edit */
+  .editgrid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+  .cuerow{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line-soft)}
+  .cuerow:first-child{border-top:none}
+  .cuerow .tc{font-size:11px;color:var(--text-3);width:74px;flex:none;font-variant-numeric:tabular-nums}
+  .cuerow .ta{flex:1;background:var(--bg-1);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;min-height:38px}
+  .cuerow.sel .ta{border-color:var(--brand-4);box-shadow:0 0 0 2px rgba(222,116,28,.15)}
+  .preview{aspect-ratio:9/16;border-radius:var(--r-md);background:var(--grad-deep);position:relative;display:grid;place-items:end center;border:1px solid var(--line)}
+  .preview .sub{margin-bottom:22px;background:rgba(0,0,0,.55);padding:6px 12px;border-radius:6px;font-size:13px}
+  .field{margin-top:14px} .field label{font-size:12px;color:var(--text-2);display:block;margin-bottom:6px}
+  .seg{display:flex;gap:6px} .seg .o{flex:1;text-align:center;padding:8px;border-radius:8px;background:var(--bg-2);border:1px solid var(--line);font-size:12.5px;cursor:pointer}
+  .seg .o.on{background:var(--grad);border-color:transparent;color:#1a1207;font-weight:700}
+
+  /* step 4 export */
+  .exgrid{display:grid;grid-template-columns:300px 1fr;gap:18px}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line-soft)}
+  .row:first-child{border-top:none}
+  .switch{width:42px;height:24px;border-radius:999px;background:var(--bg-3);position:relative;border:1px solid var(--line)}
+  .switch.on{background:var(--grad)} .switch i{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s}
+  .switch.on i{left:20px} .lock{font-size:11px;color:var(--brand-5);background:rgba(254,168,55,.12);padding:3px 8px;border-radius:999px}
+
+  /* ===== downloader (standalone) ===== */
+  .dlhero{text-align:center;max-width:680px;margin:8px auto 22px}
+  .dlhero h2{font-size:24px;margin:0 0 6px} .dlhero p{color:var(--text-3);margin:0;font-size:14px}
+  .dlbox{max-width:760px;margin:0 auto}
+  .pastebar{display:flex;gap:10px}
+  .pastebar .input{font-size:14.5px;height:48px}
+  .dlopts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 6px}
+  .dlchip{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line);font-size:13px;cursor:pointer}
+  .dlchip.on{border-color:var(--brand-4);color:var(--text-1)} .dlchip .k{width:9px;height:9px;border-radius:50%;background:var(--line)}
+  .dlchip.on .k{background:var(--brand-5);box-shadow:0 0 8px var(--brand-5)}
+  .queue{max-width:760px;margin:22px auto 0;display:flex;flex-direction:column;gap:12px}
+  .qitem{display:flex;align-items:center;gap:14px;padding:14px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--line)}
+  .qitem .thumb{width:92px;height:54px;border-radius:8px;background:var(--grad-deep);flex:none;position:relative}
+  .qitem .thumb::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;color:#fff;opacity:.8;font-size:13px}
+  .qitem .body{flex:1;min-width:0}
+  .qitem .ttl{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qitem .meta{font-size:11.5px;color:var(--text-3);margin:3px 0 7px}
+  .qbar{height:6px;border-radius:999px;background:var(--bg-3);overflow:hidden}
+  .qbar>i{display:block;height:100%;background:var(--grad);border-radius:999px}
+  .qitem .pct{font-size:12px;color:var(--brand-5);font-variant-numeric:tabular-nums;width:42px;text-align:right;flex:none}
+  .qitem .done{color:#7bdca0} .badge-ok{font-size:11px;color:#7bdca0}
+  .dlfoot{max-width:760px;margin:18px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--text-3)}
+
+  /* ===== reusable auth card (used by the login gate) ===== */
+  .auth-card{position:relative;z-index:1;width:100%;max-width:380px;padding:34px 32px 28px;text-align:center;
+    background:rgba(23,26,33,.82);backdrop-filter:blur(10px);border-radius:var(--r-xl);
+    box-shadow:var(--shadow-lg);animation:authIn .5s var(--ease) both}
+  .auth-card::before{content:"";position:absolute;inset:-1px;border-radius:calc(var(--r-xl) + 1px);z-index:-1;
+    background:linear-gradient(135deg,rgba(254,168,55,.55),rgba(89,62,103,.35) 50%,transparent 75%);opacity:.5}
+  @keyframes authIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+  .auth-logo{width:72px;height:72px;margin:0 auto 14px;border-radius:20px;background:var(--grad);
+    display:grid;place-items:center;font-weight:800;font-size:24px;color:#1a1207;box-shadow:0 0 30px rgba(254,168,55,.45)}
+  .auth-title{margin:0 0 5px;font-size:22px;font-weight:700}
+  .auth-sub{margin:0 0 20px;color:var(--text-3);font-size:13px}
+  .auth-field{text-align:left;margin-bottom:13px}
+  .auth-field label{display:block;font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .auth-card .btn{width:100%;margin-top:4px}
+  .auth-links{display:flex;justify-content:space-between;margin-top:14px;font-size:13px}
+  .auth-links a{color:var(--brand-5);cursor:pointer;text-decoration:none}
+
+  .accwrap{max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+  .acc-head{display:flex;align-items:center;gap:14px;padding:4px 2px 2px}
+  .acc-head .av2{width:48px;height:48px;border-radius:14px;background:var(--grad-deep);display:grid;place-items:center;font-weight:700;color:#fff;font-size:18px}
+  .acc-head .who b{font-size:16px} .acc-head .who div{font-size:12.5px;color:var(--text-3)}
+  .acc-head .btn{margin-left:auto;padding:8px 14px;font-size:12.5px}
+  .acc-side{display:flex;flex-direction:column;gap:16px}
+  .wallet-card{padding:22px;border-radius:var(--r-lg);background:linear-gradient(160deg,rgba(89,62,103,.55),var(--bg-2));border:1px solid var(--line);position:relative;overflow:hidden}
+  .wallet-card::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(254,168,55,.25),transparent 70%)}
+  .wallet-card .lbl{font-size:12px;color:var(--text-2)}
+  .wallet-card .n{font-size:44px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.05}
+  .wallet-card .sub{font-size:12px;color:var(--text-3)}
+  .lic{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .lic code{font-family:ui-monospace,monospace;color:var(--brand-5);font-size:12.5px}
+  .plans{display:flex;flex-direction:column;gap:10px}
+  .plan{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--line)}
+  .plan.cur{border-color:var(--brand-4);box-shadow:0 0 0 1px var(--brand-4) inset}
+  .plan .pn{font-weight:700;font-size:14px} .plan .pf{font-size:11.5px;color:var(--text-3)}
+  .plan .pp{margin-left:auto;font-weight:800;color:var(--brand-5)} .plan .btn{padding:7px 14px;font-size:12.5px}
+
+  .note{margin:0 28px 22px;padding:12px 16px;border-radius:var(--r-sm);background:rgba(89,62,103,.18);border:1px solid var(--brand-1);color:var(--text-2);font-size:12.5px}
+  @media (prefers-reduced-motion:reduce){.wind span,.orb .ring,.orb .core{animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Global ambient particles (behind the whole window) -->
+<div class="bg-wind"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<!-- LOGIN GATE — app is locked until signed in -->
+<div class="gate" id="gate">
+  <div class="auth-card">
+    <div class="auth-logo">VL</div>
+    <h1 class="auth-title">Chào mừng tới VL Studio</h1>
+    <p class="auth-sub">Đăng nhập để vào ứng dụng — dịch qua máy chủ, xem số phút và mua gói.</p>
+    <div class="auth-field"><label>Email</label><input class="input" placeholder="ban@email.com" /></div>
+    <div class="auth-field"><label>Mật khẩu</label><input class="input" type="password" value="********" /></div>
+    <button class="btn primary" id="gateLogin">Đăng nhập</button>
+    <div class="auth-links"><a>Tạo tài khoản</a><a>Quên mật khẩu?</a></div>
+  </div>
+</div>
+
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">VL</div>
+      <div class="name">VL Studio<small>LỒNG TIẾNG &amp; PHỤ ĐỀ</small></div>
+    </div>
+    <div class="modeswitch">
+      <button class="on">✨ Lồng tiếng</button>
+      <button>⬇ Tải video</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="minutes"><span class="dot"></span> Còn 120 phút</div>
+    <div class="acct"><span>Tuan</span><span class="av">T</span></div>
+  </div>
+
+  <div class="demobar">
+    <span class="lbl">Xem màn:</span>
+    <button class="on" data-s="s1">① Video</button>
+    <button data-s="s2">② Dịch</button>
+    <button data-s="s3">③ Sửa</button>
+    <button data-s="s4">④ Xuất</button>
+    <button data-s="sdl">⬇ Tải video (riêng)</button>
+    <button data-s="sacc">Tài khoản &amp; Gói</button>
+  </div>
+  <div class="note">Đây là <b>mockup tĩnh</b> để duyệt hướng thiết kế. Chưa nối logic. Đã tinh chỉnh màn <b>Dịch</b> (trạng thái đang xử lý) + <b>Tài khoản</b> (auth-card), và tách <b>Tải video</b> thành mục riêng.</div>
+
+  <div class="canvas">
+
+    <!-- STEP 1 -->
+    <section class="screen on" id="s1">
+      <div class="stepper">
+        <div class="step active"><div class="node">1</div><div class="meta"><b>Video</b><span>Đang chọn</span></div><div class="bar"></div></div>
+        <div class="step"><div class="node">2</div><div class="meta"><b>Dịch</b><span>Tự động</span></div><div class="bar"></div></div>
+        <div class="step"><div class="node">3</div><div class="meta"><b>Sửa</b><span>Phụ đề &amp; giọng</span></div><div class="bar"></div></div>
+        <div class="step"><div class="node">4</div><div class="meta"><b>Xuất</b><span>Render</span></div></div>
+      </div>
+      <div class="card">
+        <h2 class="scr-title">Chọn video cần lồng tiếng</h2>
+        <p class="scr-sub">Kéo thả tệp video từ máy để bắt đầu.</p>
+        <div class="drop">
+          <div class="ic">🎬</div>
+          <h3>Kéo thả video vào đây</h3>
+          <p class="muted small">MP4, MKV, MOV… tối đa 4GB</p>
+          <div style="margin-top:14px"><button class="btn primary">Chọn tệp từ máy</button></div>
+        </div>
+        <div class="hintbar">Video đang ở trên mạng? <a>Mở mục “Tải video” →</a></div>
+        <div class="vidcard">
+          <div class="thumb"></div>
+          <div class="info"><b>Tập 12 — 第十二集.mp4</b>
+            <div>09:42 · 1080×1920 · tiếng Trung <span class="tag">Đã sẵn sàng</span></div></div>
+        </div>
+      </div>
+      <div class="actions"><span></span><button class="btn primary">Tiếp tục → Dịch</button></div>
+    </section>
+
+    <!-- STEP 2: TRANSLATE WORKING -->
+    <section class="screen" id="s2">
+      <div class="stepper">
+        <div class="step done"><div class="node">✓</div><div class="meta"><b>Video</b><span>Xong</span></div><div class="bar"></div></div>
+        <div class="step active"><div class="node">2</div><div class="meta"><b>Dịch</b><span>Đang chạy</span></div><div class="bar"></div></div>
+        <div class="step"><div class="node">3</div><div class="meta"><b>Sửa</b><span>Phụ đề &amp; giọng</span></div><div class="bar"></div></div>
+        <div class="step"><div class="node">4</div><div class="meta"><b>Xuất</b><span>Render</span></div></div>
+      </div>
+      <div class="card">
+        <div class="work">
+          <div class="orb"><div class="ring"></div><div class="ring r2"></div><div class="core"></div></div>
+          <h2>Đang dịch phụ đề<span class="dots"></span></h2>
+          <p class="sub">Nhận dạng giọng nói &amp; dịch qua máy chủ · không cần OpenAI key</p>
+          <div class="chipline">
+            <span class="chip">Nguồn: <b>Tiếng Trung</b></span>
+            <span class="chip">Đích: <b>Tiếng Việt</b></span>
+            <span class="chip">Chế độ: <b>☁ Máy chủ</b></span>
+            <span class="chip">Ước tính: <b>~6 phút</b></span>
+          </div>
+          <div class="barwrap">
+            <div class="progress"><i></i></div>
+            <div class="lbl"><span>Đang dịch khối 38 / 61</span><span>62%</span></div>
+          </div>
+          <div class="stream">
+            <div class="row"><span>Thời điểm</span><span>Gốc</span><span>Tiếng Việt</span></div>
+            <div class="row"><span class="t">00:04</span><span>你终于来了</span><span class="vi">Cuối cùng anh cũng tới</span></div>
+            <div class="row"><span class="t">00:07</span><span>我等了很久</span><span class="vi">Em đợi lâu lắm rồi</span></div>
+            <div class="row"><span class="t">00:11</span><span>别担心，我在</span><span class="vi">Đừng lo, có anh đây</span></div>
+            <div class="row"><span class="t">00:15</span><span class="sk" style="width:70%"></span><span class="sk" style="width:80%"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="actions"><button class="btn ghost">Huỷ</button><button class="btn primary" style="opacity:.55">Tiếp tục → Sửa</button></div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="screen" id="s3">
+      <div class="stepper">
+        <div class="step done"><div class="node">✓</div><div class="meta"><b>Video</b><span>Xong</span></div><div class="bar"></div></div>
+        <div class="step done"><div class="node">✓</div><div class="meta"><b>Dịch</b><span>Xong</span></div><div class="bar"></div></div>
+        <div class="step active"><div class="node">3</div><div class="meta"><b>Sửa</b><span>Đang chỉnh</span></div><div class="bar"></div></div>
+        <div class="step"><div class="node">4</div><div class="meta"><b>Xuất</b><span>Render</span></div></div>
+      </div>
+      <div class="editgrid">
+        <div class="card">
+          <h2 class="scr-title">Sửa phụ đề &amp; giọng đọc</h2>
+          <p class="scr-sub">Chỉnh lời thoại trước khi tạo giọng lồng tiếng.</p>
+          <div class="cuerow sel"><div class="tc">00:04–00:06</div><div class="ta">Cuối cùng anh cũng tới rồi.</div></div>
+          <div class="cuerow"><div class="tc">00:07–00:10</div><div class="ta">Em đã đợi rất lâu.</div></div>
+          <div class="cuerow"><div class="tc">00:11–00:13</div><div class="ta">Đừng lo, có anh ở đây.</div></div>
+          <div class="cuerow"><div class="tc">00:14–00:17</div><div class="ta">Mọi chuyện sẽ ổn thôi.</div></div>
+        </div>
+        <div class="card">
+          <div class="preview"><div class="sub">Cuối cùng anh cũng tới rồi.</div></div>
+          <div class="field"><label>Giọng đọc</label><div class="seg"><div class="o on">Nữ · Hoài My</div><div class="o">Nam · Nam Minh</div></div></div>
+          <div class="field"><label>Tốc độ</label><div class="seg"><div class="o">Chậm</div><div class="o on">Vừa</div><div class="o">Nhanh</div></div></div>
+          <div style="margin-top:16px"><button class="btn" style="width:100%">▶ Nghe thử giọng</button></div>
+        </div>
+      </div>
+      <div class="actions"><button class="btn ghost">← Quay lại</button><button class="btn primary">Tiếp tục → Xuất</button></div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="screen" id="s4">
+      <div class="stepper">
+        <div class="step done"><div class="node">✓</div><div class="meta"><b>Video</b><span>Xong</span></div><div class="bar"></div></div>
+        <div class="step done"><div class="node">✓</div><div class="meta"><b>Dịch</b><span>Xong</span></div><div class="bar"></div></div>
+        <div class="step done"><div class="node">✓</div><div class="meta"><b>Sửa</b><span>Xong</span></div><div class="bar"></div></div>
+        <div class="step active"><div class="node">4</div><div class="meta"><b>Xuất</b><span>Sẵn sàng</span></div></div>
+      </div>
+      <div class="exgrid">
+        <div class="card">
+          <h2 class="scr-title" style="font-size:17px">Tùy chọn xuất</h2>
+          <div class="row"><span>Phụ đề chìm</span><div class="switch on"><i></i></div></div>
+          <div class="row"><span>Nhạc nền giữ lại</span><div class="switch on"><i></i></div></div>
+          <div class="row"><span>Bỏ watermark <span class="lock">Gói trả phí</span></span><div class="switch"><i></i></div></div>
+          <div class="row"><span>Độ phân giải</span><b class="small">1080p</b></div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column">
+          <div class="preview" style="aspect-ratio:16/9;max-height:300px"><div class="sub">Cuối cùng anh cũng tới rồi.</div></div>
+          <div style="margin-top:auto;display:flex;gap:12px;padding-top:18px">
+            <button class="btn primary" style="flex:1">⬇ Xuất video (MP4)</button>
+            <button class="btn">Xuất phụ đề (.srt)</button>
+          </div>
+        </div>
+      </div>
+      <div class="actions"><button class="btn ghost">← Quay lại</button><span></span></div>
+    </section>
+
+    <!-- DOWNLOADER (standalone) -->
+    <section class="screen" id="sdl">
+      <div class="dlhero">
+        <h2>Tải video</h2>
+        <p>Dán link để tải video chất lượng cao về máy — dùng độc lập, không cần qua chỉnh sửa.</p>
+      </div>
+      <div class="dlbox">
+        <div class="pastebar">
+          <input class="input" placeholder="Dán 1 hoặc nhiều link (YouTube, TikTok, Bilibili…)" />
+          <button class="btn primary" style="white-space:nowrap">Phân tích</button>
+        </div>
+        <div class="dlopts">
+          <div class="dlchip on"><span class="k"></span>1080p</div>
+          <div class="dlchip"><span class="k"></span>720p</div>
+          <div class="dlchip"><span class="k"></span>Chỉ âm thanh (MP3)</div>
+          <div class="dlchip"><span class="k"></span>Kèm phụ đề gốc</div>
+        </div>
+      </div>
+      <div class="queue">
+        <div class="qitem">
+          <div class="thumb"></div>
+          <div class="body">
+            <div class="ttl">第十二集 全场最佳·官方完整版</div>
+            <div class="meta">09:42 · 1080p · 248 MB</div>
+            <div class="qbar"><i style="width:73%"></i></div>
+          </div>
+          <div class="pct">73%</div>
+        </div>
+        <div class="qitem">
+          <div class="thumb"></div>
+          <div class="body">
+            <div class="ttl">幕后花絮 — Hậu trường tập 12</div>
+            <div class="meta done">04:18 · 1080p · 112 MB · <span class="badge-ok">Hoàn tất ✓</span></div>
+            <div class="qbar"><i style="width:100%"></i></div>
+          </div>
+          <div class="pct done">✓</div>
+        </div>
+      </div>
+      <div class="dlfoot">
+        <span>Lưu vào: <b style="color:var(--text-2)">D:\Videos\Tải về</b> · <a style="color:var(--brand-5);cursor:pointer">Đổi</a></span>
+        <span>2 mục · 1 đang tải</span>
+      </div>
+    </section>
+
+    <!-- ACCOUNT (signed-in) -->
+    <section class="screen" id="sacc">
+      <div class="accwrap">
+        <div class="acc-head">
+          <div class="av2">T</div>
+          <div class="who"><b>Tuan Tran</b><div>tuanvk49@gmail.com · Gói Pro</div></div>
+          <button class="btn" id="acctLogout">Đăng xuất</button>
+        </div>
+        <div class="wallet-card">
+          <div class="lbl">Số phút còn lại</div>
+          <div class="n">120</div>
+          <div class="sub">≈ 180.000 token · Gói Pro · hết hạn 06/07/2026</div>
+          <div class="lic">🔑 <code>VID-8KQ2-7M4P-1XZ9</code> <span class="tag" style="margin-left:auto">active</span></div>
+        </div>
+        <div class="plans">
+          <div class="plan"><div><div class="pn">Creator</div><div class="pf">≈ 333 phút/tháng</div></div><span class="pp">249k</span><button class="btn">Chọn</button></div>
+          <div class="plan cur"><div><div class="pn">Pro <span class="tag">Đang dùng</span></div><div class="pf">≈ 1.333 phút/tháng</div></div><span class="pp">599k</span><button class="btn">Gia hạn</button></div>
+          <div class="plan"><div><div class="pn">Studio</div><div class="pf">≈ 4.000 phút/tháng</div></div><span class="pp">1.49tr</span><button class="btn">Nâng cấp</button></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  // Login gate: app stays locked until "đăng nhập"
+  const gate = document.getElementById('gate');
+  document.getElementById('gateLogin').addEventListener('click', () => gate.classList.add('hidden'));
+  const lo = document.getElementById('acctLogout');
+  if (lo) lo.addEventListener('click', () => gate.classList.remove('hidden'));
+  document.querySelector('.acct').addEventListener('click', () => gate.classList.remove('hidden'));
+
+  const btns = document.querySelectorAll('.demobar button');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+    document.getElementById(b.dataset.s).classList.add('on');
+    // sync top mode-switch highlight for the standalone downloader
+    const ms = document.querySelectorAll('.modeswitch button');
+    const dl = b.dataset.s === 'sdl';
+    ms[0].classList.toggle('on', !dl); ms[1].classList.toggle('on', dl);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>

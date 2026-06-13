@@ -1,0 +1,23 @@
+-r requirements.txt
+
+# Native desktop shell — wraps desktop/server.py in an OS window (Phase N).
+# Windows: uses WebView2 (pre-installed on Win10 1809+ / Win11).
+# macOS:   uses WKWebView.
+# Linux:   uses WebKitGTK (apt: gir1.2-webkit2-4.1).
+#
+# Windows + pywebview: pip installs `pythonnet`. Official wheels target supported
+# CPython releases (this repo targets 3.11.x). On 3.13+ pip often falls back to
+# an sdist build (VS toolchain + NuGet); self-update of bundled NuGet may fail
+# with schema errors — recreate the venv with Python 3.11 (see README §2 / §4.1).
+pywebview>=5.0.0
+
+# One-file bundler used by scripts/build_desktop.* to produce VLTool.exe.
+pyinstaller>=6.6.0
+
+# Optional: OCR subtitle extractor (Phase A — ocr_only/hybrid modes).
+# Installs paddle + paddleocr (~500MB on Windows). Install only when needed:
+#   pip install paddleocr paddlepaddle
+# For GPU, install paddlepaddle-gpu matching your CUDA version instead.
+# These lines are commented out so the default desktop install stays lean.
+# paddleocr>=2.7
+# paddlepaddle>=2.6

@@ -1,0 +1,35 @@
+/* Design tokens — brand palette + layout radii/shadows.
+   Extracted from UI/Ui_desktop.html so component styles can reference
+   them by custom-property name (no duplication of hex values). */
+:root {
+  --brand-1: #593E67;
+  --brand-2: #84495F;
+  --brand-3: #B85B56;
+  --brand-4: #DE741C;
+  --brand-5: #FEA837;
+
+  --bg-0: #0F1115;
+  --bg-1: #171A21;
+  --bg-2: #1D212A;
+  --bg-3: #232833;
+  --line: #2B3240;
+  --line-soft: #232A36;
+
+  --text-1: #F4F1ED;
+  --text-2: #C7C0B9;
+  --text-3: #8B92A1;
+
+  --success: #FEA837;
+  --warning: #B85B56;
+  --running: #DE741C;
+  --queued: #84495F;
+  --active: #593E67;
+  --danger: #B85B56;
+
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, .35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, .22);
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+}

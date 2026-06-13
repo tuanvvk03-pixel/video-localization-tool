@@ -1,0 +1,22 @@
+{
+  "name": "video-localization-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Svelte + TS frontend for the video localization desktop app. Built as self-contained ESM screen modules that the existing vanilla app.js router mounts (strangler-fig migration).",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tsconfig/svelte": "^5.0.4",
+    "svelte": "^5.19.0",
+    "svelte-check": "^4.1.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}
