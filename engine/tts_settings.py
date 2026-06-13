@@ -34,7 +34,7 @@ PROJECT_TTS_REL = Path("style") / "tts_settings.json"
 VIDEO_TTS_OVERRIDE_REL = Path("tts_override.json")
 
 _PROVIDERS = {"edge_tts", "azure_tts"}
-_MIX_MODES = {"replace_original_speech", "duck_original_speech"}
+_MIX_MODES = {"replace_original_speech", "duck_original_speech", "keep_music_replace_voice"}
 _RATE_MIN, _RATE_MAX = -50, 50
 _PITCH_MIN, _PITCH_MAX = -50, 50
 _SPEED_MIN, _SPEED_MAX = 0.5, 2.0

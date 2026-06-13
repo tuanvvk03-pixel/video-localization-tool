@@ -324,8 +324,14 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument(
         "--mix-mode",
         default="replace_original_speech",
-        choices=["replace_original_speech", "duck_original_speech"],
+        choices=["replace_original_speech", "duck_original_speech", "keep_music_replace_voice"],
         help="Mix policy for dub (default replace_original_speech).",
+    )
+    p.add_argument(
+        "--demucs-device",
+        default="auto",
+        choices=["auto", "cpu", "cuda"],
+        help="Device for Demucs vocal separation (keep_music_replace_voice mode).",
     )
     p.add_argument(
         "--duck-gain-db",
@@ -745,6 +751,8 @@ def _run_pipeline(ns: argparse.Namespace, job_workspace: Path) -> int:
             str(job_workspace),
             "--mix-mode",
             ns.mix_mode,
+            "--demucs-device",
+            getattr(ns, "demucs_device", "auto") or "auto",
             "--duck-gain-db",
             str(ns.duck_gain_db),
             "--duck-fade-ms",

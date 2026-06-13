@@ -30,6 +30,8 @@ VOICE_BOOST_GAIN = 1.8
 VOICE_LIMIT = 0.96
 FINAL_LIMIT = 0.97
 BGM_LOOP_TOLERANCE_S = 0.05
+# E4 — instrumental music bed gain when keeping the original music (vocals removed).
+MUSIC_BED_GAIN = 0.6
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -38,8 +40,15 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument(
         "--mix-mode",
         default="replace_original_speech",
-        choices=["replace_original_speech", "duck_original_speech"],
-        help="Mix policy (default replace_original_speech).",
+        choices=["replace_original_speech", "duck_original_speech", "keep_music_replace_voice"],
+        help="Mix policy (default replace_original_speech). keep_music_replace_voice uses "
+        "Demucs to remove the original vocals and keep the music bed.",
+    )
+    p.add_argument(
+        "--demucs-device",
+        default="auto",
+        choices=["auto", "cpu", "cuda"],
+        help="Device for Demucs vocal separation (keep_music_replace_voice mode).",
     )
     # Backward compatible alias (deprecated)
     p.add_argument(
@@ -263,6 +272,41 @@ def _bgm_filter_chain(
     return "".join(parts)
 
 
+def _extract_audio_wav(ffmpeg: str, source_video: Path, out_wav: Path) -> None:
+    cmd = [
+        ffmpeg, "-y", "-hide_banner", "-loglevel", "error",
+        "-i", str(source_video), "-vn", "-ac", "2", "-ar", "44100",
+        "-c:a", "pcm_s16le", str(out_wav),
+    ]
+    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if proc.returncode != 0 or not out_wav.is_file():
+        tail = ((proc.stderr or "") + "\n" + (proc.stdout or ""))[-4000:]
+        raise RuntimeError(f"Failed extracting source audio for separation:\n{tail}")
+
+
+def _prepare_instrumental(
+    *, ffmpeg: str, source_video: Path, mixed_dir: Path, device: str
+) -> tuple[Path, dict]:
+    """Extract the source audio and run Demucs to get a vocals-removed music bed."""
+    from engine.vocal_separation import VocalSeparationError, separate_instrumental
+
+    if not source_video.is_file():
+        raise RuntimeError(f"Missing source video for keep_music_replace_voice: {source_video}")
+    orig_audio = mixed_dir / "_source_audio.wav"
+    _extract_audio_wav(ffmpeg, source_video, orig_audio)
+    instrumental = mixed_dir / "instrumental.wav"
+    try:
+        sep = separate_instrumental(orig_audio, instrumental, device=device)
+    except VocalSeparationError as e:
+        raise RuntimeError(str(e))
+    finally:
+        try:
+            orig_audio.unlink(missing_ok=True)
+        except OSError:
+            pass
+    return instrumental, sep
+
+
 def _mix_with_bgm(
     *,
     ffmpeg: str,
@@ -320,6 +364,16 @@ def _mix_with_bgm(
             f"[bg][bgm][voice]amix=inputs=3:normalize=0:dropout_transition=0:duration=first,"
             f"alimiter=limit={FINAL_LIMIT:.2f}[m]"
         )
+    elif mix_mode == "keep_music_replace_voice":
+        # input 0 is the Demucs instrumental (vocals removed) — a constant music bed.
+        filter_complex = (
+            f"[0:a]volume={MUSIC_BED_GAIN:.3f},aresample=async=1:first_pts=0[bed];"
+            f"{bgm_chain};"
+            f"[1:a]volume={VOICE_BOOST_GAIN:.3f},alimiter=limit={VOICE_LIMIT:.2f},"
+            "aresample=async=1:first_pts=0[voice];"
+            f"[bed][bgm][voice]amix=inputs=3:normalize=0:dropout_transition=0:duration=first,"
+            f"alimiter=limit={FINAL_LIMIT:.2f}[m]"
+        )
     else:
         raise RuntimeError(f"Unsupported mix_mode: {mix_mode!r}")
     input_args = [
@@ -351,7 +405,7 @@ def _mix_with_bgm(
     if proc.returncode != 0:
         tail = ((proc.stderr or "") + "\n" + (proc.stdout or ""))[-8000:]
         raise RuntimeError(f"ffmpeg BGM mix failed (exit {proc.returncode}). tail:\n{tail}")
-    return (0, mix_mode == "duck_original_speech")
+    return (0, mix_mode in ("duck_original_speech", "keep_music_replace_voice"))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -479,6 +533,17 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
     try:
+        instrumental_path: Path | None = None
+        separation_manifest: dict | None = None
+        if mix_mode == "keep_music_replace_voice":
+            ffmpeg, ffmpeg_err = resolve_ffmpeg_executable()
+            if ffmpeg is None:
+                raise RuntimeError(ffmpeg_err or "ffmpeg not found")
+            print("[mix] keep_music_replace_voice: separating vocals with Demucs...", file=sys.stderr)
+            instrumental_path, separation_manifest = _prepare_instrumental(
+                ffmpeg=ffmpeg, source_video=source_video, mixed_dir=mixed_dir, device=ns.demucs_device,
+            )
+
         if bgm_path is not None:
             if mix_mode == "duck_original_speech" and not source_video.is_file():
                 raise RuntimeError(f"Missing source video for duck mode: {source_video}")
@@ -496,7 +561,10 @@ def main(argv: list[str] | None = None) -> int:
             bgm_duration_s = float(bgm_duration)
             bgm_auto_looped = bgm_duration_s + BGM_LOOP_TOLERANCE_S < mix_duration_s
             bgm_stream_loop = bool(ns.bgm_loop) or bgm_auto_looped
-            ffmpeg_source = source_video if source_video.is_file() else aligned_voice
+            if mix_mode == "keep_music_replace_voice":
+                ffmpeg_source = instrumental_path  # type: ignore[assignment]
+            else:
+                ffmpeg_source = source_video if source_video.is_file() else aligned_voice
             _mix_with_bgm(
                 ffmpeg=ffmpeg,
                 source_video=ffmpeg_source,
@@ -569,6 +637,29 @@ def main(argv: list[str] | None = None) -> int:
             if proc.returncode != 0:
                 tail = ((proc.stderr or "") + "\n" + (proc.stdout or ""))[-8000:]
                 raise RuntimeError(f"ffmpeg duck mix failed (exit {proc.returncode}). tail:\n{tail}")
+        elif mix_mode == "keep_music_replace_voice":
+            ffmpeg, ffmpeg_err = resolve_ffmpeg_executable()
+            if ffmpeg is None:
+                raise RuntimeError(ffmpeg_err or "ffmpeg not found")
+            # [0:a] = Demucs instrumental (vocals removed), [1:a] = new aligned voice.
+            filter_complex = (
+                f"[0:a]volume={MUSIC_BED_GAIN:.3f},aresample=async=1:first_pts=0[bed];"
+                f"[1:a]volume={VOICE_BOOST_GAIN:.3f},alimiter=limit={VOICE_LIMIT:.2f},"
+                "aresample=async=1:first_pts=0[voice];"
+                f"[bed][voice]amix=inputs=2:normalize=0:dropout_transition=0:duration=longest,"
+                f"alimiter=limit={FINAL_LIMIT:.2f}[m]"
+            )
+            cmd = [
+                ffmpeg, "-y", "-hide_banner", "-loglevel", "error",
+                "-i", str(instrumental_path),
+                "-i", str(aligned_voice),
+                "-filter_complex", filter_complex,
+                "-map", "[m]", "-c:a", "pcm_s16le", str(mixed_audio),
+            ]
+            proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+            if proc.returncode != 0:
+                tail = ((proc.stderr or "") + "\n" + (proc.stdout or ""))[-8000:]
+                raise RuntimeError(f"ffmpeg keep_music mix failed (exit {proc.returncode}). tail:\n{tail}")
         else:
             raise RuntimeError(f"Unsupported mix_mode: {mix_mode!r}")
     except OSError as e:
@@ -619,9 +710,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     duck_segments_count = 0
-    used_original_audio = False
+    used_original_audio = mix_mode in ("duck_original_speech", "keep_music_replace_voice")
     if mix_mode == "duck_original_speech":
-        used_original_audio = True
         try:
             align_body2 = json.loads(align_manifest.read_text(encoding="utf-8"))
             duck_segments_count = len(
@@ -661,6 +751,7 @@ def main(argv: list[str] | None = None) -> int:
         "bgm_fade_in_ms": int(ns.bgm_fade_in_ms) if bgm_path is not None else None,
         "bgm_fade_out_ms": int(ns.bgm_fade_out_ms) if bgm_path is not None else None,
         "duck_segments_count": int(duck_segments_count),
+        "vocal_separation": separation_manifest,
         "original_audio_gain_db_when_ducked": float(ns.duck_gain_db) if used_original_audio else None,
         "original_audio_base_gain_db": (
             round(20.0 * log10(BACKGROUND_BASE_GAIN), 2)

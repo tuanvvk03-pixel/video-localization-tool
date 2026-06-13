@@ -395,6 +395,7 @@
       "mix_mode": "Mix mode",
       "mix_replace": "Thay thế giọng gốc",
       "mix_duck": "Hạ nền giọng gốc",
+      "mix_keep_music": "Giữ nhạc nền, thay giọng (tách vocal)",
       "scope": "Phạm vi",
       "scope_value": "Voice settings chỉ áp dụng sau khi subtitle đã được duyệt",
       "preview_title": "Voice Preview",

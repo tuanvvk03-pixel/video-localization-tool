@@ -395,6 +395,7 @@
       "mix_mode": "Mix mode",
       "mix_replace": "Replace original speech",
       "mix_duck": "Duck original speech",
+      "mix_keep_music": "Keep music, replace voice (vocal separation)",
       "scope": "Scope",
       "scope_value": "Voice settings apply after subtitle approval",
       "preview_title": "Voice Preview",

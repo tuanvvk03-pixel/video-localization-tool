@@ -388,7 +388,7 @@
     }).map(([loc, items]) => ({ label: groupLabel(items, loc), items }));
   });
   const resolveVoiceLabel = $derived(currentVoiceItem ? H.voiceOptionLabel(currentVoiceItem, lang()) : (s.tts_voice || t("settings.tts.voice_placeholder")));
-  const mixModeLabel = $derived(s.mix_mode === "duck_original_speech" ? t("settings.tts.mix_duck") : t("settings.tts.mix_replace"));
+  const mixModeLabel = $derived(s.mix_mode === "duck_original_speech" ? t("settings.tts.mix_duck") : s.mix_mode === "keep_music_replace_voice" ? t("settings.tts.mix_keep_music") : t("settings.tts.mix_replace"));
   const bgmView = $derived(H.normalizeBgm(s.bgm));
   const layoutView = $derived(H.normalizeRenderLayout(s.renderLayout));
 
@@ -513,6 +513,7 @@
                 <select class="input" value={s.mix_mode} onchange={(e) => (s.mix_mode = (e.target as HTMLSelectElement).value)}>
                   <option value="replace_original_speech">{t("settings.tts.mix_replace")}</option>
                   <option value="duck_original_speech">{t("settings.tts.mix_duck")}</option>
+                  <option value="keep_music_replace_voice">{t("settings.tts.mix_keep_music")}</option>
                 </select>
               </div>
             </div>

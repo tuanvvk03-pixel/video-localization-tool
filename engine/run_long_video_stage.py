@@ -370,7 +370,7 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--tts-voice", default="")
     p.add_argument("--tts-rate", default="")
     p.add_argument("--mix-mode", default="replace_original_speech",
-                   choices=["replace_original_speech", "duck_original_speech"])
+                   choices=["replace_original_speech", "duck_original_speech", "keep_music_replace_voice"])
     p.add_argument("--duck-gain-db", type=float, default=None)
     p.add_argument("--render-subtitle-mode", default="burn", choices=["soft", "burn", "none"])
     p.add_argument("--enable-translation-qa", action="store_true")
