@@ -12,9 +12,13 @@ from desktop.server_shared import _err, _ok, _require, require_job_workspace
 from engine.render_settings import (
     RenderSettingsError,
     clear_render_background,
+    clear_render_intro,
     clear_render_logo,
+    clear_render_outro,
     import_render_background_image,
+    import_render_intro_clip,
     import_render_logo_image,
+    import_render_outro_clip,
     load_render_settings,
     update_render_settings,
 )
@@ -92,4 +96,48 @@ def handle_render_logo_remove(body: dict[str, Any]) -> tuple[int, dict[str, Any]
         settings = clear_render_logo(jw, delete_files=True)
     except (RenderSettingsError, OSError, ValueError) as e:
         return _err("invalid_render_logo", str(e))
+    return _ok({"render": settings})
+
+
+def _clip_upload(body: dict[str, Any], importer) -> tuple[int, dict[str, Any]]:
+    missing = _require(body, "job_workspace", "clip_path")
+    if missing:
+        return _err("missing_field", f"Missing required field: {missing}")
+    jw = Path(str(body["job_workspace"])).expanduser().resolve()
+    if not jw.is_dir():
+        return _err("workspace_missing", f"Job workspace not found: {jw}")
+    try:
+        settings = importer(jw, str(body["clip_path"]))
+    except (RenderSettingsError, OSError, ValueError) as e:
+        return _err("invalid_render_clip", str(e))
+    return _ok({"render": settings})
+
+
+def handle_render_intro_upload(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    return _clip_upload(body, import_render_intro_clip)
+
+
+def handle_render_outro_upload(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    return _clip_upload(body, import_render_outro_clip)
+
+
+def handle_render_intro_remove(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    jw, error = require_job_workspace(body)
+    if error:
+        return error
+    try:
+        settings = clear_render_intro(jw, delete_files=True)
+    except (RenderSettingsError, OSError, ValueError) as e:
+        return _err("invalid_render_clip", str(e))
+    return _ok({"render": settings})
+
+
+def handle_render_outro_remove(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    jw, error = require_job_workspace(body)
+    if error:
+        return error
+    try:
+        settings = clear_render_outro(jw, delete_files=True)
+    except (RenderSettingsError, OSError, ValueError) as e:
+        return _err("invalid_render_clip", str(e))
     return _ok({"render": settings})

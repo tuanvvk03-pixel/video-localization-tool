@@ -39,7 +39,12 @@ export interface RenderLayout {
   aspect_ratio: string; background_path: string; background_original_filename: string;
   logo_path: string; logo_original_filename: string;
   logo_position: string; logo_scale: number; logo_opacity: number; logo_margin: number;
+  intro_clip_path: string; intro_original_filename: string;
+  outro_clip_path: string; outro_original_filename: string;
+  head_trim_sec: number; tail_trim_sec: number;
 }
+
+export function clampTrimSec(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(600, Math.max(0, Math.round(n * 10) / 10)) : 0; }
 
 export const LOGO_POSITIONS = ["top-left", "top-right", "bottom-left", "bottom-right"] as const;
 export function clampLogoScale(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(1, Math.max(0.02, n)) : 0.15; }
@@ -256,6 +261,12 @@ export function normalizeRenderLayout(raw: unknown): RenderLayout {
     logo_scale: clampLogoScale(data.logo_scale ?? 0.15),
     logo_opacity: clampLogoOpacity(data.logo_opacity ?? 1),
     logo_margin: clampLogoMargin(data.logo_margin ?? 0.03),
+    intro_clip_path: String(data.intro_clip_path || "").trim(),
+    intro_original_filename: String(data.intro_original_filename || "").trim(),
+    outro_clip_path: String(data.outro_clip_path || "").trim(),
+    outro_original_filename: String(data.outro_original_filename || "").trim(),
+    head_trim_sec: clampTrimSec(data.head_trim_sec ?? 0),
+    tail_trim_sec: clampTrimSec(data.tail_trim_sec ?? 0),
   };
 }
 

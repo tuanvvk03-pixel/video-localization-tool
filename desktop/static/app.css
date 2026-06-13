@@ -1278,6 +1278,22 @@ tr.row-clickable:hover td { background: rgba(254, 168, 55, .05); }
   background: var(--bg-0);
 }
 
+.clip-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.clip-col {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--line-soft);
+  background: var(--bg-1);
+}
+
 .render-logo-preview {
   max-width: 160px;
   max-height: 120px;

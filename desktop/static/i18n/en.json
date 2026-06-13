@@ -462,7 +462,24 @@
       "remove_logo": "Remove Logo",
       "logo_uploaded": "Logo imported.",
       "logo_removed": "Logo removed.",
-      "logo_confirm_remove": "Remove the logo from this workspace?"
+      "logo_confirm_remove": "Remove the logo from this workspace?",
+      "clips_title": "Trim + Intro/Outro",
+      "clips_sub": "Trim the head/tail of the localized video and bolt on your intro/outro clips.",
+      "head_trim": "Trim head",
+      "head_trim_hint": "Seconds to cut from the start (e.g. drop the competitor's original hook/intro).",
+      "tail_trim": "Trim tail",
+      "tail_trim_hint": "Seconds to cut from the end (e.g. drop the competitor's original outro/CTA).",
+      "intro_clip": "Intro clip",
+      "outro_clip": "Outro clip",
+      "no_clip": "No clip selected.",
+      "upload_intro": "Choose Intro",
+      "upload_outro": "Choose Outro",
+      "remove_clip": "Remove Clip",
+      "clip_confirm_remove": "Remove the clip from this workspace?",
+      "intro_uploaded": "Intro clip imported.",
+      "intro_removed": "Intro clip removed.",
+      "outro_uploaded": "Outro clip imported.",
+      "outro_removed": "Outro clip removed."
     }
   },
   "review": {

@@ -462,7 +462,24 @@
       "remove_logo": "Go logo",
       "logo_uploaded": "Da nhap logo.",
       "logo_removed": "Da go logo.",
-      "logo_confirm_remove": "Go logo khoi workspace nay?"
+      "logo_confirm_remove": "Go logo khoi workspace nay?",
+      "clips_title": "Cat dau/cuoi + Intro/Outro",
+      "clips_sub": "Cat bot dau/cuoi video da localize, va noi clip intro/outro cua ban.",
+      "head_trim": "Cat dau",
+      "head_trim_hint": "So giay cat o dau video (vd bo hook/intro goc cua doi thu).",
+      "tail_trim": "Cat cuoi",
+      "tail_trim_hint": "So giay cat o cuoi video (vd bo outro/CTA goc cua doi thu).",
+      "intro_clip": "Clip Intro",
+      "outro_clip": "Clip Outro",
+      "no_clip": "Chua chon clip.",
+      "upload_intro": "Chon intro",
+      "upload_outro": "Chon outro",
+      "remove_clip": "Go clip",
+      "clip_confirm_remove": "Go clip khoi workspace nay?",
+      "intro_uploaded": "Da nhap clip intro.",
+      "intro_removed": "Da go clip intro.",
+      "outro_uploaded": "Da nhap clip outro.",
+      "outro_removed": "Da go clip outro."
     }
   },
   "review": {

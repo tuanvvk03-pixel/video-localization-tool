@@ -245,6 +245,29 @@ def _resolve_layout_settings(
     return settings, bg_path, logo_path, logo_info
 
 
+def _resolve_branding(job_workspace: Path) -> tuple[Path | None, Path | None, float, float]:
+    """Resolve E2 intro/outro clip paths + head/tail trim from render settings."""
+    state = load_render_settings(job_workspace) or {}
+
+    def _clip(key: str) -> Path | None:
+        raw = str(state.get(key) or "").strip()
+        if not raw:
+            return None
+        cand = Path(raw).expanduser()
+        if not cand.is_absolute():
+            cand = job_workspace / cand
+        p = cand.resolve()
+        if not p.is_file():
+            raise RenderSettingsError(f"{key} not found: {p}")
+        return p
+
+    intro = _clip("intro_clip_path")
+    outro = _clip("outro_clip_path")
+    head = max(0.0, float(state.get("head_trim_sec") or 0.0))
+    tail = max(0.0, float(state.get("tail_trim_sec") or 0.0))
+    return intro, outro, head, tail
+
+
 def _sanitize_cmd(cmd: list[str]) -> str:
     return " ".join(shlex.quote(c) for c in cmd)
 
@@ -781,6 +804,60 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(msg, file=sys.stderr)
         return 1
+
+    # E2 — optional post-render assembly: trim head/tail of the localized video
+    # and concat the user's intro/outro. Output stays at out_path (final.mp4); the
+    # pre-assembly localized render is preserved as final_localized.mp4.
+    try:
+        intro_clip, outro_clip, head_trim, tail_trim = _resolve_branding(job_workspace)
+    except RenderSettingsError as e:
+        intro_clip = outro_clip = None
+        head_trim = tail_trim = 0.0
+        print(f"[render] WARNING: branding settings ignored: {e}", file=sys.stderr)
+    if intro_clip is not None or outro_clip is not None or head_trim > 0 or tail_trim > 0:
+        from engine.video_assemble import VideoAssembleError, assemble_branded_video
+
+        localized_path = render_dir / "final_localized.mp4"
+        try:
+            if localized_path.exists():
+                localized_path.unlink()
+            out_path.replace(localized_path)
+            branding_manifest = assemble_branded_video(
+                main_video=localized_path,
+                out_path=out_path,
+                ffmpeg=ffmpeg,
+                ffprobe=ffprobe,
+                intro_clip=intro_clip,
+                outro_clip=outro_clip,
+                head_trim_sec=head_trim,
+                tail_trim_sec=tail_trim,
+            )
+            layout_settings["branding"] = branding_manifest
+            print(f"[render] Branding assembly done -> {out_path}", file=sys.stderr)
+        except (VideoAssembleError, OSError) as e:
+            # Restore the localized render so the job still has a final.mp4.
+            try:
+                if not out_path.exists() and localized_path.exists():
+                    localized_path.replace(out_path)
+            except OSError:
+                pass
+            msg = f"Branding assembly failed: {e}"
+            _merge_job_state(
+                job_workspace,
+                {
+                    "job_id": job_id,
+                    "job_workspace": str(job_workspace),
+                    "status": "failed",
+                    "current_stage": "render_failed",
+                    "last_error": msg,
+                },
+            )
+            _write_video_state(
+                job_workspace,
+                {"video_id": job_id, "status": "failed", "current_stage": "render_failed", "last_error": msg},
+            )
+            print(msg, file=sys.stderr)
+            return 1
 
     finished_at = time.time()
     manifest_path = _write_manifest(

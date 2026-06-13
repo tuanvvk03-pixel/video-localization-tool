@@ -38,7 +38,8 @@
       tts_rate: 0, tts_pitch: 0, mix_mode: "replace_original_speech", mix_duck_gain_db: -15,
       bgm: null, bgmAdvancedOpen: false,
       renderLayout: { aspect_ratio: "16:9", background_path: "", background_original_filename: "",
-        logo_path: "", logo_original_filename: "", logo_position: "top-right", logo_scale: 0.15, logo_opacity: 1, logo_margin: 0.03 },
+        logo_path: "", logo_original_filename: "", logo_position: "top-right", logo_scale: 0.15, logo_opacity: 1, logo_margin: 0.03,
+        intro_clip_path: "", intro_original_filename: "", outro_clip_path: "", outro_original_filename: "", head_trim_sec: 0, tail_trim_sec: 0 },
       previewAudioRel: "", previewAudioBust: 0, previewText: loadPreviewText(),
       voiceEditGateOpen: false, openaiKeyMissing: false, runUntilEditLive: null,
     };
@@ -184,6 +185,10 @@
       payload.logo_opacity = l.logo_opacity;
       payload.logo_margin = l.logo_margin;
     }
+    if (l.intro_clip_path) { payload.intro_clip_path = l.intro_clip_path; payload.intro_original_filename = l.intro_original_filename; }
+    if (l.outro_clip_path) { payload.outro_clip_path = l.outro_clip_path; payload.outro_original_filename = l.outro_original_filename; }
+    payload.head_trim_sec = l.head_trim_sec;
+    payload.tail_trim_sec = l.tail_trim_sec;
     return payload;
   };
   const buildImportConfigPayload = () => {
@@ -270,6 +275,24 @@
     return runBusy("render_logo_remove", async () => {
       const data = await post<any>("/api/render-logo/remove", { job_workspace: jw() });
       s.renderLayout = H.normalizeRenderLayout(data.render); s.notice = t("settings.render_layout.logo_removed"); }); };
+
+  // ---- E2: intro/outro clips + head/tail trim ----
+  const uploadClip = (kind: "intro" | "outro") => runBusy(`render_${kind}_upload`, async () => {
+    const res = await pickFilePath(["Video files (*.mp4;*.mov;*.mkv;*.webm;*.m4v)", "All files (*.*)"]);
+    if (res?.cancelled) return;
+    if (!res?.ok || !res.path) throw new Error(res?.error || t("settings.render_layout.pick_unavailable"));
+    await post("/api/render-settings/save", { job_workspace: jw(), render: buildRenderLayoutPayload() });
+    const data = await post<any>(`/api/render-${kind}/upload`, { job_workspace: jw(), clip_path: res.path });
+    s.renderLayout = H.normalizeRenderLayout(data.render); s.notice = t(`settings.render_layout.${kind}_uploaded`);
+  });
+  const removeClip = (kind: "intro" | "outro") => {
+    const has = kind === "intro" ? H.normalizeRenderLayout(s.renderLayout).intro_clip_path : H.normalizeRenderLayout(s.renderLayout).outro_clip_path;
+    if (!has || !window.confirm(t("settings.render_layout.clip_confirm_remove"))) return;
+    return runBusy(`render_${kind}_remove`, async () => {
+      const data = await post<any>(`/api/render-${kind}/remove`, { job_workspace: jw() });
+      s.renderLayout = H.normalizeRenderLayout(data.render); s.notice = t(`settings.render_layout.${kind}_removed`); });
+  };
+  function patchTrim(patch: Record<string, unknown>) { s.renderLayout = H.normalizeRenderLayout({ ...s.renderLayout, ...patch }); }
 
   const previewVoice = () => runBusy("tts_preview", async () => {
     const text = (s.previewText || "").trim() || H.DEFAULT_VOICE_PREVIEW_TEXT; savePreviewText(text);
@@ -607,6 +630,42 @@
                 <Button disabled={isBusy()} onclick={removeRenderLogo}>{t("settings.render_layout.remove_logo")}</Button>
               {/if}
             </div>
+
+            <!-- E2: intro/outro clips + head/tail trim -->
+            <div class="stack" style="gap:6px;margin-top:10px"><div class="card-title">{t("settings.render_layout.clips_title")}</div><div class="card-sub">{t("settings.render_layout.clips_sub")}</div></div>
+            <div class="field-grid">
+              <div class="field"><label>{t("settings.render_layout.head_trim")} ({layoutView.head_trim_sec}s)</label>
+                <input class="input" type="number" min="0" max="600" step="0.5" value={layoutView.head_trim_sec}
+                  onchange={(e) => patchTrim({ head_trim_sec: Number((e.target as HTMLInputElement).value) })} />
+                <div class="small-muted">{t("settings.render_layout.head_trim_hint")}</div></div>
+              <div class="field"><label>{t("settings.render_layout.tail_trim")} ({layoutView.tail_trim_sec}s)</label>
+                <input class="input" type="number" min="0" max="600" step="0.5" value={layoutView.tail_trim_sec}
+                  onchange={(e) => patchTrim({ tail_trim_sec: Number((e.target as HTMLInputElement).value) })} />
+                <div class="small-muted">{t("settings.render_layout.tail_trim_hint")}</div></div>
+            </div>
+            <div class="clip-row">
+              <div class="clip-col">
+                <div class="row-title">{t("settings.render_layout.intro_clip")}</div>
+                {#if layoutView.intro_clip_path}
+                  <div class="small-muted">{(layoutView.intro_original_filename || layoutView.intro_clip_path).split(/[\\/]/).pop()}</div>
+                {:else}<div class="meta-empty">{t("settings.render_layout.no_clip")}</div>{/if}
+                <div class="toolbar">
+                  <Button variant="secondary" disabled={isBusy()} onclick={() => uploadClip("intro")}>{t("settings.render_layout.upload_intro")}</Button>
+                  {#if layoutView.intro_clip_path}<Button disabled={isBusy()} onclick={() => removeClip("intro")}>{t("settings.render_layout.remove_clip")}</Button>{/if}
+                </div>
+              </div>
+              <div class="clip-col">
+                <div class="row-title">{t("settings.render_layout.outro_clip")}</div>
+                {#if layoutView.outro_clip_path}
+                  <div class="small-muted">{(layoutView.outro_original_filename || layoutView.outro_clip_path).split(/[\\/]/).pop()}</div>
+                {:else}<div class="meta-empty">{t("settings.render_layout.no_clip")}</div>{/if}
+                <div class="toolbar">
+                  <Button variant="secondary" disabled={isBusy()} onclick={() => uploadClip("outro")}>{t("settings.render_layout.upload_outro")}</Button>
+                  {#if layoutView.outro_clip_path}<Button disabled={isBusy()} onclick={() => removeClip("outro")}>{t("settings.render_layout.remove_clip")}</Button>{/if}
+                </div>
+              </div>
+            </div>
+            <div class="toolbar"><Button variant="primary" disabled={isBusy()} onclick={saveRenderLayout}>{t("settings.render_layout.save")}</Button></div>
           </div>
 
           <div class="toolbar">
