@@ -1,0 +1,18 @@
+# Keep shell scripts LF so they run regardless of the OS that committed them.
+*.sh text eol=lf
+
+# Treat known binary assets as binary: no line-ending munging, no text diffs.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.wav  binary
+*.mp3  binary
+*.m4a  binary
+*.mp4  binary
+*.woff  binary
+*.woff2 binary
+*.zip  binary
+*.pdf  binary
