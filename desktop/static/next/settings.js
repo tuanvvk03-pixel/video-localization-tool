@@ -1,198 +1,216 @@
-import { d as ko, p as wo, w as $o, x as No, f as kt, i as C, g as d, l as r, a as f, b as So, s as Po, e as jt, c as $, A as Qt, h as e, t as y, j as s, u as w, n as E, a3 as vi, Q as ct, q as Se, m as M, r as st, o as B, R as ut, K as wt, P as di, z as Pe, v as je, X as _i, V as jo } from "./chunks/api-vHpIWCot.js";
-import { o as Lo } from "./chunks/index-client-CjB8cgHo.js";
-import { e as Lt, i as Et } from "./chunks/each-BE197-93.js";
-import { p as Eo, B as O } from "./chunks/Button-GpBM5g0S.js";
-import { P as Mo } from "./chunks/ProgressBar-BACn-l7Z.js";
-import { s as Ao } from "./chunks/screen-DRq5NjFu.js";
-const Fo = [
+import { d as zs, p as Is, w as Vs, x as Us, f as ut, i as R, g as v, l as r, a as f, b as Ds, s as Gs, e as Jt, c as N, A as fe, h as e, t as y, j as o, u as w, n as A, a3 as zi, Q as gt, q as Ke, m as j, r as st, o as T, R as pt, K as nt, P as Ii, z as Je, v as He, X as Xe, V as qs } from "./chunks/api-vHpIWCot.js";
+import { o as Ws } from "./chunks/index-client-CjB8cgHo.js";
+import { e as Ht, i as Xt } from "./chunks/each-BE197-93.js";
+import { p as Ks, B as C } from "./chunks/Button-GpBM5g0S.js";
+import { P as Js } from "./chunks/ProgressBar-BACn-l7Z.js";
+import { s as Hs } from "./chunks/screen-DRq5NjFu.js";
+const Xs = [
   ["left", "L"],
   ["center", "C"],
   ["right", "R"]
-], ci = "vlt.voicePreviewText", Mt = "Xin chào, đây là giọng đọc thử nghiệm.", Ro = {
+], Vi = "vlt.voicePreviewText", Yt = "Xin chào, đây là giọng đọc thử nghiệm.", Ys = {
   "vi-VN": "vi-VN-HoaiMyNeural",
   "en-US": "en-US-JennyNeural",
   "en-GB": "en-GB-SoniaNeural",
   "zh-CN": "zh-CN-XiaoxiaoNeural",
   "ja-JP": "ja-JP-NanamiNeural",
   "ko-KR": "ko-KR-SunHiNeural"
-}, Co = {
+}, Qs = {
   bottom_band: { x: 0, y: 0.78, w: 1, h: 0.22 }
-};
-function To(l) {
-  const v = /* @__PURE__ */ new Set(), o = [];
+}, Zs = ["top-left", "top-right", "bottom-left", "bottom-right"];
+function tn(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.min(1, Math.max(0.02, n)) : 0.15;
+}
+function en(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 1;
+}
+function an(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.min(0.5, Math.max(0, n)) : 0.03;
+}
+function rn(l) {
+  const n = /* @__PURE__ */ new Set(), _ = [];
   for (const a of Array.isArray(l) ? l : []) {
     if (!a || typeof a.family != "string" || !a.family.trim()) continue;
-    const k = a.family.trim(), b = k.toLowerCase();
-    v.has(b) || (v.add(b), o.push({ family: k, file: String(a.file || "") }));
+    const $ = a.family.trim(), m = $.toLowerCase();
+    n.has(m) || (n.add(m), _.push({ family: $, file: String(a.file || "") }));
   }
-  return o.sort((a, k) => a.family.localeCompare(k.family));
+  return _.sort((a, $) => a.family.localeCompare($.family));
 }
-function Bo(l) {
-  const v = [];
-  for (const o of Array.isArray(l) ? l : []) {
-    if (!o || typeof o.voice_id != "string" || !o.voice_id.trim()) continue;
-    const a = Array.isArray(o.style_tags) ? o.style_tags.map((k) => String(k || "").trim()).filter(Boolean) : [];
-    v.push({
-      provider: String(o.provider || "edge_tts"),
-      voice_id: o.voice_id.trim(),
-      label: String(o.label || o.voice_id).trim(),
-      locale: String(o.locale || "").trim(),
-      locale_label: String(o.locale_label || "").trim(),
-      locale_label_en: String(o.locale_label_en || "").trim(),
-      gender: String(o.gender || "").trim().toLowerCase(),
-      gender_label: String(o.gender_label || "").trim(),
-      gender_label_en: String(o.gender_label_en || "").trim(),
-      short_name: String(o.short_name || "").trim(),
+function on(l) {
+  const n = [];
+  for (const _ of Array.isArray(l) ? l : []) {
+    if (!_ || typeof _.voice_id != "string" || !_.voice_id.trim()) continue;
+    const a = Array.isArray(_.style_tags) ? _.style_tags.map(($) => String($ || "").trim()).filter(Boolean) : [];
+    n.push({
+      provider: String(_.provider || "edge_tts"),
+      voice_id: _.voice_id.trim(),
+      label: String(_.label || _.voice_id).trim(),
+      locale: String(_.locale || "").trim(),
+      locale_label: String(_.locale_label || "").trim(),
+      locale_label_en: String(_.locale_label_en || "").trim(),
+      gender: String(_.gender || "").trim().toLowerCase(),
+      gender_label: String(_.gender_label || "").trim(),
+      gender_label_en: String(_.gender_label_en || "").trim(),
+      short_name: String(_.short_name || "").trim(),
       style_tags: a,
-      enabled: o.enabled !== !1
+      enabled: _.enabled !== !1
     });
   }
-  return v;
+  return n;
 }
-function xi(l, v) {
-  const o = l.filter((a) => a.provider === v && a.enabled !== !1);
-  return o.length ? o : l.filter((a) => a.provider === v);
+function Ji(l, n) {
+  const _ = l.filter((a) => a.provider === n && a.enabled !== !1);
+  return _.length ? _ : l.filter((a) => a.provider === n);
 }
-function Fe(l) {
-  const v = String(l || "").trim();
-  if (!v) return "vi";
-  const o = v.toLowerCase();
-  return o.startsWith("english") ? "en" : o.startsWith("vietnam") ? "vi" : o.startsWith("chinese") ? "zh" : o.startsWith("japanese") ? "ja" : o.startsWith("korean") ? "ko" : o.split(/[-_\s]/, 1)[0] || "vi";
+function ia(l) {
+  const n = String(l || "").trim();
+  if (!n) return "vi";
+  const _ = n.toLowerCase();
+  return _.startsWith("english") ? "en" : _.startsWith("vietnam") ? "vi" : _.startsWith("chinese") ? "zh" : _.startsWith("japanese") ? "ja" : _.startsWith("korean") ? "ko" : _.split(/[-_\s]/, 1)[0] || "vi";
 }
-function ki(l) {
-  const v = Fe(l);
-  return v === "en" ? "en-US" : v === "zh" ? "zh-CN" : v === "ja" ? "ja-JP" : v === "ko" ? "ko-KR" : v === "vi" ? "vi-VN" : v.includes("-") ? v : "";
+function Hi(l) {
+  const n = ia(l);
+  return n === "en" ? "en-US" : n === "zh" ? "zh-CN" : n === "ja" ? "ja-JP" : n === "ko" ? "ko-KR" : n === "vi" ? "vi-VN" : n.includes("-") ? n : "";
 }
-function Oo(l, v) {
-  const o = Fe(v);
-  return !!l && !!o && l.toLowerCase().startsWith(`${o}-`);
+function sn(l, n) {
+  const _ = ia(n);
+  return !!l && !!_ && l.toLowerCase().startsWith(`${_}-`);
 }
-function Zt(l, v) {
-  const o = { female: 0, male: 1 }, a = o[l.gender] ?? 9, k = o[v.gender] ?? 9;
-  return a !== k ? a - k : (l.short_name || l.label || l.voice_id).localeCompare(v.short_name || v.label || v.voice_id);
+function ye(l, n) {
+  const _ = { female: 0, male: 1 }, a = _[l.gender] ?? 9, $ = _[n.gender] ?? 9;
+  return a !== $ ? a - $ : (l.short_name || l.label || l.voice_id).localeCompare(n.short_name || n.label || n.voice_id);
 }
-function zo(l, v, o, a = "vi") {
-  const k = xi(l, v);
-  if (k.some((t) => t.voice_id === o)) return o;
-  const b = ki(a), G = Ro[b], At = G ? k.find((t) => t.voice_id === G && t.enabled !== !1) : null;
-  if (At) return At.voice_id;
-  const $t = k.filter((t) => t.locale === b || Oo(t.locale, a)).sort(Zt)[0];
-  return $t ? $t.voice_id : k.filter((t) => t.gender === "female").sort(Zt)[0]?.voice_id || [...k].sort(Zt)[0]?.voice_id || o || "vi-VN-HoaiMyNeural";
+function nn(l, n, _, a = "vi") {
+  const $ = Ji(l, n);
+  if ($.some((t) => t.voice_id === _)) return _;
+  const m = Hi(a), Y = Ys[m], Qt = Y ? $.find((t) => t.voice_id === Y && t.enabled !== !1) : null;
+  if (Qt) return Qt.voice_id;
+  const Ot = $.filter((t) => t.locale === m || sn(t.locale, a)).sort(ye)[0];
+  return Ot ? Ot.voice_id : $.filter((t) => t.gender === "female").sort(ye)[0]?.voice_id || [...$].sort(ye)[0]?.voice_id || _ || "vi-VN-HoaiMyNeural";
 }
-function Vo(l, v, o) {
-  return l.filter((a) => !(v && a.locale !== v || o && a.gender !== o));
+function ln(l, n, _) {
+  return l.filter((a) => !(n && a.locale !== n || _ && a.gender !== _));
 }
-function ui(l, v, o) {
-  return v === "vi" ? l.locale_label || l.locale_label_en || l.locale || o : l.locale_label_en || l.locale_label || l.locale || o;
+function Ui(l, n, _) {
+  return n === "vi" ? l.locale_label || l.locale_label_en || l.locale || _ : l.locale_label_en || l.locale_label || l.locale || _;
 }
-function Uo(l, v) {
-  return v === "vi" ? l.gender_label || l.gender_label_en || l.gender || "" : l.gender_label_en || l.gender_label || l.gender || "";
+function _n(l, n) {
+  return n === "vi" ? l.gender_label || l.gender_label_en || l.gender || "" : l.gender_label_en || l.gender_label || l.gender || "";
 }
-function Le(l, v) {
-  const o = l.short_name || l.label || l.voice_id, a = Uo(l, v), k = l.style_tags.length ? l.style_tags[0] : "", b = [a, k].filter(Boolean).join(", ");
-  return b ? `${o} - ${b}` : o;
+function Ye(l, n) {
+  const _ = l.short_name || l.label || l.voice_id, a = _n(l, n), $ = l.style_tags.length ? l.style_tags[0] : "", m = [a, $].filter(Boolean).join(", ");
+  return m ? `${_} - ${m}` : _;
 }
-function gi(l) {
+function Di(l) {
   if (!l || typeof l != "object") return null;
-  const v = l, o = {};
+  const n = l, _ = {};
   for (const a of ["x", "y", "w", "h"]) {
-    const k = Number(v[a]);
-    if (!Number.isFinite(k) || k < 0 || k > 1) return null;
-    o[a] = k;
+    const $ = Number(n[a]);
+    if (!Number.isFinite($) || $ < 0 || $ > 1) return null;
+    _[a] = $;
   }
-  return o.w <= 0 || o.h <= 0 || o.x + o.w > 1.0001 || o.y + o.h > 1.0001 ? null : o;
+  return _.w <= 0 || _.h <= 0 || _.x + _.w > 1.0001 || _.y + _.h > 1.0001 ? null : _;
 }
-function gt(l) {
-  const v = Number(l);
-  return Number.isFinite(v) ? Math.max(0.5, Math.min(2, Math.round(v * 20) / 20)) : 1;
+function wt(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.max(0.5, Math.min(2, Math.round(n * 20) / 20)) : 1;
 }
-function pi(l) {
-  return Math.max(-50, Math.min(50, Math.round((gt(l) - 1) * 100)));
+function Gi(l) {
+  return Math.max(-50, Math.min(50, Math.round((wt(l) - 1) * 100)));
 }
-function Io(l) {
-  const v = Number(l);
-  return Number.isFinite(v) ? gt(1 + v / 100) : 1;
+function vn(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? wt(1 + n / 100) : 1;
 }
-function Ee(l) {
-  const v = Number(l);
-  return Number.isFinite(v) ? Math.max(-30, Math.min(0, Math.round(v * 100) / 100)) : -15;
+function Qe(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.max(-30, Math.min(0, Math.round(n * 100) / 100)) : -15;
 }
-function Ae(l) {
-  const v = Number(l);
-  return Number.isFinite(v) ? Math.max(-40, Math.min(0, Math.round(v * 100) / 100)) : -20;
+function aa(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.max(-40, Math.min(0, Math.round(n * 100) / 100)) : -20;
 }
-function te(l) {
-  const v = Number(l);
-  return Number.isFinite(v) ? Math.max(0, Math.min(1e4, Math.round(v))) : 0;
+function he(l) {
+  const n = Number(l);
+  return Number.isFinite(n) ? Math.max(0, Math.min(1e4, Math.round(n))) : 0;
 }
-function Q(l) {
+function lt(l) {
   if (!l || typeof l != "object") return null;
-  const v = l, o = String(v.normalized_path || "").trim(), a = String(v.original_path || "").trim();
-  return !o && !a ? null : {
+  const n = l, _ = String(n.normalized_path || "").trim(), a = String(n.original_path || "").trim();
+  return !_ && !a ? null : {
     original_path: a,
-    normalized_path: o,
-    original_filename: String(v.original_filename || "").trim(),
-    duration_ms: Math.max(0, Math.round(Number(v.duration_ms) || 0)),
-    volume_db: Ae(v.volume_db),
-    loop: v.loop !== !1,
-    fade_in_ms: te(v.fade_in_ms ?? 500),
-    fade_out_ms: te(v.fade_out_ms ?? 1e3)
+    normalized_path: _,
+    original_filename: String(n.original_filename || "").trim(),
+    duration_ms: Math.max(0, Math.round(Number(n.duration_ms) || 0)),
+    volume_db: aa(n.volume_db),
+    loop: n.loop !== !1,
+    fade_in_ms: he(n.fade_in_ms ?? 500),
+    fade_out_ms: he(n.fade_out_ms ?? 1e3)
   };
 }
-function Z(l) {
-  const v = l && typeof l == "object" ? l : {};
+function U(l) {
+  const n = l && typeof l == "object" ? l : {}, _ = String(n.aspect_ratio || "16:9").trim(), a = String(n.logo_position || "top-right").trim();
   return {
-    aspect_ratio: String(v.aspect_ratio || "16:9").trim() === "9:16" ? "9:16" : "16:9",
-    background_path: String(v.background_path || "").trim(),
-    background_original_filename: String(v.background_original_filename || "").trim()
+    aspect_ratio: _ === "9:16" ? "9:16" : "16:9",
+    background_path: String(n.background_path || "").trim(),
+    background_original_filename: String(n.background_original_filename || "").trim(),
+    logo_path: String(n.logo_path || "").trim(),
+    logo_original_filename: String(n.logo_original_filename || "").trim(),
+    logo_position: Zs.includes(a) ? a : "top-right",
+    logo_scale: tn(n.logo_scale ?? 0.15),
+    logo_opacity: en(n.logo_opacity ?? 1),
+    logo_margin: an(n.logo_margin ?? 0.03)
   };
 }
-function bi(l) {
-  const v = Number(l), o = Number.isFinite(v) ? Math.round(v * 10) / 10 : 0;
-  return `${o > 0 ? "+" : ""}${o} dB`;
+function qi(l) {
+  const n = Number(l), _ = Number.isFinite(n) ? Math.round(n * 10) / 10 : 0;
+  return `${_ > 0 ? "+" : ""}${_} dB`;
 }
-function mi(l) {
-  const v = Number(l) || 0;
-  return `${v > 0 ? "+" : ""}${v}%`;
+function Wi(l) {
+  const n = Number(l) || 0;
+  return `${n > 0 ? "+" : ""}${n}%`;
 }
-function fi(l) {
-  return `${gt(l).toFixed(2).replace(/0$/, "").replace(/\.$/, "")}x`;
+function Ki(l) {
+  return `${wt(l).toFixed(2).replace(/0$/, "").replace(/\.$/, "")}x`;
 }
-function Do(l) {
-  const v = Math.max(0, Math.round((Number(l) || 0) / 1e3)), o = Math.floor(v / 60), a = String(v % 60).padStart(2, "0");
-  return `${o}:${a}`;
+function dn(l) {
+  const n = Math.max(0, Math.round((Number(l) || 0) / 1e3)), _ = Math.floor(n / 60), a = String(n % 60).padStart(2, "0");
+  return `${_}:${a}`;
 }
-function Go(l) {
+function cn(l) {
   return l === "left" ? "left" : l === "right" ? "right" : "center";
 }
-function qo(l) {
-  const v = String(l || "").trim();
-  return v ? `"${v}", "Segoe UI", sans-serif` : '"Segoe UI", sans-serif';
+function un(l) {
+  const n = String(l || "").trim();
+  return n ? `"${n}", "Segoe UI", sans-serif` : '"Segoe UI", sans-serif';
 }
-function Wo(l) {
-  const v = String(l || "").trim();
-  return /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(v) ? v.toUpperCase() : "#000000";
+function gn(l) {
+  const n = String(l || "").trim();
+  return /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(n) ? n.toUpperCase() : "#000000";
 }
-var Ko = E('<div class="error-banner"><div class="error-code">UI</div><div class="error-message"> </div></div>'), Jo = E('<div class="card" data-testid="settings-empty"><div class="empty-card"><div class="empty-icon">⚙</div> <h3> </h3> <p> </p></div></div>'), Ho = E('<div class="small-muted run-until-edit-progress-error"> </div>'), Xo = E('<div class="card work-card"><div class="work"><div class="orb"><div class="ring"></div><div class="ring r2"></div><div class="core"></div></div> <h2 class="work-title"> <span class="work-dots"></span></h2> <p class="work-sub"> </p> <div class="work-bar"><!> <div class="work-bar-foot"><span> </span><span> </span></div></div> <!></div></div>'), Yo = E('<div class="info-banner"> </div>'), Me = E("<option> </option>"), Qo = E('<button type="button"> </button>'), Zo = E('<optgroup><option selected=""> </option></optgroup>'), tn = E("<optgroup></optgroup>"), en = E('<div class="small-muted voice-filter-warning"> </div>'), an = E('<audio class="audio-preview" controls="" preload="metadata"></audio>'), hi = E('<div class="meta-empty"> </div>'), rn = E('<div class="bgm-summary"><div class="row-title"> </div> <div class="small-muted"> </div></div> <audio class="audio-preview" controls="" preload="metadata"></audio> <div class="field-grid"><div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>-40 ... 0 dB</span></div> <input class="range-input" type="range" min="-40" max="0" step="1"/></div> <div class="switch-row"><div><div style="font-weight:700"> </div><div class="small-muted"> </div></div> <label class="checkbox-row"><input type="checkbox"/></label></div></div>', 1), yi = E("<!> <!>", 1), sn = E('<div class="bgm-summary"><div class="row-title"> </div> <div class="small-muted"> </div></div> <img class="render-background-preview" alt=""/>', 1), on = E('<div class="section-block stack inline-action-banner" data-testid="api-key-missing" style="gap:10px"><div class="small-muted"> </div> <div class="toolbar"><!></div></div>'), nn = E('<!> <div class="stack"><div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div><div class="tag"> </div></div> <div class="card-body stack"><div class="section-block stack"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <div class="field-grid"><div class="field"><label> </label> <select class="input"></select></div> <div class="field"><label> </label><input class="input" type="text" readonly=""/></div></div> <div class="stack" style="gap:10px"><div class="small-muted"> </div> <div class="toggle-bar"><button type="button" data-testid="style-bold">B</button> <button type="button" data-testid="style-italic">I</button> <!></div></div> <div class="small-muted"> </div> <div class="preview-tile"><div class="card-title"> </div> <div><span class="subtitle-sample"> </span></div></div></div> <div class="section-block stack"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <div class="field-grid"><div class="field voice-picker"><label> </label> <div class="voice-filter-row"><select class="input voice-filter-select"><option> </option><!></select> <select class="input voice-filter-select"><option> </option><option> </option><option> </option></select></div> <select class="input"><!><!></select> <!></div> <div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>0.5x ... 2x</span></div> <input class="range-input" type="range" min="0.5" max="2" step="0.05"/></div> <div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div></div> <details class="advanced-details"><summary> </summary> <div class="field-grid advanced-grid"><div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>-50 ... +50</span></div> <input class="range-input" type="range" min="-50" max="50" step="1"/></div> <div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>-30 ... 0 dB</span></div> <input class="range-input" type="range" min="-30" max="0" step="1"/></div></div></details> <div class="field voice-preview-text-field"><label> </label> <input class="input" type="text"/></div> <div class="preview-tile"><div class="card-title"> </div> <div class="small-muted"><div> </div> <div> </div> <div> </div> <div> </div></div> <!> <div class="small-muted"> </div></div> <div class="toolbar"><!></div></div> <div class="section-block stack bgm-section"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <!> <div class="toolbar"><!> <!></div></div> <div class="section-block stack render-layout-section"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div></div> <!> <div class="toolbar"><!> <!> <!></div></div> <div class="toolbar"><!> <!></div></div></div> <div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option><option> </option><option> </option></select></div></div> <!> <details class="advanced-details"><summary> </summary> <div class="section-block"><div class="switch-row"><div><div style="font-weight:700"> </div><div class="small-muted"> </div></div> <label class="checkbox-row"><input type="checkbox"/></label></div> <div class="switch-row"><div><div style="font-weight:700"> </div><div class="small-muted"> </div></div> <label class="checkbox-row"><input type="checkbox"/></label></div></div></details> <div class="toolbar"><!></div></div></div></div>', 1), ln = E('<div class="voice-edit-gate-backdrop" role="dialog" aria-modal="true"><div class="voice-edit-gate-card stack"><h3 class="voice-edit-gate-title"> </h3> <p class="voice-edit-gate-body"> </p> <div class="voice-edit-gate-actions"><!> <!></div></div></div>'), vn = E('<div class="screen stack" data-testid="settings-screen"><!></div> <!>', 1);
-function dn(l, v) {
-  wo(v, !0);
-  let o = Eo(v, "ctx", 7);
-  const a = (i, _) => (o()?.t ?? ((h) => h))(i, _), k = () => o()?.getLang?.() ?? "vi", b = () => String(o()?.jobWorkspace || ""), G = () => String(o()?.parentProjectRoot || "");
-  function At() {
+var pn = A('<div class="error-banner"><div class="error-code">UI</div><div class="error-message"> </div></div>'), mn = A('<div class="card" data-testid="settings-empty"><div class="empty-card"><div class="empty-icon">⚙</div> <h3> </h3> <p> </p></div></div>'), bn = A('<div class="small-muted run-until-edit-progress-error"> </div>'), fn = A('<div class="card work-card"><div class="work"><div class="orb"><div class="ring"></div><div class="ring r2"></div><div class="core"></div></div> <h2 class="work-title"> <span class="work-dots"></span></h2> <p class="work-sub"> </p> <div class="work-bar"><!> <div class="work-bar-foot"><span> </span><span> </span></div></div> <!></div></div>'), yn = A('<div class="info-banner"> </div>'), Ze = A("<option> </option>"), hn = A('<button type="button"> </button>'), xn = A('<optgroup><option selected=""> </option></optgroup>'), kn = A("<optgroup></optgroup>"), wn = A('<div class="small-muted voice-filter-warning"> </div>'), $n = A('<audio class="audio-preview" controls="" preload="metadata"></audio>'), ta = A('<div class="meta-empty"> </div>'), Nn = A('<div class="bgm-summary"><div class="row-title"> </div> <div class="small-muted"> </div></div> <audio class="audio-preview" controls="" preload="metadata"></audio> <div class="field-grid"><div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>-40 ... 0 dB</span></div> <input class="range-input" type="range" min="-40" max="0" step="1"/></div> <div class="switch-row"><div><div style="font-weight:700"> </div><div class="small-muted"> </div></div> <label class="checkbox-row"><input type="checkbox"/></label></div></div>', 1), ea = A("<!> <!>", 1), Sn = A('<div class="bgm-summary"><div class="row-title"> </div> <div class="small-muted"> </div></div> <img class="render-background-preview" alt=""/>', 1), Ln = A('<div class="bgm-summary"><div class="row-title"> </div> <div class="small-muted"> </div></div> <img class="render-logo-preview" alt=""/> <div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option><option> </option></select></div> <div class="field"><label> </label> <input class="input" type="range" min="2" max="60" step="1"/></div> <div class="field"><label> </label> <input class="input" type="range" min="0" max="100" step="1"/></div> <div class="field"><label> </label> <input class="input" type="range" min="0" max="20" step="1"/></div></div>', 1), Pn = A('<div class="section-block stack inline-action-banner" data-testid="api-key-missing" style="gap:10px"><div class="small-muted"> </div> <div class="toolbar"><!></div></div>'), jn = A('<!> <div class="stack"><div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div><div class="tag"> </div></div> <div class="card-body stack"><div class="section-block stack"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <div class="field-grid"><div class="field"><label> </label> <select class="input"></select></div> <div class="field"><label> </label><input class="input" type="text" readonly=""/></div></div> <div class="stack" style="gap:10px"><div class="small-muted"> </div> <div class="toggle-bar"><button type="button" data-testid="style-bold">B</button> <button type="button" data-testid="style-italic">I</button> <!></div></div> <div class="small-muted"> </div> <div class="preview-tile"><div class="card-title"> </div> <div><span class="subtitle-sample"> </span></div></div></div> <div class="section-block stack"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <div class="field-grid"><div class="field voice-picker"><label> </label> <div class="voice-filter-row"><select class="input voice-filter-select"><option> </option><!></select> <select class="input voice-filter-select"><option> </option><option> </option><option> </option></select></div> <select class="input"><!><!></select> <!></div> <div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>0.5x ... 2x</span></div> <input class="range-input" type="range" min="0.5" max="2" step="0.05"/></div> <div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div></div> <details class="advanced-details"><summary> </summary> <div class="field-grid advanced-grid"><div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>-50 ... +50</span></div> <input class="range-input" type="range" min="-50" max="50" step="1"/></div> <div class="field slider-row"><label> </label> <div class="slider-meta"><span> </span><span>-30 ... 0 dB</span></div> <input class="range-input" type="range" min="-30" max="0" step="1"/></div></div></details> <div class="field voice-preview-text-field"><label> </label> <input class="input" type="text"/></div> <div class="preview-tile"><div class="card-title"> </div> <div class="small-muted"><div> </div> <div> </div> <div> </div> <div> </div></div> <!> <div class="small-muted"> </div></div> <div class="toolbar"><!></div></div> <div class="section-block stack bgm-section"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <!> <div class="toolbar"><!> <!></div></div> <div class="section-block stack render-layout-section"><div class="stack" style="gap:6px"><div class="card-title"> </div><div class="card-sub"> </div></div> <div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div></div> <!> <div class="toolbar"><!> <!> <!></div> <div class="stack" style="gap:6px;margin-top:10px"><div class="card-title"> </div><div class="card-sub"> </div></div> <!> <div class="toolbar"><!> <!></div></div> <div class="toolbar"><!> <!></div></div></div> <div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option><option> </option><option> </option></select></div></div> <!> <details class="advanced-details"><summary> </summary> <div class="section-block"><div class="switch-row"><div><div style="font-weight:700"> </div><div class="small-muted"> </div></div> <label class="checkbox-row"><input type="checkbox"/></label></div> <div class="switch-row"><div><div style="font-weight:700"> </div><div class="small-muted"> </div></div> <label class="checkbox-row"><input type="checkbox"/></label></div></div></details> <div class="toolbar"><!></div></div></div></div>', 1), Mn = A('<div class="voice-edit-gate-backdrop" role="dialog" aria-modal="true"><div class="voice-edit-gate-card stack"><h3 class="voice-edit-gate-title"> </h3> <p class="voice-edit-gate-body"> </p> <div class="voice-edit-gate-actions"><!> <!></div></div></div>'), En = A('<div class="screen stack" data-testid="settings-screen"><!></div> <!>', 1);
+function An(l, n) {
+  Is(n, !0);
+  let _ = Ks(n, "ctx", 7);
+  const a = (i, d) => (_()?.t ?? ((h) => h))(i, d), $ = () => _()?.getLang?.() ?? "vi", m = () => String(_()?.jobWorkspace || ""), Y = () => String(_()?.parentProjectRoot || "");
+  function Qt() {
     try {
-      const i = window.localStorage.getItem(ci);
-      return i && i.trim() ? i : Mt;
+      const i = window.localStorage.getItem(Vi);
+      return i && i.trim() ? i : Yt;
     } catch {
-      return Mt;
+      return Yt;
     }
   }
-  function $t(i) {
+  function Ot(i) {
     try {
-      window.localStorage.setItem(ci, i || Mt);
+      window.localStorage.setItem(Vi, i || Yt);
     } catch {
     }
   }
-  function Re() {
+  function ra() {
     return {
       loadedJobWorkspace: "",
       loadedProjectRoot: "",
@@ -236,149 +254,155 @@ function dn(l, v) {
       renderLayout: {
         aspect_ratio: "16:9",
         background_path: "",
-        background_original_filename: ""
+        background_original_filename: "",
+        logo_path: "",
+        logo_original_filename: "",
+        logo_position: "top-right",
+        logo_scale: 0.15,
+        logo_opacity: 1,
+        logo_margin: 0.03
       },
       previewAudioRel: "",
       previewAudioBust: 0,
-      previewText: At(),
+      previewText: Qt(),
       voiceEditGateOpen: !1,
       openaiKeyMissing: !1,
       runUntilEditLive: null
     };
   }
-  let t = $o(o()?.settingsState || Re());
-  o() && (o().settingsState = t);
-  let ot = Po(""), pt = null;
-  Lo(() => {
-    pt && clearInterval(pt);
+  let t = Vs(_()?.settingsState || ra());
+  _() && (_().settingsState = t);
+  let mt = Gs(""), $t = null;
+  Ws(() => {
+    $t && clearInterval($t);
   });
-  const I = () => !!t.loading || !!t.busyAction;
-  function ee(i, _) {
-    if (!b()) return "";
-    const h = new URLSearchParams({ workspace: b(), rel: i });
-    return _ && h.set("v", String(_)), `/media?${h.toString()}`;
+  const B = () => !!t.loading || !!t.busyAction;
+  function Zt(i, d) {
+    if (!m()) return "";
+    const h = new URLSearchParams({ workspace: m(), rel: i });
+    return d && h.set("v", String(d)), `/media?${h.toString()}`;
   }
-  function Ft() {
+  function te() {
     t.previewAudioRel = "", t.previewAudioBust = 0;
   }
-  async function Ce(i = !1) {
-    if (!b() || !i && t.loadedJobWorkspace === b() && t.loadedProjectRoot === G()) return;
-    t.loading = !0, t.notice = "", jt(ot, "");
-    const _ = !i && t.fontOptions.length ? Promise.resolve({ fonts: t.fontOptions }) : $("/api/list-system-fonts"), h = !i && t.voiceCatalog.length ? Promise.resolve({ voices: t.voiceCatalog }) : $("/api/list-voices");
+  async function oa(i = !1) {
+    if (!m() || !i && t.loadedJobWorkspace === m() && t.loadedProjectRoot === Y()) return;
+    t.loading = !0, t.notice = "", Jt(mt, "");
+    const d = !i && t.fontOptions.length ? Promise.resolve({ fonts: t.fontOptions }) : N("/api/list-system-fonts"), h = !i && t.voiceCatalog.length ? Promise.resolve({ voices: t.voiceCatalog }) : N("/api/list-voices");
     try {
       const [
         x,
-        S,
-        et,
-        Nt,
-        St,
-        A,
-        F,
-        q,
-        J
+        P,
+        _t,
+        zt,
+        It,
+        O,
+        z,
+        Q,
+        tt
       ] = await Promise.all([
-        $("/api/get-video-style", { job_workspace: b() }),
-        $("/api/get-video-tts", { job_workspace: b() }),
-        G() ? $("/api/get-project-style", { project_root: G() }) : Promise.resolve({ style: {} }),
-        G() ? $("/api/get-project-tts", { project_root: G() }) : Promise.resolve({ settings: {} }),
-        $("/api/get-import-config", { job_workspace: b() }),
-        _,
+        N("/api/get-video-style", { job_workspace: m() }),
+        N("/api/get-video-tts", { job_workspace: m() }),
+        Y() ? N("/api/get-project-style", { project_root: Y() }) : Promise.resolve({ style: {} }),
+        Y() ? N("/api/get-project-tts", { project_root: Y() }) : Promise.resolve({ settings: {} }),
+        N("/api/get-import-config", { job_workspace: m() }),
+        d,
         h,
-        $("/api/bgm/status", { job_workspace: b() }),
-        $("/api/render-settings/status", { job_workspace: b() })
-      ]), z = { ...et.style || {}, ...x.style || {} }, L = { ...Nt.settings || {}, ...S.settings || {} }, at = o()?.importConfig && o().importConfig.job_workspace === b() ? o().importConfig : null, P = { ...St.config || {}, ...at || {} }, V = String(P?.subtitle_extractor || "audio_only").toLowerCase();
-      let H = !1, R = V;
-      V === "ocr_only" || V === "hybrid" ? (H = !0, R = "audio_only") : V !== "external_srt" && (R = "audio_only");
-      const X = To(A.fonts || []), T = Bo(F.voices || []), W = P?.tts_provider || L.tts_provider || "edge_tts", bt = Number.isFinite(Number(L.tts_rate)) ? Number(L.tts_rate) : 0, nt = Fe(P?.translate_target || P?.target_language || P?.target_locale || "vi");
+        N("/api/bgm/status", { job_workspace: m() }),
+        N("/api/render-settings/status", { job_workspace: m() })
+      ]), D = { ..._t.style || {}, ...x.style || {} }, E = { ...zt.settings || {}, ...P.settings || {} }, vt = _()?.importConfig && _().importConfig.job_workspace === m() ? _().importConfig : null, M = { ...It.config || {}, ...vt || {} }, G = String(M?.subtitle_extractor || "audio_only").toLowerCase();
+      let et = !1, I = G;
+      G === "ocr_only" || G === "hybrid" ? (et = !0, I = "audio_only") : G !== "external_srt" && (I = "audio_only");
+      const at = rn(O.fonts || []), V = on(z.voices || []), Z = M?.tts_provider || E.tts_provider || "edge_tts", Nt = Number.isFinite(Number(E.tts_rate)) ? Number(E.tts_rate) : 0, bt = ia(M?.translate_target || M?.target_language || M?.target_locale || "vi");
       Object.assign(t, {
-        loadedJobWorkspace: b(),
-        loadedProjectRoot: G(),
+        loadedJobWorkspace: m(),
+        loadedProjectRoot: Y(),
         loading: !1,
-        fontOptions: X,
-        voiceCatalog: T,
-        subtitle_font: z.subtitle_font || "",
-        subtitle_background_color: z.subtitle_background_color || "#000000",
-        bg_enabled: !!z.subtitle_background_color,
-        subtitle_bold: !!z.bold,
-        subtitle_italic: !!z.italic,
-        subtitle_align: z.align || "center",
-        use_auto_translate: P?.use_auto_translate ?? !0,
-        source_language: P?.source_language || "auto",
-        translate_target: nt,
-        translate_backend: P?.translate_backend || "block_v2",
-        subtitle_extractor: R,
-        external_srt_path: String(P?.external_srt_path || "").trim(),
-        legacy_deprecated_extractor: H,
-        ocr_provider: P?.ocr_provider || "paddleocr",
-        ocr_language: P?.ocr_language || "ch",
-        ocr_device: P?.ocr_device || "auto",
-        ocr_roi: gi(P?.ocr_roi) || { x: 0, y: 0.78, w: 1, h: 0.22 },
-        tts_provider: W,
-        tts_voice: zo(T, W, L.tts_voice || "", nt),
-        speed_multiplier: Number.isFinite(Number(L.speed_multiplier)) ? gt(Number(L.speed_multiplier)) : Io(bt),
-        tts_rate: bt,
-        tts_pitch: Number.isFinite(Number(L.tts_pitch)) ? Number(L.tts_pitch) : 0,
-        mix_mode: L.mix_mode || "replace_original_speech",
-        mix_duck_gain_db: Number.isFinite(Number(L.mix_duck_gain_db)) ? Ee(Number(L.mix_duck_gain_db)) : -15,
-        bgm: Q(q?.bgm),
+        fontOptions: at,
+        voiceCatalog: V,
+        subtitle_font: D.subtitle_font || "",
+        subtitle_background_color: D.subtitle_background_color || "#000000",
+        bg_enabled: !!D.subtitle_background_color,
+        subtitle_bold: !!D.bold,
+        subtitle_italic: !!D.italic,
+        subtitle_align: D.align || "center",
+        use_auto_translate: M?.use_auto_translate ?? !0,
+        source_language: M?.source_language || "auto",
+        translate_target: bt,
+        translate_backend: M?.translate_backend || "block_v2",
+        subtitle_extractor: I,
+        external_srt_path: String(M?.external_srt_path || "").trim(),
+        legacy_deprecated_extractor: et,
+        ocr_provider: M?.ocr_provider || "paddleocr",
+        ocr_language: M?.ocr_language || "ch",
+        ocr_device: M?.ocr_device || "auto",
+        ocr_roi: Di(M?.ocr_roi) || { x: 0, y: 0.78, w: 1, h: 0.22 },
+        tts_provider: Z,
+        tts_voice: nn(V, Z, E.tts_voice || "", bt),
+        speed_multiplier: Number.isFinite(Number(E.speed_multiplier)) ? wt(Number(E.speed_multiplier)) : vn(Nt),
+        tts_rate: Nt,
+        tts_pitch: Number.isFinite(Number(E.tts_pitch)) ? Number(E.tts_pitch) : 0,
+        mix_mode: E.mix_mode || "replace_original_speech",
+        mix_duck_gain_db: Number.isFinite(Number(E.mix_duck_gain_db)) ? Qe(Number(E.mix_duck_gain_db)) : -15,
+        bgm: lt(Q?.bgm),
         bgmAdvancedOpen: !1,
-        renderLayout: Z(J?.render),
+        renderLayout: U(tt?.render),
         previewAudioRel: "",
         previewAudioBust: 0,
         openaiKeyMissing: !1,
         notice: a("settings.notice_loaded")
       });
     } catch (x) {
-      t.loading = !1, jt(ot, ae(x), !0);
+      t.loading = !1, Jt(mt, xe(x), !0);
     }
   }
-  function ae(i) {
-    return i instanceof Qt ? i.summary || i.message : i?.message || a("error.generic");
+  function xe(i) {
+    return i instanceof fe ? i.summary || i.message : i?.message || a("error.generic");
   }
-  async function K(i, _) {
-    if (o()) {
-      jt(ot, ""), t.busyAction = i, t.notice = "";
+  async function W(i, d) {
+    if (_()) {
+      Jt(mt, ""), t.busyAction = i, t.notice = "";
       try {
-        await _();
+        await d();
       } catch (h) {
-        jt(ot, ae(h), !0);
+        Jt(mt, xe(h), !0);
       } finally {
-        o() && (t.busyAction = "");
+        _() && (t.busyAction = "");
       }
     }
   }
-  const $i = () => {
+  const Yi = () => {
     const i = {};
     return (t.subtitle_font || "").trim() && (i.subtitle_font = t.subtitle_font.trim()), i.bold = !!t.subtitle_bold, i.italic = !!t.subtitle_italic, i.align = t.subtitle_align || "center", i;
-  }, Ni = () => ({
+  }, Qi = () => ({
     tts_provider: t.tts_provider,
     tts_voice: (t.tts_voice || "").trim(),
-    speed_multiplier: gt(t.speed_multiplier),
-    tts_rate: pi(t.speed_multiplier),
+    speed_multiplier: wt(t.speed_multiplier),
+    tts_rate: Gi(t.speed_multiplier),
     tts_pitch: Number(t.tts_pitch) || 0,
     mix_mode: t.mix_mode,
-    mix_duck_gain_db: Ee(t.mix_duck_gain_db)
-  }), Te = () => {
-    const i = Q(t.bgm);
+    mix_duck_gain_db: Qe(t.mix_duck_gain_db)
+  }), sa = () => {
+    const i = lt(t.bgm);
     return i ? {
       original_path: i.original_path,
       normalized_path: i.normalized_path,
       original_filename: i.original_filename,
       duration_ms: i.duration_ms,
-      volume_db: Ae(i.volume_db),
+      volume_db: aa(i.volume_db),
       loop: !!i.loop,
-      fade_in_ms: te(i.fade_in_ms),
-      fade_out_ms: te(i.fade_out_ms)
+      fade_in_ms: he(i.fade_in_ms),
+      fade_out_ms: he(i.fade_out_ms)
     } : {};
-  }, ie = () => {
-    const i = Z(t.renderLayout);
-    return {
+  }, ee = () => {
+    const i = U(t.renderLayout), d = {
       aspect_ratio: i.aspect_ratio,
       background_path: i.background_path,
       background_original_filename: i.background_original_filename
     };
-  }, Si = () => {
-    const i = t.subtitle_extractor || "audio_only", _ = {
+    return i.logo_path && (d.logo_path = i.logo_path, d.logo_original_filename = i.logo_original_filename, d.logo_position = i.logo_position, d.logo_scale = i.logo_scale, d.logo_opacity = i.logo_opacity, d.logo_margin = i.logo_margin), d;
+  }, Zi = () => {
+    const i = t.subtitle_extractor || "audio_only", d = {
       use_auto_translate: !!t.use_auto_translate,
       translate_backend: t.translate_backend || "block_v2",
       tts_provider: t.tts_provider || "edge_tts",
@@ -388,73 +412,90 @@ function dn(l, v) {
       ocr_language: t.ocr_language || "ch",
       ocr_device: t.ocr_device || "auto"
     };
-    return i === "audio_only" && (_.ocr_roi = gi(t.ocr_roi) || Co.bottom_band), _;
-  }, Pi = () => {
-    if (o()?.parentProject) return String(o().parentProject);
-    const _ = b().replace(/[\\/]+$/, "").split(/[\\/]/);
-    return _[_.length - 1] || "job";
-  }, ji = () => K("save_text_audio", async () => {
+    return i === "audio_only" && (d.ocr_roi = Di(t.ocr_roi) || Qs.bottom_band), d;
+  }, tr = () => {
+    if (_()?.parentProject) return String(_().parentProject);
+    const d = m().replace(/[\\/]+$/, "").split(/[\\/]/);
+    return d[d.length - 1] || "job";
+  }, er = () => W("save_text_audio", async () => {
     const i = [
-      $("/api/save-video-style", { job_workspace: b(), style: $i() }),
-      $("/api/save-video-tts", { job_workspace: b(), settings: Ni() })
-    ], _ = !!t.bgm;
-    _ && i.push($("/api/bgm/save", { job_workspace: b(), bgm: Te() })), i.push($("/api/render-settings/save", { job_workspace: b(), render: ie() }));
-    const h = await Promise.all(i), x = h[1], S = _ ? h[2] : null, et = _ ? h[3] : h[2];
-    Number.isFinite(Number(x.settings?.speed_multiplier)) && (t.speed_multiplier = gt(Number(x.settings.speed_multiplier))), Number.isFinite(Number(x.settings?.tts_rate)) && (t.tts_rate = Number(x.settings.tts_rate)), S && (t.bgm = Q(S.bgm)), et && (t.renderLayout = Z(et.render)), t.notice = a("settings.notice_saved_text_audio", { path: b() });
-  }), Li = () => K("bgm_upload", async () => {
-    const i = await _i(["Audio files (*.mp3;*.wav;*.m4a;*.aac)", "All files (*.*)"]);
+      N("/api/save-video-style", { job_workspace: m(), style: Yi() }),
+      N("/api/save-video-tts", { job_workspace: m(), settings: Qi() })
+    ], d = !!t.bgm;
+    d && i.push(N("/api/bgm/save", { job_workspace: m(), bgm: sa() })), i.push(N("/api/render-settings/save", { job_workspace: m(), render: ee() }));
+    const h = await Promise.all(i), x = h[1], P = d ? h[2] : null, _t = d ? h[3] : h[2];
+    Number.isFinite(Number(x.settings?.speed_multiplier)) && (t.speed_multiplier = wt(Number(x.settings.speed_multiplier))), Number.isFinite(Number(x.settings?.tts_rate)) && (t.tts_rate = Number(x.settings.tts_rate)), P && (t.bgm = lt(P.bgm)), _t && (t.renderLayout = U(_t.render)), t.notice = a("settings.notice_saved_text_audio", { path: m() });
+  }), ar = () => W("bgm_upload", async () => {
+    const i = await Xe(["Audio files (*.mp3;*.wav;*.m4a;*.aac)", "All files (*.*)"]);
     if (i?.cancelled) return;
     if (!i?.ok || !i.path) throw new Error(i?.error || a("settings.bgm.pick_unavailable"));
-    const _ = Q(t.bgm) || {}, h = await $("/api/bgm/upload", {
-      job_workspace: b(),
+    const d = lt(t.bgm) || {}, h = await N("/api/bgm/upload", {
+      job_workspace: m(),
       bgm_path: i.path,
-      volume_db: _.volume_db ?? -20,
-      loop: _.loop ?? !0,
-      fade_in_ms: _.fade_in_ms ?? 500,
-      fade_out_ms: _.fade_out_ms ?? 1e3
+      volume_db: d.volume_db ?? -20,
+      loop: d.loop ?? !0,
+      fade_in_ms: d.fade_in_ms ?? 500,
+      fade_out_ms: d.fade_out_ms ?? 1e3
     });
-    t.bgm = Q(h.bgm), t.notice = a("settings.bgm.uploaded");
-  }), Ei = () => {
+    t.bgm = lt(h.bgm), t.notice = a("settings.bgm.uploaded");
+  }), ir = () => {
     if (t.bgm)
-      return K("bgm_save", async () => {
-        const i = await $("/api/bgm/save", { job_workspace: b(), bgm: Te() });
-        t.bgm = Q(i.bgm), t.notice = a("settings.bgm.saved");
+      return W("bgm_save", async () => {
+        const i = await N("/api/bgm/save", { job_workspace: m(), bgm: sa() });
+        t.bgm = lt(i.bgm), t.notice = a("settings.bgm.saved");
       });
-  }, Mi = () => {
+  }, rr = () => {
     if (!(!t.bgm || !window.confirm(a("settings.bgm.confirm_remove"))))
-      return K("bgm_remove", async () => {
-        await $("/api/bgm/remove", { job_workspace: b() }), t.bgm = null, t.bgmAdvancedOpen = !1, t.notice = a("settings.bgm.removed");
+      return W("bgm_remove", async () => {
+        await N("/api/bgm/remove", { job_workspace: m() }), t.bgm = null, t.bgmAdvancedOpen = !1, t.notice = a("settings.bgm.removed");
       });
-  }, Ai = () => K("render_background_upload", async () => {
-    const i = await _i(["Image files (*.jpg;*.jpeg;*.png;*.webp)", "All files (*.*)"]);
+  }, or = () => W("render_background_upload", async () => {
+    const i = await Xe(["Image files (*.jpg;*.jpeg;*.png;*.webp)", "All files (*.*)"]);
     if (i?.cancelled) return;
     if (!i?.ok || !i.path) throw new Error(i?.error || a("settings.render_layout.pick_unavailable"));
-    await $("/api/render-settings/save", { job_workspace: b(), render: ie() });
-    const _ = await $("/api/render-background/upload", { job_workspace: b(), image_path: i.path });
-    t.renderLayout = Z(_.render), t.notice = a("settings.render_layout.uploaded");
-  }), Fi = () => K("render_layout_save", async () => {
-    const i = await $("/api/render-settings/save", { job_workspace: b(), render: ie() });
-    t.renderLayout = Z(i.render), t.notice = a("settings.render_layout.saved");
-  }), Ri = () => {
-    if (!(!Z(t.renderLayout).background_path || !window.confirm(a("settings.render_layout.confirm_remove"))))
-      return K("render_background_remove", async () => {
-        const i = await $("/api/render-background/remove", { job_workspace: b() });
-        t.renderLayout = Z(i.render), t.notice = a("settings.render_layout.removed");
+    await N("/api/render-settings/save", { job_workspace: m(), render: ee() });
+    const d = await N("/api/render-background/upload", { job_workspace: m(), image_path: i.path });
+    t.renderLayout = U(d.render), t.notice = a("settings.render_layout.uploaded");
+  }), na = () => W("render_layout_save", async () => {
+    const i = await N("/api/render-settings/save", { job_workspace: m(), render: ee() });
+    t.renderLayout = U(i.render), t.notice = a("settings.render_layout.saved");
+  }), sr = () => {
+    if (!(!U(t.renderLayout).background_path || !window.confirm(a("settings.render_layout.confirm_remove"))))
+      return W("render_background_remove", async () => {
+        const i = await N("/api/render-background/remove", { job_workspace: m() });
+        t.renderLayout = U(i.render), t.notice = a("settings.render_layout.removed");
       });
-  }, Ci = () => K("tts_preview", async () => {
-    const i = (t.previewText || "").trim() || Mt;
-    $t(i);
-    const _ = await $("/api/tts-preview", {
-      job_workspace: b(),
+  };
+  function ae(i) {
+    t.renderLayout = U({ ...t.renderLayout, ...i });
+  }
+  const nr = () => W("render_logo_upload", async () => {
+    const i = await Xe(["Image files (*.png;*.jpg;*.jpeg;*.webp)", "All files (*.*)"]);
+    if (i?.cancelled) return;
+    if (!i?.ok || !i.path) throw new Error(i?.error || a("settings.render_layout.pick_unavailable"));
+    await N("/api/render-settings/save", { job_workspace: m(), render: ee() });
+    const d = await N("/api/render-logo/upload", { job_workspace: m(), image_path: i.path });
+    t.renderLayout = U(d.render), t.notice = a("settings.render_layout.logo_uploaded");
+  }), lr = () => {
+    if (!(!U(t.renderLayout).logo_path || !window.confirm(a("settings.render_layout.logo_confirm_remove"))))
+      return W("render_logo_remove", async () => {
+        const i = await N("/api/render-logo/remove", { job_workspace: m() });
+        t.renderLayout = U(i.render), t.notice = a("settings.render_layout.logo_removed");
+      });
+  }, _r = () => W("tts_preview", async () => {
+    const i = (t.previewText || "").trim() || Yt;
+    Ot(i);
+    const d = await N("/api/tts-preview", {
+      job_workspace: m(),
       tts_provider: t.tts_provider,
       tts_voice: t.tts_voice,
       speed_multiplier: t.speed_multiplier,
       text: i
     });
-    t.previewText = i, t.previewAudioRel = _.rel_path || "", t.previewAudioBust = Number(_.cache_bust) || Date.now(), t.notice = a("settings.tts.preview_ready");
+    t.previewText = i, t.previewAudioRel = d.rel_path || "", t.previewAudioBust = Number(d.cache_bust) || Date.now(), t.notice = a("settings.tts.preview_ready");
   });
-  function re() {
-    $("/api/job-progress", { job_workspace: b() }).then((i) => {
+  function ke() {
+    N("/api/job-progress", { job_workspace: m() }).then((i) => {
       t.runUntilEditLive = {
         overall_percent: Number(i.overall_percent) || 0,
         current_stage_label: String(i.current_stage_label || ""),
@@ -466,7 +507,7 @@ function dn(l, v) {
     }).catch(() => {
     });
   }
-  const Ti = () => K("run_until_edit", async () => {
+  const vr = () => W("run_until_edit", async () => {
     t.openaiKeyMissing = !1, t.runUntilEditLive = {
       overall_percent: 0,
       current_stage_label: "",
@@ -474,17 +515,17 @@ function dn(l, v) {
       status_label: "",
       lifecycle: "queued",
       last_error: null
-    }, re();
+    }, ke();
     try {
-      pt = setInterval(re, 800);
+      $t = setInterval(ke, 800);
       try {
-        const x = await $("/api/save-import-config", { job_workspace: b(), config: Si() });
-        o().importConfig = { job_workspace: b(), ...x?.config || {} };
+        const x = await N("/api/save-import-config", { job_workspace: m(), config: Zi() });
+        _().importConfig = { job_workspace: m(), ...x?.config || {} };
       } catch {
       }
-      const i = await $("/api/run-until-edit", {
-        job_workspace: b(),
-        project_name: Pi(),
+      const i = await N("/api/run-until-edit", {
+        job_workspace: m(),
+        project_name: tr(),
         use_auto_translate: !0,
         source_language: t.source_language,
         translate_backend: "block_v2",
@@ -492,494 +533,596 @@ function dn(l, v) {
         enable_translation_qa: !!t.enable_translation_qa,
         async: !0,
         subtitle_extractor: "audio_only"
-      }), _ = await jo(b(), i);
-      o().applyJobStatusToEditGate?.(o(), _), re();
-      const h = _.voice_edit_status || "";
+      }), d = await qs(m(), i);
+      _().applyJobStatusToEditGate?.(_(), d), ke();
+      const h = d.voice_edit_status || "";
       if (h === "voice_edit_pending") {
         t.voiceEditGateOpen = !0, t.notice = a("settings.notice_run_until_edit", { stage: a(`stage.${h}`) }), t.runUntilEditLive = null;
         return;
       }
-      t.voiceEditGateOpen = !1, t.notice = a("settings.notice_run_until_edit", { stage: a(`stage.${h || "voice_edit_pending"}`) }), t.runUntilEditLive = null, o().navigate("review");
+      t.voiceEditGateOpen = !1, t.notice = a("settings.notice_run_until_edit", { stage: a(`stage.${h || "voice_edit_pending"}`) }), t.runUntilEditLive = null, _().navigate("review");
     } catch (i) {
-      if (i instanceof Qt && i.code === "api_key_required") {
+      if (i instanceof fe && i.code === "api_key_required") {
         t.openaiKeyMissing = !0, t.runUntilEditLive = null;
         return;
       }
-      const _ = t.runUntilEditLive?.current_stage_label || t.runUntilEditLive?.current_stage || "", h = i instanceof Qt ? i.message || i.code || "" : ae(i), x = i instanceof Qt && Array.isArray(i.logTail) && i.logTail.length ? `
+      const d = t.runUntilEditLive?.current_stage_label || t.runUntilEditLive?.current_stage || "", h = i instanceof fe ? i.message || i.code || "" : xe(i), x = i instanceof fe && Array.isArray(i.logTail) && i.logTail.length ? `
 — Log:
 ` + i.logTail.slice(-8).join(`
 `) : "";
-      jt(ot, a("settings.run_failed", { stage: _ || "—", message: h }) + x), t.runUntilEditLive = null;
+      Jt(mt, a("settings.run_failed", { stage: d || "—", message: h }) + x), t.runUntilEditLive = null;
       return;
     } finally {
-      pt && (clearInterval(pt), pt = null), o() && (t.runUntilEditLive = null);
+      $t && (clearInterval($t), $t = null), _() && (t.runUntilEditLive = null);
     }
-  }), Be = w(() => xi(t.voiceCatalog, t.tts_provider)), Bi = w(() => {
+  }), la = w(() => Ji(t.voiceCatalog, t.tts_provider)), dr = w(() => {
     const i = /* @__PURE__ */ new Map();
-    for (const _ of d(Be))
-      !_.locale || i.has(_.locale) || i.set(_.locale, ui(_, k(), a("settings.tts.locale_unknown")));
-    return Array.from(i.entries()).sort((_, h) => _[1].localeCompare(h[1]));
-  }), Oe = w(() => Vo(d(Be), t.voiceLocaleFilter, t.voiceGenderFilter)), ze = w(() => !!t.tts_voice && !d(Oe).some((i) => i.voice_id === t.tts_voice)), Rt = w(() => t.voiceCatalog.find((i) => i.provider === t.tts_provider && i.voice_id === t.tts_voice)), Oi = w(() => {
-    const i = ki(t.translate_target), _ = /* @__PURE__ */ new Map();
-    for (const x of [...d(Oe)].sort(Zt)) {
-      const S = x.locale || a("settings.tts.locale_unknown");
-      _.has(S) || _.set(S, []), _.get(S).push(x);
+    for (const d of v(la))
+      !d.locale || i.has(d.locale) || i.set(d.locale, Ui(d, $(), a("settings.tts.locale_unknown")));
+    return Array.from(i.entries()).sort((d, h) => d[1].localeCompare(h[1]));
+  }), _a = w(() => ln(v(la), t.voiceLocaleFilter, t.voiceGenderFilter)), va = w(() => !!t.tts_voice && !v(_a).some((i) => i.voice_id === t.tts_voice)), ie = w(() => t.voiceCatalog.find((i) => i.provider === t.tts_provider && i.voice_id === t.tts_voice)), cr = w(() => {
+    const i = Hi(t.translate_target), d = /* @__PURE__ */ new Map();
+    for (const x of [...v(_a)].sort(ye)) {
+      const P = x.locale || a("settings.tts.locale_unknown");
+      d.has(P) || d.set(P, []), d.get(P).push(x);
     }
-    const h = (x, S) => x[0] ? ui(x[0], k(), a("settings.tts.locale_unknown")) : S;
-    return Array.from(_.entries()).sort((x, S) => x[0] === i && S[0] !== i ? -1 : S[0] === i && x[0] !== i ? 1 : h(x[1], x[0]).localeCompare(h(S[1], S[0]))).map(([x, S]) => ({ label: h(S, x), items: S }));
-  }), zi = w(() => d(Rt) ? Le(d(Rt), k()) : t.tts_voice || a("settings.tts.voice_placeholder")), Vi = w(() => t.mix_mode === "duck_original_speech" ? a("settings.tts.mix_duck") : a("settings.tts.mix_replace")), D = w(() => Q(t.bgm)), tt = w(() => Z(t.renderLayout));
-  function Ui(i) {
-    t.tts_voice = i.target.value, Ft();
+    const h = (x, P) => x[0] ? Ui(x[0], $(), a("settings.tts.locale_unknown")) : P;
+    return Array.from(d.entries()).sort((x, P) => x[0] === i && P[0] !== i ? -1 : P[0] === i && x[0] !== i ? 1 : h(x[1], x[0]).localeCompare(h(P[1], P[0]))).map(([x, P]) => ({ label: h(P, x), items: P }));
+  }), ur = w(() => v(ie) ? Ye(v(ie), $()) : t.tts_voice || a("settings.tts.voice_placeholder")), gr = w(() => t.mix_mode === "duck_original_speech" ? a("settings.tts.mix_duck") : a("settings.tts.mix_replace")), K = w(() => lt(t.bgm)), L = w(() => U(t.renderLayout));
+  function pr(i) {
+    t.tts_voice = i.target.value, te();
   }
-  function Ii(i) {
-    t.speed_multiplier = gt(i), t.tts_rate = pi(t.speed_multiplier), Ft();
+  function mr(i) {
+    t.speed_multiplier = wt(i), t.tts_rate = Gi(t.speed_multiplier), te();
   }
-  const Di = w(() => {
+  const br = w(() => {
     const i = [];
-    t.subtitle_font && !t.fontOptions.some((_) => _.family === t.subtitle_font) && i.push([t.subtitle_font, t.subtitle_font]);
-    for (const _ of t.fontOptions) i.push([_.family, _.family]);
+    t.subtitle_font && !t.fontOptions.some((d) => d.family === t.subtitle_font) && i.push([t.subtitle_font, t.subtitle_font]);
+    for (const d of t.fontOptions) i.push([d.family, d.family]);
     return i.length ? i : [[t.subtitle_font || "Arial", t.subtitle_font || "Arial"]];
   });
-  No(() => {
-    b(), G(), Ce();
+  Us(() => {
+    m(), Y(), oa();
   });
-  var Ve = yi(), Ue = kt(Ve);
+  var da = ea(), ca = ut(da);
   {
-    var Gi = (i) => {
-      var _ = Ko(), h = r(e(_)), x = e(h);
-      y(() => s(x, d(ot))), f(i, _);
+    var fr = (i) => {
+      var d = pn(), h = r(e(d)), x = e(h);
+      y(() => o(x, v(mt))), f(i, d);
     };
-    C(Ue, (i) => {
-      d(ot) && i(Gi);
+    R(ca, (i) => {
+      v(mt) && i(fr);
     });
   }
-  var qi = r(Ue, 2);
+  var yr = r(ca, 2);
   {
-    var Wi = (i) => {
-      var _ = Jo(), h = e(_), x = r(e(h), 2), S = e(x), et = r(x, 2), Nt = e(et);
+    var hr = (i) => {
+      var d = mn(), h = e(d), x = r(e(h), 2), P = e(x), _t = r(x, 2), zt = e(_t);
       y(
-        (St, A) => {
-          s(S, St), s(Nt, A);
+        (It, O) => {
+          o(P, It), o(zt, O);
         },
         [
           () => a("settings.empty_title"),
           () => a("settings.empty_body")
         ]
-      ), f(i, _);
-    }, Ki = w(() => !b()), Ji = (i) => {
-      var _ = vn(), h = kt(_), x = e(h);
+      ), f(i, d);
+    }, xr = w(() => !m()), kr = (i) => {
+      var d = En(), h = ut(d), x = e(h);
       {
-        var S = (A) => {
-          const F = w(() => t.runUntilEditLive), q = w(() => Math.max(0, Math.min(100, Number(d(F)?.overall_percent) || 0)));
-          var J = Xo(), z = e(J), L = r(e(z), 2), at = e(L), P = r(L, 2), V = e(P), H = r(P, 2), R = e(H);
-          Mo(R, {
+        var P = (O) => {
+          const z = w(() => t.runUntilEditLive), Q = w(() => Math.max(0, Math.min(100, Number(v(z)?.overall_percent) || 0)));
+          var tt = fn(), D = e(tt), E = r(e(D), 2), vt = e(E), M = r(E, 2), G = e(M), et = r(M, 2), I = e(et);
+          Js(I, {
             get percent() {
-              return d(q);
+              return v(Q);
             },
             wide: !0
           });
-          var X = r(R, 2), T = e(X), W = e(T), bt = r(T), nt = e(bt), Ct = r(H, 2);
+          var at = r(I, 2), V = e(at), Z = e(V), Nt = r(V), bt = e(Nt), re = r(et, 2);
           {
-            var Tt = (lt) => {
-              var mt = Ho(), Pt = e(mt);
-              y(() => s(Pt, d(F).last_error)), f(lt, mt);
+            var oe = (ft) => {
+              var St = bn(), Vt = e(St);
+              y(() => o(Vt, v(z).last_error)), f(ft, St);
             };
-            C(Ct, (lt) => {
-              d(F)?.last_error && lt(Tt);
+            R(re, (ft) => {
+              v(z)?.last_error && ft(oe);
             });
           }
           y(
-            (lt, mt, Pt, Bt) => {
-              s(at, lt), s(V, `${mt ?? ""}${d(F)?.status_label ? ` · ${d(F).status_label}` : ""}`), s(W, Pt), s(nt, `${Bt ?? ""}%`);
+            (ft, St, Vt, se) => {
+              o(vt, ft), o(G, `${St ?? ""}${v(z)?.status_label ? ` · ${v(z).status_label}` : ""}`), o(Z, Vt), o(bt, `${se ?? ""}%`);
             },
             [
               () => a("settings.run_until_edit_progress_title"),
-              () => d(F)?.current_stage_label || a("settings.run_until_edit_progress_waiting"),
-              () => a("settings.translation.progress_percent", { percent: Math.round(d(q)) }),
-              () => Math.round(d(q))
+              () => v(z)?.current_stage_label || a("settings.run_until_edit_progress_waiting"),
+              () => a("settings.translation.progress_percent", { percent: Math.round(v(Q)) }),
+              () => Math.round(v(Q))
             ]
-          ), f(A, J);
-        }, et = (A) => {
-          var F = nn(), q = kt(F);
+          ), f(O, tt);
+        }, _t = (O) => {
+          var z = jn(), Q = ut(z);
           {
-            var J = (n) => {
-              var c = Yo(), g = e(c);
-              y(() => s(g, t.notice)), f(n, c);
+            var tt = (s) => {
+              var c = yn(), g = e(c);
+              y(() => o(g, t.notice)), f(s, c);
             };
-            C(q, (n) => {
-              t.notice && n(J);
+            R(Q, (s) => {
+              t.notice && s(tt);
             });
           }
-          var z = r(q, 2), L = e(z), at = e(L), P = e(at), V = e(P), H = e(V), R = r(V), X = e(R), T = r(P), W = e(T), bt = r(at, 2), nt = e(bt), Ct = e(nt), Tt = e(Ct), lt = e(Tt), mt = r(Tt), Pt = e(mt), Bt = r(Ct, 2), Ie = e(Bt), De = e(Ie), Hi = e(De), ft = r(De, 2);
-          Lt(ft, 21, () => d(Di), Et, (n, c) => {
-            var g = w(() => je(d(c), 2));
-            let u = () => d(g)[0], p = () => d(g)[1];
-            var m = Me(), j = e(m), N = {};
+          var D = r(Q, 2), E = e(D), vt = e(E), M = e(vt), G = e(M), et = e(G), I = r(G), at = e(I), V = r(M), Z = e(V), Nt = r(vt, 2), bt = e(Nt), re = e(bt), oe = e(re), ft = e(oe), St = r(oe), Vt = e(St), se = r(re, 2), ua = e(se), ga = e(ua), wr = e(ga), Lt = r(ga, 2);
+          Ht(Lt, 21, () => v(br), Xt, (s, c) => {
+            var g = w(() => He(v(c), 2));
+            let u = () => v(g)[0], p = () => v(g)[1];
+            var b = Ze(), S = e(b), k = {};
             y(() => {
-              vi(m, u() === t.subtitle_font), s(j, p()), N !== (N = u()) && (m.value = (m.__value = u()) ?? "");
-            }), f(n, m);
+              zi(b, u() === t.subtitle_font), o(S, p()), k !== (k = u()) && (b.value = (b.__value = u()) ?? "");
+            }), f(s, b);
           });
-          var Ge;
-          ct(ft);
-          var Xi = r(Ie, 2), qe = e(Xi), Yi = e(qe), Qi = r(qe), We = r(Bt, 2), Ke = e(We), Zi = e(Ke), tr = r(Ke, 2), se = e(tr), oe = r(se, 2), er = r(oe, 2);
-          Lt(er, 17, () => Fo, Et, (n, c) => {
-            var g = w(() => je(d(c), 2));
-            let u = () => d(g)[0], p = () => d(g)[1];
-            var m = Qo(), j = e(m);
+          var pa;
+          gt(Lt);
+          var $r = r(ua, 2), ma = e($r), Nr = e(ma), Sr = r(ma), ba = r(se, 2), fa = e(ba), Lr = e(fa), Pr = r(fa, 2), we = e(Pr), $e = r(we, 2), jr = r($e, 2);
+          Ht(jr, 17, () => Xs, Xt, (s, c) => {
+            var g = w(() => He(v(c), 2));
+            let u = () => v(g)[0], p = () => v(g)[1];
+            var b = hn(), S = e(b);
             y(() => {
-              Se(m, 1, `toggle-btn ${t.subtitle_align === u() ? "active" : ""}`), s(j, p());
-            }), M("click", m, () => t.subtitle_align = u()), f(n, m);
+              Ke(b, 1, `toggle-btn ${t.subtitle_align === u() ? "active" : ""}`), o(S, p());
+            }), j("click", b, () => t.subtitle_align = u()), f(s, b);
           });
-          var Je = r(We, 2), ar = e(Je), ir = r(Je, 2), He = e(ir), rr = e(He), Xe = r(He, 2), Ye = e(Xe), sr = e(Ye), Qe = r(nt, 2), Ze = e(Qe), ta = e(Ze), or = e(ta), nr = r(ta), lr = e(nr), ea = r(Ze, 2), aa = e(ea), ia = e(aa), vr = e(ia), ra = r(ia, 2), it = e(ra), Ot = e(it), dr = e(Ot);
-          Ot.value = Ot.__value = "";
-          var _r = r(Ot);
-          Lt(_r, 17, () => d(Bi), Et, (n, c) => {
-            var g = w(() => je(d(c), 2));
-            let u = () => d(g)[0], p = () => d(g)[1];
-            var m = Me(), j = e(m), N = {};
+          var ya = r(ba, 2), Mr = e(ya), Er = r(ya, 2), ha = e(Er), Ar = e(ha), xa = r(ha, 2), ka = e(xa), Fr = e(ka), wa = r(bt, 2), $a = e(wa), Na = e($a), Rr = e(Na), Tr = r(Na), Cr = e(Tr), Sa = r($a, 2), La = e(Sa), Pa = e(La), Br = e(Pa), ja = r(Pa, 2), dt = e(ja), ne = e(dt), Or = e(ne);
+          ne.value = ne.__value = "";
+          var zr = r(ne);
+          Ht(zr, 17, () => v(dr), Xt, (s, c) => {
+            var g = w(() => He(v(c), 2));
+            let u = () => v(g)[0], p = () => v(g)[1];
+            var b = Ze(), S = e(b), k = {};
             y(() => {
-              s(j, p()), N !== (N = u()) && (m.value = (m.__value = u()) ?? "");
-            }), f(n, m);
+              o(S, p()), k !== (k = u()) && (b.value = (b.__value = u()) ?? "");
+            }), f(s, b);
           });
-          var sa;
-          ct(it);
-          var vt = r(it, 2), zt = e(vt), cr = e(zt);
-          zt.value = zt.__value = "";
-          var Vt = r(zt), ur = e(Vt);
-          Vt.value = Vt.__value = "female";
-          var ne = r(Vt), gr = e(ne);
-          ne.value = ne.__value = "male";
-          var oa;
-          ct(vt);
-          var dt = r(ra, 2), na = e(dt);
+          var Ma;
+          gt(dt);
+          var yt = r(dt, 2), le = e(yt), Ir = e(le);
+          le.value = le.__value = "";
+          var _e = r(le), Vr = e(_e);
+          _e.value = _e.__value = "female";
+          var Ne = r(_e), Ur = e(Ne);
+          Ne.value = Ne.__value = "male";
+          var Ea;
+          gt(yt);
+          var ht = r(ja, 2), Aa = e(ht);
           {
-            var pr = (n) => {
-              var c = Zo(), g = e(c), u = e(g), p = {};
+            var Dr = (s) => {
+              var c = xn(), g = e(c), u = e(g), p = {};
               y(
-                (m, j) => {
-                  st(c, "label", m), s(u, j), p !== (p = t.tts_voice) && (g.value = (g.__value = t.tts_voice) ?? "");
+                (b, S) => {
+                  st(c, "label", b), o(u, S), p !== (p = t.tts_voice) && (g.value = (g.__value = t.tts_voice) ?? "");
                 },
                 [
                   () => a("settings.tts.current_voice"),
-                  () => d(Rt) ? Le(d(Rt), k()) : t.tts_voice
+                  () => v(ie) ? Ye(v(ie), $()) : t.tts_voice
                 ]
-              ), f(n, c);
+              ), f(s, c);
             };
-            C(na, (n) => {
-              d(ze) && n(pr);
+            R(Aa, (s) => {
+              v(va) && s(Dr);
             });
           }
-          var br = r(na);
-          Lt(br, 17, () => d(Oi), Et, (n, c) => {
-            var g = tn();
-            Lt(g, 21, () => d(c).items, Et, (u, p) => {
-              var m = Me(), j = e(m), N = {};
+          var Gr = r(Aa);
+          Ht(Gr, 17, () => v(cr), Xt, (s, c) => {
+            var g = kn();
+            Ht(g, 21, () => v(c).items, Xt, (u, p) => {
+              var b = Ze(), S = e(b), k = {};
               y(
-                (U) => {
-                  vi(m, d(p).voice_id === t.tts_voice), s(j, U), N !== (N = d(p).voice_id) && (m.value = (m.__value = d(p).voice_id) ?? "");
+                (F) => {
+                  zi(b, v(p).voice_id === t.tts_voice), o(S, F), k !== (k = v(p).voice_id) && (b.value = (b.__value = v(p).voice_id) ?? "");
                 },
-                [() => Le(d(p), k())]
-              ), f(u, m);
-            }), y(() => st(g, "label", d(c).label)), f(n, g);
+                [() => Ye(v(p), $())]
+              ), f(u, b);
+            }), y(() => st(g, "label", v(c).label)), f(s, g);
           });
-          var la;
-          ct(dt);
-          var mr = r(dt, 2);
+          var Fa;
+          gt(ht);
+          var qr = r(ht, 2);
           {
-            var fr = (n) => {
-              var c = en(), g = e(c);
-              y((u) => s(g, u), [() => a("settings.tts.filter_current_hidden")]), f(n, c);
+            var Wr = (s) => {
+              var c = wn(), g = e(c);
+              y((u) => o(g, u), [() => a("settings.tts.filter_current_hidden")]), f(s, c);
             };
-            C(mr, (n) => {
-              d(ze) && n(fr);
+            R(qr, (s) => {
+              v(va) && s(Wr);
             });
           }
-          var va = r(aa, 2), da = e(va), hr = e(da), _a = r(da, 2), yr = e(_a), xr = e(yr), ca = r(_a, 2), kr = r(va, 2), ua = e(kr), wr = e(ua), ht = r(ua, 2), Ut = e(ht), $r = e(Ut);
-          Ut.value = Ut.__value = "replace_original_speech";
-          var le = r(Ut), Nr = e(le);
-          le.value = le.__value = "duck_original_speech";
-          var ga;
-          ct(ht);
-          var pa = r(ea, 2), ba = e(pa), Sr = e(ba), Pr = r(ba, 2), ma = e(Pr), fa = e(ma), jr = e(fa), ha = r(fa, 2), Lr = e(ha), Er = e(Lr), ya = r(ha, 2), Mr = r(ma, 2), xa = e(Mr), Ar = e(xa), ka = r(xa, 2), Fr = e(ka), Rr = e(Fr), wa = r(ka, 2), $a = r(pa, 2), Na = e($a), Cr = e(Na), ve = r(Na, 2), Sa = r($a, 2), Pa = e(Sa), Tr = e(Pa), ja = r(Pa, 2), La = e(ja), Br = e(La), Ea = r(La, 2), Or = e(Ea), Ma = r(Ea, 2), zr = e(Ma), Vr = r(Ma, 2), Ur = e(Vr), Aa = r(ja, 2);
+          var Ra = r(La, 2), Ta = e(Ra), Kr = e(Ta), Ca = r(Ta, 2), Jr = e(Ca), Hr = e(Jr), Ba = r(Ca, 2), Xr = r(Ra, 2), Oa = e(Xr), Yr = e(Oa), Pt = r(Oa, 2), ve = e(Pt), Qr = e(ve);
+          ve.value = ve.__value = "replace_original_speech";
+          var Se = r(ve), Zr = e(Se);
+          Se.value = Se.__value = "duck_original_speech";
+          var za;
+          gt(Pt);
+          var Ia = r(Sa, 2), Va = e(Ia), to = e(Va), eo = r(Va, 2), Ua = e(eo), Da = e(Ua), ao = e(Da), Ga = r(Da, 2), io = e(Ga), ro = e(io), qa = r(Ga, 2), oo = r(Ua, 2), Wa = e(oo), so = e(Wa), Ka = r(Wa, 2), no = e(Ka), lo = e(no), Ja = r(Ka, 2), Ha = r(Ia, 2), Xa = e(Ha), _o = e(Xa), Le = r(Xa, 2), Ya = r(Ha, 2), Qa = e(Ya), vo = e(Qa), Za = r(Qa, 2), ti = e(Za), co = e(ti), ei = r(ti, 2), uo = e(ei), ai = r(ei, 2), go = e(ai), po = r(ai, 2), mo = e(po), ii = r(Za, 2);
           {
-            var Ir = (n) => {
-              var c = an();
-              y((g) => st(c, "src", g), [() => ee(t.previewAudioRel, t.previewAudioBust)]), f(n, c);
+            var bo = (s) => {
+              var c = $n();
+              y((g) => st(c, "src", g), [() => Zt(t.previewAudioRel, t.previewAudioBust)]), f(s, c);
             };
-            C(Aa, (n) => {
-              t.previewAudioRel && n(Ir);
+            R(ii, (s) => {
+              t.previewAudioRel && s(bo);
             });
           }
-          var Dr = r(Aa, 2), Gr = e(Dr), qr = r(Sa, 2), Wr = e(qr);
+          var fo = r(ii, 2), yo = e(fo), ho = r(Ya, 2), xo = e(ho);
           {
-            let n = w(I);
-            O(Wr, {
+            let s = w(B);
+            C(xo, {
               variant: "strong",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: Ci,
+              onclick: _r,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.tts.test_voice")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.tts.test_voice")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
-          var Fa = r(Qe, 2), Ra = e(Fa), Ca = e(Ra), Kr = e(Ca), Jr = r(Ca), Hr = e(Jr), Ta = r(Ra, 2);
+          var ri = r(wa, 2), oi = e(ri), si = e(oi), ko = e(si), wo = r(si), $o = e(wo), ni = r(oi, 2);
           {
-            var Xr = (n) => {
-              var c = hi(), g = e(c);
-              y((u) => s(g, u), [() => a("settings.bgm.no_bgm")]), f(n, c);
-            }, Yr = (n) => {
-              var c = rn(), g = kt(c), u = e(g), p = e(u), m = r(u, 2), j = e(m), N = r(g, 2), U = r(N, 2), Y = e(U), rt = e(Y), ce = e(rt), Kt = r(rt, 2), ue = e(Kt), ge = e(ue), Jt = r(Kt, 2), pe = r(Y, 2), Ht = e(pe), Xt = e(Ht), be = e(Xt), me = r(Xt), fe = e(me), he = r(Ht, 2), Yt = e(he);
+            var No = (s) => {
+              var c = ta(), g = e(c);
+              y((u) => o(g, u), [() => a("settings.bgm.no_bgm")]), f(s, c);
+            }, So = (s) => {
+              var c = Nn(), g = ut(c), u = e(g), p = e(u), b = r(u, 2), S = e(b), k = r(g, 2), F = r(k, 2), q = e(F), J = e(q), Ut = e(J), H = r(J, 2), ct = e(H), Dt = e(ct), it = r(H, 2), Gt = r(q, 2), rt = e(Gt), Et = e(rt), xt = e(Et), qt = r(Et), At = e(qt), Ft = r(rt, 2), kt = e(Ft);
               y(
-                (_t, ye, xe, ke, we, $e, Ne) => {
-                  s(p, _t), s(j, ye), st(N, "src", xe), s(ce, ke), s(ge, we), wt(Jt, d(D).volume_db), s(be, $e), s(fe, Ne), Pe(Yt, d(D).loop);
+                (ot, Rt, Tt, Ct, Wt, Bt, Kt) => {
+                  o(p, ot), o(S, Rt), st(k, "src", Tt), o(Ut, Ct), o(Dt, Wt), nt(it, v(K).volume_db), o(xt, Bt), o(At, Kt), Je(kt, v(K).loop);
                 },
                 [
-                  () => (d(D).original_filename || d(D).original_path || d(D).normalized_path).split(/[\\/]/).pop(),
-                  () => a("settings.bgm.duration", { duration: Do(d(D).duration_ms) }),
-                  () => ee(d(D).normalized_path || d(D).original_path, Date.now()),
+                  () => (v(K).original_filename || v(K).original_path || v(K).normalized_path).split(/[\\/]/).pop(),
+                  () => a("settings.bgm.duration", { duration: dn(v(K).duration_ms) }),
+                  () => Zt(v(K).normalized_path || v(K).original_path, Date.now()),
                   () => a("settings.bgm.volume"),
-                  () => bi(d(D).volume_db),
+                  () => qi(v(K).volume_db),
                   () => a("settings.bgm.loop"),
                   () => a("settings.bgm.loop_sub")
                 ]
-              ), M("input", Jt, (_t) => t.bgm = Q({ ...t.bgm, volume_db: Ae(Number(_t.target.value)) })), M("change", Yt, (_t) => t.bgm = Q({ ...t.bgm, loop: _t.target.checked })), f(n, c);
+              ), j("input", it, (ot) => t.bgm = lt({ ...t.bgm, volume_db: aa(Number(ot.target.value)) })), j("change", kt, (ot) => t.bgm = lt({ ...t.bgm, loop: ot.target.checked })), f(s, c);
             };
-            C(Ta, (n) => {
-              d(D) ? n(Yr, -1) : n(Xr);
+            R(ni, (s) => {
+              v(K) ? s(So, -1) : s(No);
             });
           }
-          var Qr = r(Ta, 2), Ba = e(Qr);
+          var Lo = r(ni, 2), li = e(Lo);
           {
-            let n = w(I);
-            O(Ba, {
+            let s = w(B);
+            C(li, {
               variant: "secondary",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: Li,
+              onclick: ar,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.bgm.upload")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.bgm.upload")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
-          var Zr = r(Ba, 2);
+          var Po = r(li, 2);
           {
-            var ts = (n) => {
-              var c = yi(), g = kt(c);
+            var jo = (s) => {
+              var c = ea(), g = ut(c);
               {
-                let p = w(I);
-                O(g, {
+                let p = w(B);
+                C(g, {
                   variant: "primary",
                   get disabled() {
-                    return d(p);
+                    return v(p);
                   },
-                  onclick: Ei,
-                  children: (m, j) => {
-                    var N = B();
-                    y((U) => s(N, U), [() => a("settings.bgm.save")]), f(m, N);
+                  onclick: ir,
+                  children: (b, S) => {
+                    var k = T();
+                    y((F) => o(k, F), [() => a("settings.bgm.save")]), f(b, k);
                   },
                   $$slots: { default: !0 }
                 });
               }
               var u = r(g, 2);
               {
-                let p = w(I);
-                O(u, {
+                let p = w(B);
+                C(u, {
                   get disabled() {
-                    return d(p);
+                    return v(p);
                   },
-                  onclick: Mi,
-                  children: (m, j) => {
-                    var N = B();
-                    y((U) => s(N, U), [() => a("settings.bgm.remove")]), f(m, N);
+                  onclick: rr,
+                  children: (b, S) => {
+                    var k = T();
+                    y((F) => o(k, F), [() => a("settings.bgm.remove")]), f(b, k);
                   },
                   $$slots: { default: !0 }
                 });
               }
-              f(n, c);
+              f(s, c);
             };
-            C(Zr, (n) => {
-              d(D) && n(ts);
+            R(Po, (s) => {
+              v(K) && s(jo);
             });
           }
-          var Oa = r(Fa, 2), za = e(Oa), Va = e(za), es = e(Va), as = r(Va), is = e(as), Ua = r(za, 2), rs = e(Ua), Ia = e(rs), ss = e(Ia), yt = r(Ia, 2), It = e(yt), os = e(It);
-          It.value = It.__value = "16:9";
-          var de = r(It), ns = e(de);
-          de.value = de.__value = "9:16";
-          var Da;
-          ct(yt);
-          var Ga = r(Ua, 2);
+          var _i = r(ri, 2), vi = e(_i), di = e(vi), Mo = e(di), Eo = r(di), Ao = e(Eo), ci = r(vi, 2), Fo = e(ci), ui = e(Fo), Ro = e(ui), jt = r(ui, 2), de = e(jt), To = e(de);
+          de.value = de.__value = "16:9";
+          var Pe = r(de), Co = e(Pe);
+          Pe.value = Pe.__value = "9:16";
+          var gi;
+          gt(jt);
+          var pi = r(ci, 2);
           {
-            var ls = (n) => {
-              var c = sn(), g = kt(c), u = e(g), p = e(u), m = r(u, 2), j = e(m), N = r(g, 2);
+            var Bo = (s) => {
+              var c = Sn(), g = ut(c), u = e(g), p = e(u), b = r(u, 2), S = e(b), k = r(g, 2);
               y(
-                (U, Y, rt) => {
-                  s(p, U), s(j, Y), st(N, "src", rt);
+                (F, q, J) => {
+                  o(p, F), o(S, q), st(k, "src", J);
                 },
                 [
-                  () => (d(tt).background_original_filename || d(tt).background_path).split(/[\\/]/).pop(),
+                  () => (v(L).background_original_filename || v(L).background_path).split(/[\\/]/).pop(),
                   () => a("settings.render_layout.background_ready"),
-                  () => ee(d(tt).background_path, Date.now())
+                  () => Zt(v(L).background_path, Date.now())
                 ]
-              ), f(n, c);
-            }, vs = (n) => {
-              var c = hi(), g = e(c);
-              y((u) => s(g, u), [() => a("settings.render_layout.no_background")]), f(n, c);
+              ), f(s, c);
+            }, Oo = (s) => {
+              var c = ta(), g = e(c);
+              y((u) => o(g, u), [() => a("settings.render_layout.no_background")]), f(s, c);
             };
-            C(Ga, (n) => {
-              d(tt).background_path ? n(ls) : n(vs, -1);
+            R(pi, (s) => {
+              v(L).background_path ? s(Bo) : s(Oo, -1);
             });
           }
-          var ds = r(Ga, 2), qa = e(ds);
+          var mi = r(pi, 2), bi = e(mi);
           {
-            let n = w(I);
-            O(qa, {
+            let s = w(B);
+            C(bi, {
               variant: "secondary",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: Ai,
+              onclick: or,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.render_layout.upload_background")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.render_layout.upload_background")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
-          var Wa = r(qa, 2);
+          var fi = r(bi, 2);
           {
-            let n = w(I);
-            O(Wa, {
+            let s = w(B);
+            C(fi, {
               variant: "primary",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: Fi,
+              onclick: na,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.render_layout.save")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.render_layout.save")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
-          var _s = r(Wa, 2);
+          var zo = r(fi, 2);
           {
-            var cs = (n) => {
+            var Io = (s) => {
               {
-                let c = w(I);
-                O(n, {
+                let c = w(B);
+                C(s, {
                   get disabled() {
-                    return d(c);
+                    return v(c);
                   },
-                  onclick: Ri,
+                  onclick: sr,
                   children: (g, u) => {
-                    var p = B();
-                    y((m) => s(p, m), [() => a("settings.render_layout.remove_background")]), f(g, p);
+                    var p = T();
+                    y((b) => o(p, b), [() => a("settings.render_layout.remove_background")]), f(g, p);
                   },
                   $$slots: { default: !0 }
                 });
               }
             };
-            C(_s, (n) => {
-              d(tt).background_path && n(cs);
+            R(zo, (s) => {
+              v(L).background_path && s(Io);
             });
           }
-          var us = r(Oa, 2), Ka = e(us);
+          var yi = r(mi, 2), hi = e(yi), Vo = e(hi), Uo = r(hi), Do = e(Uo), xi = r(yi, 2);
           {
-            let n = w(I);
-            O(Ka, {
+            var Go = (s) => {
+              var c = Ln(), g = ut(c), u = e(g), p = e(u), b = r(u, 2), S = e(b), k = r(g, 2), F = r(k, 2), q = e(F), J = e(q), Ut = e(J), H = r(J, 2), ct = e(H), Dt = e(ct);
+              ct.value = ct.__value = "top-left";
+              var it = r(ct), Gt = e(it);
+              it.value = it.__value = "top-right";
+              var rt = r(it), Et = e(rt);
+              rt.value = rt.__value = "bottom-left";
+              var xt = r(rt), qt = e(xt);
+              xt.value = xt.__value = "bottom-right";
+              var At;
+              gt(H);
+              var Ft = r(q, 2), kt = e(Ft), ot = e(kt), Rt = r(kt, 2), Tt = r(Ft, 2), Ct = e(Tt), Wt = e(Ct), Bt = r(Ct, 2), Kt = r(Tt, 2), me = e(Kt), Me = e(me), be = r(me, 2);
+              y(
+                (X, Ee, Ae, Fe, Re, Te, Ce, Be, Oe, ze, Ie, Ve, Ue, De, Ge, qe, We) => {
+                  o(p, X), o(S, Ee), st(k, "src", Ae), o(Ut, Fe), o(Dt, Re), o(Gt, Te), o(Et, Ce), o(qt, Be), At !== (At = v(L).logo_position) && (H.value = (H.__value = v(L).logo_position) ?? "", pt(H, v(L).logo_position)), o(ot, `${Oe ?? ""} (${ze ?? ""}%)`), nt(Rt, Ie), o(Wt, `${Ve ?? ""} (${Ue ?? ""}%)`), nt(Bt, De), o(Me, `${Ge ?? ""} (${qe ?? ""}%)`), nt(be, We);
+                },
+                [
+                  () => (v(L).logo_original_filename || v(L).logo_path).split(/[\\/]/).pop(),
+                  () => a("settings.render_layout.logo_ready"),
+                  () => Zt(v(L).logo_path, Date.now()),
+                  () => a("settings.render_layout.logo_position"),
+                  () => a("settings.render_layout.pos_top_left"),
+                  () => a("settings.render_layout.pos_top_right"),
+                  () => a("settings.render_layout.pos_bottom_left"),
+                  () => a("settings.render_layout.pos_bottom_right"),
+                  () => a("settings.render_layout.logo_scale"),
+                  () => Math.round(v(L).logo_scale * 100),
+                  () => Math.round(v(L).logo_scale * 100),
+                  () => a("settings.render_layout.logo_opacity"),
+                  () => Math.round(v(L).logo_opacity * 100),
+                  () => Math.round(v(L).logo_opacity * 100),
+                  () => a("settings.render_layout.logo_margin"),
+                  () => Math.round(v(L).logo_margin * 100),
+                  () => Math.round(v(L).logo_margin * 100)
+                ]
+              ), j("change", H, (X) => ae({ logo_position: X.target.value })), j("input", Rt, (X) => ae({ logo_scale: Number(X.target.value) / 100 })), j("input", Bt, (X) => ae({ logo_opacity: Number(X.target.value) / 100 })), j("input", be, (X) => ae({ logo_margin: Number(X.target.value) / 100 })), f(s, c);
+            }, qo = (s) => {
+              var c = ta(), g = e(c);
+              y((u) => o(g, u), [() => a("settings.render_layout.no_logo")]), f(s, c);
+            };
+            R(xi, (s) => {
+              v(L).logo_path ? s(Go) : s(qo, -1);
+            });
+          }
+          var Wo = r(xi, 2), ki = e(Wo);
+          {
+            let s = w(B);
+            C(ki, {
               variant: "secondary",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: () => Ce(!0),
+              onclick: nr,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.reload")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.render_layout.upload_logo")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
-          var gs = r(Ka, 2);
+          var Ko = r(ki, 2);
           {
-            let n = w(I);
-            O(gs, {
+            var Jo = (s) => {
+              var c = ea(), g = ut(c);
+              {
+                let p = w(B);
+                C(g, {
+                  variant: "primary",
+                  get disabled() {
+                    return v(p);
+                  },
+                  onclick: na,
+                  children: (b, S) => {
+                    var k = T();
+                    y((F) => o(k, F), [() => a("settings.render_layout.save")]), f(b, k);
+                  },
+                  $$slots: { default: !0 }
+                });
+              }
+              var u = r(g, 2);
+              {
+                let p = w(B);
+                C(u, {
+                  get disabled() {
+                    return v(p);
+                  },
+                  onclick: lr,
+                  children: (b, S) => {
+                    var k = T();
+                    y((F) => o(k, F), [() => a("settings.render_layout.remove_logo")]), f(b, k);
+                  },
+                  $$slots: { default: !0 }
+                });
+              }
+              f(s, c);
+            };
+            R(Ko, (s) => {
+              v(L).logo_path && s(Jo);
+            });
+          }
+          var Ho = r(_i, 2), wi = e(Ho);
+          {
+            let s = w(B);
+            C(wi, {
+              variant: "secondary",
+              get disabled() {
+                return v(s);
+              },
+              onclick: () => oa(!0),
+              children: (c, g) => {
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.reload")]), f(c, u);
+              },
+              $$slots: { default: !0 }
+            });
+          }
+          var Xo = r(wi, 2);
+          {
+            let s = w(B);
+            C(Xo, {
               "data-testid": "save-text-audio",
               variant: "primary",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: ji,
+              onclick: er,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.text_audio.save")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.text_audio.save")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
-          var ps = r(L, 2), Ja = e(ps), bs = e(Ja), Ha = e(bs), ms = e(Ha), fs = r(Ha), hs = e(fs), ys = r(Ja, 2), Xa = e(ys), xs = e(Xa), Ya = e(xs), ks = e(Ya), xt = r(Ya, 2), Dt = e(xt), ws = e(Dt);
-          Dt.value = Dt.__value = "auto";
-          var Gt = r(Dt), $s = e(Gt);
-          Gt.value = Gt.__value = "zh";
-          var qt = r(Gt), Ns = e(qt);
-          qt.value = qt.__value = "en";
-          var Wt = r(qt), Ss = e(Wt);
-          Wt.value = Wt.__value = "ja";
-          var _e = r(Wt), Ps = e(_e);
-          _e.value = _e.__value = "ko";
-          var Qa;
-          ct(xt);
-          var Za = r(Xa, 2);
+          var Yo = r(E, 2), $i = e(Yo), Qo = e($i), Ni = e(Qo), Zo = e(Ni), ts = r(Ni), es = e(ts), as = r($i, 2), Si = e(as), is = e(Si), Li = e(is), rs = e(Li), Mt = r(Li, 2), ce = e(Mt), os = e(ce);
+          ce.value = ce.__value = "auto";
+          var ue = r(ce), ss = e(ue);
+          ue.value = ue.__value = "zh";
+          var ge = r(ue), ns = e(ge);
+          ge.value = ge.__value = "en";
+          var pe = r(ge), ls = e(pe);
+          pe.value = pe.__value = "ja";
+          var je = r(pe), _s = e(je);
+          je.value = je.__value = "ko";
+          var Pi;
+          gt(Mt);
+          var ji = r(Si, 2);
           {
-            var js = (n) => {
-              var c = on(), g = e(c), u = e(g), p = r(g, 2), m = e(p);
+            var vs = (s) => {
+              var c = Pn(), g = e(c), u = e(g), p = r(g, 2), b = e(p);
               {
-                let j = w(I);
-                O(m, {
+                let S = w(B);
+                C(b, {
                   variant: "secondary",
                   get disabled() {
-                    return d(j);
+                    return v(S);
                   },
-                  onclick: () => o().navigate("app_settings"),
-                  children: (N, U) => {
-                    var Y = B();
-                    y((rt) => s(Y, rt), [() => a("settings.translation.go_to_app_settings")]), f(N, Y);
+                  onclick: () => _().navigate("app_settings"),
+                  children: (k, F) => {
+                    var q = T();
+                    y((J) => o(q, J), [() => a("settings.translation.go_to_app_settings")]), f(k, q);
                   },
                   $$slots: { default: !0 }
                 });
               }
-              y((j) => s(u, j), [() => a("settings.translation.api_key_required")]), f(n, c);
+              y((S) => o(u, S), [() => a("settings.translation.api_key_required")]), f(s, c);
             };
-            C(Za, (n) => {
-              t.openaiKeyMissing && n(js);
+            R(ji, (s) => {
+              t.openaiKeyMissing && s(vs);
             });
           }
-          var ti = r(Za, 2), ei = e(ti), Ls = e(ei), Es = r(ei, 2), ai = e(Es), ii = e(ai), ri = e(ii), Ms = e(ri), As = r(ri), Fs = e(As), Rs = r(ii, 2), si = e(Rs), Cs = r(ai, 2), oi = e(Cs), ni = e(oi), Ts = e(ni), Bs = r(ni), Os = e(Bs), zs = r(oi, 2), li = e(zs), Vs = r(ti, 2), Us = e(Vs);
+          var Mi = r(ji, 2), Ei = e(Mi), ds = e(Ei), cs = r(Ei, 2), Ai = e(cs), Fi = e(Ai), Ri = e(Fi), us = e(Ri), gs = r(Ri), ps = e(gs), ms = r(Fi, 2), Ti = e(ms), bs = r(Ai, 2), Ci = e(bs), Bi = e(Ci), fs = e(Bi), ys = r(Bi), hs = e(ys), xs = r(Ci, 2), Oi = e(xs), ks = r(Mi, 2), ws = e(ks);
           {
-            let n = w(I);
-            O(Us, {
+            let s = w(B);
+            C(ws, {
               "data-testid": "run-until-edit",
               variant: "strong",
               get disabled() {
-                return d(n);
+                return v(s);
               },
-              onclick: Ti,
+              onclick: vr,
               children: (c, g) => {
-                var u = B();
-                y((p) => s(u, p), [() => a("settings.translation.run_until_edit_auto")]), f(c, u);
+                var u = T();
+                y((p) => o(u, p), [() => a("settings.translation.run_until_edit_auto")]), f(c, u);
               },
               $$slots: { default: !0 }
             });
           }
           y(
-            (n, c, g, u, p, m, j, N, U, Y, rt, ce, Kt, ue, ge, Jt, pe, Ht, Xt, be, me, fe, he, Yt, _t, ye, xe, ke, we, $e, Ne, Is, Ds, Gs, qs, Ws, Ks, Js, Hs, Xs, Ys, Qs, Zs, to, eo, ao, io, ro, so, oo, no, lo, vo, _o, co, uo, go, po, bo, mo, fo, ho, yo, xo) => {
-              s(H, n), s(X, c), s(W, g), s(lt, u), s(Pt, p), s(Hi, m), Ge !== (Ge = t.subtitle_font) && (ft.value = (ft.__value = t.subtitle_font) ?? "", ut(ft, t.subtitle_font)), s(Yi, j), wt(Qi, N), s(Zi, U), Se(se, 1, `toggle-btn ${t.subtitle_bold ? "active" : ""}`), Se(oe, 1, `toggle-btn ${t.subtitle_italic ? "active" : ""}`), s(ar, Y), s(rr, rt), di(Xe, ce), di(Ye, Kt), s(sr, ue), s(or, ge), s(lr, Jt), s(vr, pe), st(it, "aria-label", Ht), s(dr, `${Xt ?? ""}: ${be ?? ""}`), sa !== (sa = t.voiceLocaleFilter) && (it.value = (it.__value = t.voiceLocaleFilter) ?? "", ut(it, t.voiceLocaleFilter)), st(vt, "aria-label", me), s(cr, `${fe ?? ""}: ${he ?? ""}`), s(ur, Yt), s(gr, _t), oa !== (oa = t.voiceGenderFilter) && (vt.value = (vt.__value = t.voiceGenderFilter) ?? "", ut(vt, t.voiceGenderFilter)), la !== (la = t.tts_voice) && (dt.value = (dt.__value = t.tts_voice) ?? "", ut(dt, t.tts_voice)), s(hr, ye), s(xr, xe), wt(ca, t.speed_multiplier), s(wr, ke), s($r, we), s(Nr, $e), ga !== (ga = t.mix_mode) && (ht.value = (ht.__value = t.mix_mode) ?? "", ut(ht, t.mix_mode)), s(Sr, Ne), s(jr, Is), s(Er, Ds), wt(ya, t.tts_pitch), s(Ar, Gs), s(Rr, qs), wt(wa, t.mix_duck_gain_db), s(Cr, Ws), st(ve, "placeholder", Mt), wt(ve, t.previewText), s(Tr, Ks), s(Br, `${Js ?? ""}: ${d(zi) ?? ""}`), s(Or, `${Hs ?? ""}: ${Xs ?? ""}`), s(zr, `${Ys ?? ""}: ${Qs ?? ""}`), s(Ur, `${Zs ?? ""}: ${d(Vi) ?? ""}`), s(Gr, to), s(Kr, eo), s(Hr, ao), s(es, io), s(is, ro), s(ss, so), s(os, oo), s(ns, no), Da !== (Da = d(tt).aspect_ratio) && (yt.value = (yt.__value = d(tt).aspect_ratio) ?? "", ut(yt, d(tt).aspect_ratio)), s(ms, lo), s(hs, vo), s(ks, _o), s(ws, co), s($s, uo), s(Ns, go), s(Ss, po), s(Ps, bo), Qa !== (Qa = t.source_language) && (xt.value = (xt.__value = t.source_language) ?? "", ut(xt, t.source_language)), s(Ls, mo), s(Ms, fo), s(Fs, ho), Pe(si, t.enable_source_cleanup), s(Ts, yo), s(Os, xo), Pe(li, t.enable_translation_qa);
+            (s, c, g, u, p, b, S, k, F, q, J, Ut, H, ct, Dt, it, Gt, rt, Et, xt, qt, At, Ft, kt, ot, Rt, Tt, Ct, Wt, Bt, Kt, me, Me, be, X, Ee, Ae, Fe, Re, Te, Ce, Be, Oe, ze, Ie, Ve, Ue, De, Ge, qe, We, $s, Ns, Ss, Ls, Ps, js, Ms, Es, As, Fs, Rs, Ts, Cs, Bs, Os) => {
+              o(et, s), o(at, c), o(Z, g), o(ft, u), o(Vt, p), o(wr, b), pa !== (pa = t.subtitle_font) && (Lt.value = (Lt.__value = t.subtitle_font) ?? "", pt(Lt, t.subtitle_font)), o(Nr, S), nt(Sr, k), o(Lr, F), Ke(we, 1, `toggle-btn ${t.subtitle_bold ? "active" : ""}`), Ke($e, 1, `toggle-btn ${t.subtitle_italic ? "active" : ""}`), o(Mr, q), o(Ar, J), Ii(xa, Ut), Ii(ka, H), o(Fr, ct), o(Rr, Dt), o(Cr, it), o(Br, Gt), st(dt, "aria-label", rt), o(Or, `${Et ?? ""}: ${xt ?? ""}`), Ma !== (Ma = t.voiceLocaleFilter) && (dt.value = (dt.__value = t.voiceLocaleFilter) ?? "", pt(dt, t.voiceLocaleFilter)), st(yt, "aria-label", qt), o(Ir, `${At ?? ""}: ${Ft ?? ""}`), o(Vr, kt), o(Ur, ot), Ea !== (Ea = t.voiceGenderFilter) && (yt.value = (yt.__value = t.voiceGenderFilter) ?? "", pt(yt, t.voiceGenderFilter)), Fa !== (Fa = t.tts_voice) && (ht.value = (ht.__value = t.tts_voice) ?? "", pt(ht, t.tts_voice)), o(Kr, Rt), o(Hr, Tt), nt(Ba, t.speed_multiplier), o(Yr, Ct), o(Qr, Wt), o(Zr, Bt), za !== (za = t.mix_mode) && (Pt.value = (Pt.__value = t.mix_mode) ?? "", pt(Pt, t.mix_mode)), o(to, Kt), o(ao, me), o(ro, Me), nt(qa, t.tts_pitch), o(so, be), o(lo, X), nt(Ja, t.mix_duck_gain_db), o(_o, Ee), st(Le, "placeholder", Yt), nt(Le, t.previewText), o(vo, Ae), o(co, `${Fe ?? ""}: ${v(ur) ?? ""}`), o(uo, `${Re ?? ""}: ${Te ?? ""}`), o(go, `${Ce ?? ""}: ${Be ?? ""}`), o(mo, `${Oe ?? ""}: ${v(gr) ?? ""}`), o(yo, ze), o(ko, Ie), o($o, Ve), o(Mo, Ue), o(Ao, De), o(Ro, Ge), o(To, qe), o(Co, We), gi !== (gi = v(L).aspect_ratio) && (jt.value = (jt.__value = v(L).aspect_ratio) ?? "", pt(jt, v(L).aspect_ratio)), o(Vo, $s), o(Do, Ns), o(Zo, Ss), o(es, Ls), o(rs, Ps), o(os, js), o(ss, Ms), o(ns, Es), o(ls, As), o(_s, Fs), Pi !== (Pi = t.source_language) && (Mt.value = (Mt.__value = t.source_language) ?? "", pt(Mt, t.source_language)), o(ds, Rs), o(us, Ts), o(ps, Cs), Je(Ti, t.enable_source_cleanup), o(fs, Bs), o(hs, Os), Je(Oi, t.enable_translation_qa);
             },
             [
               () => a("settings.text_audio.title"),
@@ -993,8 +1136,8 @@ function dn(l, v) {
               () => a("settings.subtitle.style_tools"),
               () => a("settings.subtitle.burn_moved_hint"),
               () => a("settings.subtitle.preview_title"),
-              () => `flex:1;display:grid;align-items:end;background:var(--bg-0);border-radius:14px;padding:28px;text-align:${Go(t.subtitle_align)}`,
-              () => `font-family:${qo(t.subtitle_font)};background:${t.bg_enabled ? Wo(t.subtitle_background_color) : "transparent"};font-weight:${t.subtitle_bold ? 800 : 500};font-style:${t.subtitle_italic ? "italic" : "normal"}`,
+              () => `flex:1;display:grid;align-items:end;background:var(--bg-0);border-radius:14px;padding:28px;text-align:${cn(t.subtitle_align)}`,
+              () => `font-family:${un(t.subtitle_font)};background:${t.bg_enabled ? gn(t.subtitle_background_color) : "transparent"};font-weight:${t.subtitle_bold ? 800 : 500};font-style:${t.subtitle_italic ? "italic" : "normal"}`,
               () => a("settings.subtitle.preview_sample"),
               () => a("settings.tts.title"),
               () => a("settings.tts.sub"),
@@ -1008,22 +1151,22 @@ function dn(l, v) {
               () => a("settings.tts.filter_female"),
               () => a("settings.tts.filter_male"),
               () => a("settings.tts.speed"),
-              () => fi(t.speed_multiplier),
+              () => Ki(t.speed_multiplier),
               () => a("settings.tts.mix_mode"),
               () => a("settings.tts.mix_replace"),
               () => a("settings.tts.mix_duck"),
               () => a("settings.tts.advanced"),
               () => a("settings.tts.pitch"),
-              () => mi(t.tts_pitch),
+              () => Wi(t.tts_pitch),
               () => a("settings.tts.duck_gain"),
-              () => bi(t.mix_duck_gain_db),
+              () => qi(t.mix_duck_gain_db),
               () => a("settings.tts.preview_text_label"),
               () => a("settings.tts.preview_title"),
               () => a("settings.tts.voice"),
               () => a("settings.tts.speed"),
-              () => fi(t.speed_multiplier),
+              () => Ki(t.speed_multiplier),
               () => a("settings.tts.pitch"),
-              () => mi(t.tts_pitch),
+              () => Wi(t.tts_pitch),
               () => a("settings.tts.mix_mode"),
               () => a("settings.tts.preview_sub"),
               () => a("settings.bgm.title"),
@@ -1033,6 +1176,8 @@ function dn(l, v) {
               () => a("settings.render_layout.aspect_ratio"),
               () => a("settings.render_layout.aspect_16_9"),
               () => a("settings.render_layout.aspect_9_16"),
+              () => a("settings.render_layout.logo_title"),
+              () => a("settings.render_layout.logo_sub"),
               () => a("settings.translation.title"),
               () => a("settings.translation.sub"),
               () => a("settings.translation.source_language"),
@@ -1047,68 +1192,68 @@ function dn(l, v) {
               () => a("settings.translation.qa_title"),
               () => a("settings.translation.qa_sub")
             ]
-          ), M("change", ft, (n) => t.subtitle_font = n.target.value), M("click", se, () => t.subtitle_bold = !t.subtitle_bold), M("click", oe, () => t.subtitle_italic = !t.subtitle_italic), M("change", it, (n) => t.voiceLocaleFilter = n.target.value), M("change", vt, (n) => t.voiceGenderFilter = n.target.value), M("change", dt, Ui), M("input", ca, (n) => Ii(Number(n.target.value))), M("change", ht, (n) => t.mix_mode = n.target.value), M("input", ya, (n) => {
-            t.tts_pitch = Number(n.target.value), Ft();
-          }), M("input", wa, (n) => t.mix_duck_gain_db = Ee(Number(n.target.value))), M("input", ve, (n) => {
-            t.previewText = n.target.value, $t(t.previewText), Ft();
-          }), M("change", yt, (n) => t.renderLayout = Z({ ...t.renderLayout, aspect_ratio: n.target.value })), M("change", xt, (n) => t.source_language = n.target.value), M("change", si, (n) => t.enable_source_cleanup = n.target.checked), M("change", li, (n) => t.enable_translation_qa = n.target.checked), f(A, F);
+          ), j("change", Lt, (s) => t.subtitle_font = s.target.value), j("click", we, () => t.subtitle_bold = !t.subtitle_bold), j("click", $e, () => t.subtitle_italic = !t.subtitle_italic), j("change", dt, (s) => t.voiceLocaleFilter = s.target.value), j("change", yt, (s) => t.voiceGenderFilter = s.target.value), j("change", ht, pr), j("input", Ba, (s) => mr(Number(s.target.value))), j("change", Pt, (s) => t.mix_mode = s.target.value), j("input", qa, (s) => {
+            t.tts_pitch = Number(s.target.value), te();
+          }), j("input", Ja, (s) => t.mix_duck_gain_db = Qe(Number(s.target.value))), j("input", Le, (s) => {
+            t.previewText = s.target.value, Ot(t.previewText), te();
+          }), j("change", jt, (s) => t.renderLayout = U({ ...t.renderLayout, aspect_ratio: s.target.value })), j("change", Mt, (s) => t.source_language = s.target.value), j("change", Ti, (s) => t.enable_source_cleanup = s.target.checked), j("change", Oi, (s) => t.enable_translation_qa = s.target.checked), f(O, z);
         };
-        C(x, (A) => {
-          t.busyAction === "run_until_edit" ? A(S) : A(et, -1);
+        R(x, (O) => {
+          t.busyAction === "run_until_edit" ? O(P) : O(_t, -1);
         });
       }
-      var Nt = r(h, 2);
+      var zt = r(h, 2);
       {
-        var St = (A) => {
-          var F = ln(), q = e(F), J = e(q), z = e(J), L = r(J, 2), at = e(L), P = r(L, 2), V = e(P);
-          O(V, {
+        var It = (O) => {
+          var z = Mn(), Q = e(z), tt = e(Q), D = e(tt), E = r(tt, 2), vt = e(E), M = r(E, 2), G = e(M);
+          C(G, {
             variant: "secondary",
             onclick: () => {
-              t.voiceEditGateOpen = !1, o().navigate("review");
+              t.voiceEditGateOpen = !1, _().navigate("review");
             },
-            children: (R, X) => {
-              var T = B();
-              y((W) => s(T, W), [() => a("settings.voice_edit_gate.pause")]), f(R, T);
+            children: (I, at) => {
+              var V = T();
+              y((Z) => o(V, Z), [() => a("settings.voice_edit_gate.pause")]), f(I, V);
             },
             $$slots: { default: !0 }
           });
-          var H = r(V, 2);
-          O(H, {
+          var et = r(G, 2);
+          C(et, {
             variant: "strong",
             onclick: () => {
-              t.voiceEditGateOpen = !1, o().pendingVoiceEditContinue = !0, o().navigate("render");
+              t.voiceEditGateOpen = !1, _().pendingVoiceEditContinue = !0, _().navigate("render");
             },
-            children: (R, X) => {
-              var T = B();
-              y((W) => s(T, W), [() => a("settings.voice_edit_gate.continue")]), f(R, T);
+            children: (I, at) => {
+              var V = T();
+              y((Z) => o(V, Z), [() => a("settings.voice_edit_gate.continue")]), f(I, V);
             },
             $$slots: { default: !0 }
           }), y(
-            (R, X) => {
-              s(z, R), s(at, X);
+            (I, at) => {
+              o(D, I), o(vt, at);
             },
             [
               () => a("settings.voice_edit_gate.title"),
               () => a("settings.voice_edit_gate.body")
             ]
-          ), f(A, F);
+          ), f(O, z);
         };
-        C(Nt, (A) => {
-          t.voiceEditGateOpen && A(St);
+        R(zt, (O) => {
+          t.voiceEditGateOpen && O(It);
         });
       }
-      f(i, _);
+      f(i, d);
     };
-    C(qi, (i) => {
-      d(Ki) ? i(Wi) : i(Ji, -1);
+    R(yr, (i) => {
+      v(xr) ? i(hr) : i(kr, -1);
     });
   }
-  f(l, Ve), So();
+  f(l, da), Ds();
 }
-ko(["change", "click", "input"]);
-const wi = Ao(dn), mn = wi.mount, fn = wi.unmount;
+zs(["change", "click", "input"]);
+const Xi = Hs(An), zn = Xi.mount, In = Xi.unmount;
 export {
-  mn as mount,
-  fn as unmount
+  zn as mount,
+  In as unmount
 };
 //# sourceMappingURL=settings.js.map

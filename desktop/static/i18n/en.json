@@ -445,7 +445,24 @@
       "saved": "Video frame settings saved.",
       "removed": "Background image removed.",
       "confirm_remove": "Remove the selected background image from this workspace?",
-      "pick_unavailable": "Could not get an absolute image file path. Use the desktop window app or paste a file path through the native picker."
+      "pick_unavailable": "Could not get an absolute image file path. Use the desktop window app or paste a file path through the native picker.",
+      "logo_title": "Logo / watermark",
+      "logo_sub": "Overlay your logo on the video (a frame corner). PNG with transparency recommended.",
+      "no_logo": "No logo selected.",
+      "logo_ready": "Logo will be overlaid at render time.",
+      "logo_position": "Position",
+      "pos_top_left": "Top left",
+      "pos_top_right": "Top right",
+      "pos_bottom_left": "Bottom left",
+      "pos_bottom_right": "Bottom right",
+      "logo_scale": "Size",
+      "logo_opacity": "Opacity",
+      "logo_margin": "Margin",
+      "upload_logo": "Choose Logo",
+      "remove_logo": "Remove Logo",
+      "logo_uploaded": "Logo imported.",
+      "logo_removed": "Logo removed.",
+      "logo_confirm_remove": "Remove the logo from this workspace?"
     }
   },
   "review": {

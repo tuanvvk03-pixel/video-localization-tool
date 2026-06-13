@@ -445,7 +445,24 @@
       "saved": "Da luu cai dat khung video.",
       "removed": "Da go anh nen.",
       "confirm_remove": "Go anh nen da chon khoi workspace nay?",
-      "pick_unavailable": "Khong lay duoc duong dan tuyet doi toi file anh. Hay dung app desktop hoac chon file qua native picker."
+      "pick_unavailable": "Khong lay duoc duong dan tuyet doi toi file anh. Hay dung app desktop hoac chon file qua native picker.",
+      "logo_title": "Logo / watermark",
+      "logo_sub": "Chen logo cua ban len video (goc man hinh). Nen dung PNG nen trong.",
+      "no_logo": "Chua chon logo.",
+      "logo_ready": "Logo se duoc chen khi render.",
+      "logo_position": "Vi tri",
+      "pos_top_left": "Tren trai",
+      "pos_top_right": "Tren phai",
+      "pos_bottom_left": "Duoi trai",
+      "pos_bottom_right": "Duoi phai",
+      "logo_scale": "Kich thuoc",
+      "logo_opacity": "Do mo",
+      "logo_margin": "Le",
+      "upload_logo": "Chon logo",
+      "remove_logo": "Go logo",
+      "logo_uploaded": "Da nhap logo.",
+      "logo_removed": "Da go logo.",
+      "logo_confirm_remove": "Go logo khoi workspace nay?"
     }
   },
   "review": {

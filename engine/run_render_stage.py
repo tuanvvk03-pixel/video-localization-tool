@@ -200,7 +200,7 @@ def _resolve_layout_settings(
     *,
     cli_aspect_ratio: str,
     cli_background_image: str,
-) -> tuple[dict[str, object], Path | None]:
+) -> tuple[dict[str, object], Path | None, Path | None, dict[str, object] | None]:
     state = load_render_settings(job_workspace) or {}
     aspect = (cli_aspect_ratio or str(state.get("aspect_ratio") or "source")).strip()
     if aspect not in {"source", "16:9", "9:16"}:
@@ -216,14 +216,33 @@ def _resolve_layout_settings(
         if not bg_path.is_file():
             raise RenderSettingsError(f"Background image not found: {bg_path}")
 
-    return (
-        {
-            "aspect_ratio": aspect,
-            "background_path": str(bg_path) if bg_path is not None else None,
-            "background_original_filename": state.get("background_original_filename"),
-        },
-        bg_path,
-    )
+    logo_raw = str(state.get("logo_path") or "").strip()
+    logo_path: Path | None = None
+    logo_info: dict[str, object] | None = None
+    if logo_raw:
+        cand = Path(logo_raw).expanduser()
+        if not cand.is_absolute():
+            cand = job_workspace / cand
+        logo_path = cand.resolve()
+        if not logo_path.is_file():
+            raise RenderSettingsError(f"Logo image not found: {logo_path}")
+        logo_info = {
+            "position": str(state.get("logo_position") or "top-right"),
+            "scale": float(state.get("logo_scale") or 0.15),
+            "opacity": float(state.get("logo_opacity") or 1.0),
+            "margin": float(state.get("logo_margin") or 0.03),
+        }
+
+    settings: dict[str, object] = {
+        "aspect_ratio": aspect,
+        "background_path": str(bg_path) if bg_path is not None else None,
+        "background_original_filename": state.get("background_original_filename"),
+        "logo_path": str(logo_path) if logo_path is not None else None,
+        "logo_original_filename": state.get("logo_original_filename"),
+    }
+    if logo_info is not None:
+        settings.update({f"logo_{k}": v for k, v in logo_info.items()})
+    return settings, bg_path, logo_path, logo_info
 
 
 def _sanitize_cmd(cmd: list[str]) -> str:
@@ -251,6 +270,18 @@ def _build_burn_subtitle_filter(subtitle_path: Path, style: dict[str, object]) -
     return sub_filter, burn_style
 
 
+def _logo_overlay_position(position: str, margin_px: int) -> str:
+    m = max(0, int(margin_px))
+    if position == "top-left":
+        return f"{m}:{m}"
+    if position == "bottom-left":
+        return f"{m}:H-h-{m}"
+    if position == "bottom-right":
+        return f"W-w-{m}:H-h-{m}"
+    # default top-right
+    return f"W-w-{m}:{m}"
+
+
 def _build_layout_filter_complex(
     *,
     target_w: int,
@@ -258,6 +289,8 @@ def _build_layout_filter_complex(
     background_input_index: int | None,
     burn_subtitle_path: Path | None,
     style: dict[str, object],
+    logo_input_index: int | None = None,
+    logo_info: dict[str, object] | None = None,
 ) -> tuple[str, dict[str, object] | None]:
     if background_input_index is None:
         parts = [
@@ -281,12 +314,28 @@ def _build_layout_filter_complex(
             "[bg][fg]overlay=(W-w)/2:(H-h)/2:shortest=1[vbase]",
         ]
 
+    cur = "vbase"
     burn_style: dict[str, object] | None = None
     if burn_subtitle_path is not None:
         sub_filter, burn_style = _build_burn_subtitle_filter(burn_subtitle_path, style)
-        parts.append(f"[vbase]{sub_filter},format=yuv420p[vout]")
-    else:
-        parts.append("[vbase]format=yuv420p[vout]")
+        parts.append(f"[{cur}]{sub_filter}[vsub]")
+        cur = "vsub"
+
+    if logo_input_index is not None and logo_info is not None:
+        scale = float(logo_info.get("scale") or 0.15)
+        opacity = float(logo_info.get("opacity") or 1.0)
+        margin = float(logo_info.get("margin") or 0.03)
+        position = str(logo_info.get("position") or "top-right")
+        logo_w = _even(max(2.0, target_w * scale))
+        margin_px = int(round(target_w * margin))
+        parts.append(
+            f"[{logo_input_index}:v]scale={logo_w}:-1,format=rgba,"
+            f"colorchannelmixer=aa={opacity:.4f}[logo]"
+        )
+        parts.append(f"[{cur}][logo]overlay={_logo_overlay_position(position, margin_px)}:shortest=1[vlogo]")
+        cur = "vlogo"
+
+    parts.append(f"[{cur}]format=yuv420p[vout]")
     return ";".join(parts), burn_style
 
 
@@ -478,7 +527,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        layout_settings, background_image = _resolve_layout_settings(
+        layout_settings, background_image, logo_image, logo_info = _resolve_layout_settings(
             job_workspace,
             cli_aspect_ratio=ns.aspect_ratio,
             cli_background_image=ns.background_image,
@@ -517,6 +566,9 @@ def main(argv: list[str] | None = None) -> int:
     aspect_ratio = str(layout_settings.get("aspect_ratio") or "source")
     target_w, target_h = _target_dimensions(source_w, source_h, aspect_ratio)
     layout_transform = aspect_ratio in {"16:9", "9:16"} or background_image is not None
+    logo_enabled = logo_image is not None
+    # A logo overlay also requires a re-encode filtergraph (can't -c:v copy).
+    needs_filtergraph = layout_transform or logo_enabled
     layout_settings.update(
         {
             "source_width": source_w,
@@ -524,6 +576,7 @@ def main(argv: list[str] | None = None) -> int:
             "target_width": target_w,
             "target_height": target_h,
             "enabled": bool(layout_transform),
+            "logo_enabled": bool(logo_enabled),
         }
     )
 
@@ -554,6 +607,12 @@ def main(argv: list[str] | None = None) -> int:
         input_args.extend(["-loop", "1", "-i", str(background_image)])
         next_input_index += 1
 
+    logo_input_index: int | None = None
+    if logo_enabled and logo_image is not None:
+        logo_input_index = next_input_index
+        input_args.extend(["-loop", "1", "-i", str(logo_image)])
+        next_input_index += 1
+
     has_sub_input = subtitle_mode != "none" and selected_subtitle is not None
     subtitle_input_index: int | None = None
     if has_sub_input:
@@ -578,13 +637,15 @@ def main(argv: list[str] | None = None) -> int:
         ]
     )
 
-    if layout_transform:
+    if needs_filtergraph:
         filter_complex, _burn_style = _build_layout_filter_complex(
             target_w=target_w,
             target_h=target_h,
             background_input_index=background_input_index,
             burn_subtitle_path=(selected_subtitle if subtitle_mode == "burn" else None),
             style=resolved_style,
+            logo_input_index=logo_input_index,
+            logo_info=logo_info,
         )
         output_args.extend(
             [

@@ -101,6 +101,8 @@ from engine.runtime_app_settings import (  # noqa: E402
 from desktop.server_render import (  # noqa: E402
     handle_render_background_remove,
     handle_render_background_upload,
+    handle_render_logo_remove,
+    handle_render_logo_upload,
     handle_render_settings_save,
     handle_render_settings_status,
 )
@@ -1849,6 +1851,8 @@ ROUTES: dict[str, Callable[[dict[str, Any]], tuple[int, dict[str, Any]]]] = {
     "/api/render-settings/save": handle_render_settings_save,
     "/api/render-background/upload": handle_render_background_upload,
     "/api/render-background/remove": handle_render_background_remove,
+    "/api/render-logo/upload": handle_render_logo_upload,
+    "/api/render-logo/remove": handle_render_logo_remove,
     "/api/get-import-config": handle_get_import_config,
     "/api/save-import-config": handle_save_import_config,
     "/api/import-external-srt": handle_import_external_srt,

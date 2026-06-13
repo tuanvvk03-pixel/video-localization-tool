@@ -37,7 +37,8 @@
       tts_provider: "edge_tts", tts_voice: "vi-VN-HoaiMyNeural", speed_multiplier: 1,
       tts_rate: 0, tts_pitch: 0, mix_mode: "replace_original_speech", mix_duck_gain_db: -15,
       bgm: null, bgmAdvancedOpen: false,
-      renderLayout: { aspect_ratio: "16:9", background_path: "", background_original_filename: "" },
+      renderLayout: { aspect_ratio: "16:9", background_path: "", background_original_filename: "",
+        logo_path: "", logo_original_filename: "", logo_position: "top-right", logo_scale: 0.15, logo_opacity: 1, logo_margin: 0.03 },
       previewAudioRel: "", previewAudioBust: 0, previewText: loadPreviewText(),
       voiceEditGateOpen: false, openaiKeyMissing: false, runUntilEditLive: null,
     };
@@ -173,8 +174,17 @@
   };
   const buildRenderLayoutPayload = () => {
     const l = H.normalizeRenderLayout(s.renderLayout);
-    return { aspect_ratio: l.aspect_ratio, background_path: l.background_path,
+    const payload: Record<string, unknown> = { aspect_ratio: l.aspect_ratio, background_path: l.background_path,
       background_original_filename: l.background_original_filename };
+    if (l.logo_path) {
+      payload.logo_path = l.logo_path;
+      payload.logo_original_filename = l.logo_original_filename;
+      payload.logo_position = l.logo_position;
+      payload.logo_scale = l.logo_scale;
+      payload.logo_opacity = l.logo_opacity;
+      payload.logo_margin = l.logo_margin;
+    }
+    return payload;
   };
   const buildImportConfigPayload = () => {
     const ex = s.subtitle_extractor || "audio_only";
@@ -243,6 +253,23 @@
     return runBusy("render_background_remove", async () => {
       const data = await post<any>("/api/render-background/remove", { job_workspace: jw() });
       s.renderLayout = H.normalizeRenderLayout(data.render); s.notice = t("settings.render_layout.removed"); }); };
+
+  // ---- E1: brand logo / watermark overlay ----
+  function patchLogo(patch: Record<string, unknown>) {
+    s.renderLayout = H.normalizeRenderLayout({ ...s.renderLayout, ...patch });
+  }
+  const uploadRenderLogo = () => runBusy("render_logo_upload", async () => {
+    const res = await pickFilePath(["Image files (*.png;*.jpg;*.jpeg;*.webp)", "All files (*.*)"]);
+    if (res?.cancelled) return;
+    if (!res?.ok || !res.path) throw new Error(res?.error || t("settings.render_layout.pick_unavailable"));
+    await post("/api/render-settings/save", { job_workspace: jw(), render: buildRenderLayoutPayload() });
+    const data = await post<any>("/api/render-logo/upload", { job_workspace: jw(), image_path: res.path });
+    s.renderLayout = H.normalizeRenderLayout(data.render); s.notice = t("settings.render_layout.logo_uploaded");
+  });
+  const removeRenderLogo = () => { if (!H.normalizeRenderLayout(s.renderLayout).logo_path || !window.confirm(t("settings.render_layout.logo_confirm_remove"))) return;
+    return runBusy("render_logo_remove", async () => {
+      const data = await post<any>("/api/render-logo/remove", { job_workspace: jw() });
+      s.renderLayout = H.normalizeRenderLayout(data.render); s.notice = t("settings.render_layout.logo_removed"); }); };
 
   const previewVoice = () => runBusy("tts_preview", async () => {
     const text = (s.previewText || "").trim() || H.DEFAULT_VOICE_PREVIEW_TEXT; savePreviewText(text);
@@ -546,6 +573,39 @@
               <Button variant="secondary" disabled={isBusy()} onclick={uploadRenderBg}>{t("settings.render_layout.upload_background")}</Button>
               <Button variant="primary" disabled={isBusy()} onclick={saveRenderLayout}>{t("settings.render_layout.save")}</Button>
               {#if layoutView.background_path}<Button disabled={isBusy()} onclick={removeRenderBg}>{t("settings.render_layout.remove_background")}</Button>{/if}
+            </div>
+
+            <!-- E1: brand logo / watermark overlay -->
+            <div class="stack" style="gap:6px;margin-top:10px"><div class="card-title">{t("settings.render_layout.logo_title")}</div><div class="card-sub">{t("settings.render_layout.logo_sub")}</div></div>
+            {#if layoutView.logo_path}
+              <div class="bgm-summary"><div class="row-title">{(layoutView.logo_original_filename || layoutView.logo_path).split(/[\\/]/).pop()}</div>
+                <div class="small-muted">{t("settings.render_layout.logo_ready")}</div></div>
+              <img class="render-logo-preview" alt="" src={buildMediaUrl(layoutView.logo_path, Date.now())} />
+              <div class="field-grid">
+                <div class="field"><label>{t("settings.render_layout.logo_position")}</label>
+                  <select class="input" value={layoutView.logo_position} onchange={(e) => patchLogo({ logo_position: (e.target as HTMLSelectElement).value })}>
+                    <option value="top-left">{t("settings.render_layout.pos_top_left")}</option>
+                    <option value="top-right">{t("settings.render_layout.pos_top_right")}</option>
+                    <option value="bottom-left">{t("settings.render_layout.pos_bottom_left")}</option>
+                    <option value="bottom-right">{t("settings.render_layout.pos_bottom_right")}</option>
+                  </select>
+                </div>
+                <div class="field"><label>{t("settings.render_layout.logo_scale")} ({Math.round(layoutView.logo_scale * 100)}%)</label>
+                  <input class="input" type="range" min="2" max="60" step="1" value={Math.round(layoutView.logo_scale * 100)} oninput={(e) => patchLogo({ logo_scale: Number((e.target as HTMLInputElement).value) / 100 })} /></div>
+                <div class="field"><label>{t("settings.render_layout.logo_opacity")} ({Math.round(layoutView.logo_opacity * 100)}%)</label>
+                  <input class="input" type="range" min="0" max="100" step="1" value={Math.round(layoutView.logo_opacity * 100)} oninput={(e) => patchLogo({ logo_opacity: Number((e.target as HTMLInputElement).value) / 100 })} /></div>
+                <div class="field"><label>{t("settings.render_layout.logo_margin")} ({Math.round(layoutView.logo_margin * 100)}%)</label>
+                  <input class="input" type="range" min="0" max="20" step="1" value={Math.round(layoutView.logo_margin * 100)} oninput={(e) => patchLogo({ logo_margin: Number((e.target as HTMLInputElement).value) / 100 })} /></div>
+              </div>
+            {:else}
+              <div class="meta-empty">{t("settings.render_layout.no_logo")}</div>
+            {/if}
+            <div class="toolbar">
+              <Button variant="secondary" disabled={isBusy()} onclick={uploadRenderLogo}>{t("settings.render_layout.upload_logo")}</Button>
+              {#if layoutView.logo_path}
+                <Button variant="primary" disabled={isBusy()} onclick={saveRenderLayout}>{t("settings.render_layout.save")}</Button>
+                <Button disabled={isBusy()} onclick={removeRenderLogo}>{t("settings.render_layout.remove_logo")}</Button>
+              {/if}
             </div>
           </div>
 

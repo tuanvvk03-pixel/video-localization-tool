@@ -13,9 +13,31 @@ ALLOWED_BACKGROUND_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
 MAX_BACKGROUND_BYTES = 25 * 1024 * 1024
 RENDER_BACKGROUND_REL_DIR = Path("assets") / "render_background"
 
+# E1 — brand logo / watermark overlay.
+ALLOWED_LOGO_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
+MAX_LOGO_BYTES = 25 * 1024 * 1024
+RENDER_LOGO_REL_DIR = Path("assets") / "render_logo"
+ALLOWED_LOGO_POSITIONS = {"top-left", "top-right", "bottom-left", "bottom-right"}
+DEFAULT_LOGO_POSITION = "top-right"
+DEFAULT_LOGO_SCALE = 0.15  # logo width as a fraction of the target frame width
+DEFAULT_LOGO_OPACITY = 1.0
+DEFAULT_LOGO_MARGIN = 0.03  # margin from the edges as a fraction of frame width
+
 
 class RenderSettingsError(ValueError):
     pass
+
+
+def _clamp_float(value: Any, *, lo: float, hi: float, default: float, field: str) -> float:
+    if value is None or value == "":
+        return default
+    try:
+        f = float(value)
+    except (TypeError, ValueError):
+        raise RenderSettingsError(f"{field} must be a number.")
+    if f < lo or f > hi:
+        raise RenderSettingsError(f"{field} must be between {lo} and {hi}.")
+    return f
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -60,6 +82,31 @@ def normalize_render_settings(raw: Any) -> dict[str, Any]:
         out["background_path"] = background_path
     if background_filename:
         out["background_original_filename"] = background_filename
+
+    # Logo / watermark overlay. Position + scale + opacity always normalize so the
+    # UI can configure them before/after uploading the image; the overlay only
+    # applies at render time when logo_path resolves to a real file.
+    logo_path = str(data.get("logo_path") or "").strip()
+    if logo_path:
+        out["logo_path"] = logo_path
+        logo_filename = str(data.get("logo_original_filename") or "").strip()
+        if logo_filename:
+            out["logo_original_filename"] = logo_filename
+        position = str(data.get("logo_position") or DEFAULT_LOGO_POSITION).strip()
+        if position not in ALLOWED_LOGO_POSITIONS:
+            raise RenderSettingsError(
+                "logo_position must be one of: top-left, top-right, bottom-left, bottom-right."
+            )
+        out["logo_position"] = position
+        out["logo_scale"] = _clamp_float(
+            data.get("logo_scale"), lo=0.02, hi=1.0, default=DEFAULT_LOGO_SCALE, field="logo_scale"
+        )
+        out["logo_opacity"] = _clamp_float(
+            data.get("logo_opacity"), lo=0.0, hi=1.0, default=DEFAULT_LOGO_OPACITY, field="logo_opacity"
+        )
+        out["logo_margin"] = _clamp_float(
+            data.get("logo_margin"), lo=0.0, hi=0.5, default=DEFAULT_LOGO_MARGIN, field="logo_margin"
+        )
     return out
 
 
@@ -73,6 +120,10 @@ def load_render_settings(job_workspace: str | Path) -> dict[str, Any] | None:
     background = str(settings.get("background_path") or "")
     if background and not (jw / background).is_file():
         settings.pop("background_path", None)
+    logo = str(settings.get("logo_path") or "")
+    if logo and not (jw / logo).is_file():
+        for k in ("logo_path", "logo_original_filename", "logo_position", "logo_scale", "logo_opacity", "logo_margin"):
+            settings.pop(k, None)
     return settings
 
 
@@ -133,4 +184,53 @@ def clear_render_background(job_workspace: str | Path, *, delete_files: bool = T
     current.pop("background_original_filename", None)
     if delete_files:
         shutil.rmtree(jw / RENDER_BACKGROUND_REL_DIR, ignore_errors=True)
+    return save_render_settings(jw, current)
+
+
+def import_render_logo_image(
+    job_workspace: str | Path,
+    source_path: str | Path,
+) -> dict[str, Any]:
+    jw = Path(job_workspace).expanduser().resolve()
+    src = Path(source_path).expanduser().resolve()
+    if not jw.is_dir():
+        raise RenderSettingsError(f"Job workspace not found: {jw}")
+    if not src.is_file():
+        raise RenderSettingsError(f"Logo image does not exist: {src}")
+    if src.suffix.lower() not in ALLOWED_LOGO_EXTS:
+        raise RenderSettingsError("Logo image must be one of: png, jpg, jpeg, webp (png recommended for transparency).")
+    size = src.stat().st_size
+    if size <= 0:
+        raise RenderSettingsError("Logo image is empty.")
+    if size > MAX_LOGO_BYTES:
+        raise RenderSettingsError("Logo image is larger than 25MB.")
+
+    logo_dir = jw / RENDER_LOGO_REL_DIR
+    shutil.rmtree(logo_dir, ignore_errors=True)
+    logo_dir.mkdir(parents=True, exist_ok=True)
+    copied = logo_dir / _safe_filename(src.name)
+    shutil.copy2(src, copied)
+
+    current = load_render_settings(jw) or {"aspect_ratio": "source"}
+    current.update(
+        {
+            "logo_path": _workspace_rel(copied, jw),
+            "logo_original_filename": src.name,
+        }
+    )
+    # Seed sensible overlay defaults if the user hasn't set them yet.
+    current.setdefault("logo_position", DEFAULT_LOGO_POSITION)
+    current.setdefault("logo_scale", DEFAULT_LOGO_SCALE)
+    current.setdefault("logo_opacity", DEFAULT_LOGO_OPACITY)
+    current.setdefault("logo_margin", DEFAULT_LOGO_MARGIN)
+    return save_render_settings(jw, current)
+
+
+def clear_render_logo(job_workspace: str | Path, *, delete_files: bool = True) -> dict[str, Any]:
+    jw = Path(job_workspace)
+    current = load_render_settings(jw) or {"aspect_ratio": "source"}
+    for k in ("logo_path", "logo_original_filename", "logo_position", "logo_scale", "logo_opacity", "logo_margin"):
+        current.pop(k, None)
+    if delete_files:
+        shutil.rmtree(jw / RENDER_LOGO_REL_DIR, ignore_errors=True)
     return save_render_settings(jw, current)

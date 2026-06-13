@@ -37,7 +37,14 @@ export interface Bgm {
 }
 export interface RenderLayout {
   aspect_ratio: string; background_path: string; background_original_filename: string;
+  logo_path: string; logo_original_filename: string;
+  logo_position: string; logo_scale: number; logo_opacity: number; logo_margin: number;
 }
+
+export const LOGO_POSITIONS = ["top-left", "top-right", "bottom-left", "bottom-right"] as const;
+export function clampLogoScale(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(1, Math.max(0.02, n)) : 0.15; }
+export function clampLogoOpacity(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 1; }
+export function clampLogoMargin(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(0.5, Math.max(0, n)) : 0.03; }
 
 export function normalizeFonts(fonts: unknown): FontItem[] {
   const seen = new Set<string>();
@@ -238,10 +245,17 @@ export function normalizeBgm(raw: unknown): Bgm | null {
 export function normalizeRenderLayout(raw: unknown): RenderLayout {
   const data = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
   const aspect = String(data.aspect_ratio || "16:9").trim();
+  const position = String(data.logo_position || "top-right").trim();
   return {
     aspect_ratio: aspect === "9:16" ? "9:16" : "16:9",
     background_path: String(data.background_path || "").trim(),
     background_original_filename: String(data.background_original_filename || "").trim(),
+    logo_path: String(data.logo_path || "").trim(),
+    logo_original_filename: String(data.logo_original_filename || "").trim(),
+    logo_position: (LOGO_POSITIONS as readonly string[]).includes(position) ? position : "top-right",
+    logo_scale: clampLogoScale(data.logo_scale ?? 0.15),
+    logo_opacity: clampLogoOpacity(data.logo_opacity ?? 1),
+    logo_margin: clampLogoMargin(data.logo_margin ?? 0.03),
   };
 }
 
