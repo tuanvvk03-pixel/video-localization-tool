@@ -42,8 +42,9 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument(
         "--audio-source",
         default="auto",
-        choices=["auto", "mixed", "aligned"],
-        help="Select audio input (default auto prefers mixed then aligned).",
+        choices=["auto", "mixed", "aligned", "original"],
+        help="Select audio input (default auto prefers mixed then aligned). "
+        "'original' keeps the source video's own audio (no-dub / branding-only).",
     )
     p.add_argument(
         "--subtitle-mode",
@@ -437,8 +438,11 @@ def main(argv: list[str] | None = None) -> int:
     mixed_audio = job_workspace / "artifacts" / "mixed" / "mixed_audio.wav"
     aligned_audio = job_workspace / "artifacts" / "aligned" / "voice_track_aligned.wav"
     audio_mode = ns.audio_source
+    use_original_audio = audio_mode == "original"
     selected_audio: Path | None = None
-    if audio_mode == "mixed":
+    if use_original_audio:
+        selected_audio = None  # keep the source video's own audio track (input 0)
+    elif audio_mode == "mixed":
         selected_audio = mixed_audio if mixed_audio.is_file() else None
     elif audio_mode == "aligned":
         selected_audio = aligned_audio if aligned_audio.is_file() else None
@@ -446,7 +450,7 @@ def main(argv: list[str] | None = None) -> int:
         selected_audio = mixed_audio if mixed_audio.is_file() else (aligned_audio if aligned_audio.is_file() else None)
         audio_mode = "mixed" if (selected_audio == mixed_audio) else ("aligned" if selected_audio else "auto")
 
-    if selected_audio is None:
+    if not use_original_audio and selected_audio is None:
         msg = (
             "Missing audio input: expected artifacts/mixed/mixed_audio.wav or "
             "artifacts/aligned/voice_track_aligned.wav."
@@ -469,7 +473,8 @@ def main(argv: list[str] | None = None) -> int:
         if selected_audio == mixed_audio
         else job_workspace / "artifacts" / "aligned" / "alignment_manifest.json"
     )
-    stale = stale_manifest_input_provenance_message(job_workspace, prov_check)
+    # No-dub (original audio) has no mixed/aligned manifest to check.
+    stale = None if use_original_audio else stale_manifest_input_provenance_message(job_workspace, prov_check)
     if stale:
         _merge_job_state(
             job_workspace,
@@ -544,7 +549,7 @@ def main(argv: list[str] | None = None) -> int:
         print(msg, file=sys.stderr)
         return 1
 
-    audio_dur = _probe_duration_sec(ffprobe, selected_audio)
+    audio_dur = _probe_duration_sec(ffprobe, selected_audio) if selected_audio else _probe_duration_sec(ffprobe, source_video)
 
     project_root = (ns.project_root or "").strip()
     try:
@@ -635,13 +640,13 @@ def main(argv: list[str] | None = None) -> int:
         "error",
     ]
 
-    input_args: list[str] = [
-        "-i",
-        str(source_video),
-        "-i",
-        str(selected_audio),
-    ]
-    next_input_index = 2
+    # No-dub: keep the source video's own audio (input 0). Otherwise input 1 is
+    # the dubbed/mixed track.
+    audio_label = "0:a:0" if use_original_audio else "1:a:0"
+    input_args: list[str] = ["-i", str(source_video)]
+    if not use_original_audio:
+        input_args.extend(["-i", str(selected_audio)])
+    next_input_index = 1 if use_original_audio else 2
     background_input_index: int | None = None
     if layout_transform and background_image is not None:
         background_input_index = next_input_index
@@ -695,7 +700,7 @@ def main(argv: list[str] | None = None) -> int:
                 "-map",
                 "[vout]",
                 "-map",
-                "1:a:0",
+                audio_label,
                 "-c:v",
                 "libx264",
                 "-preset",
@@ -709,11 +714,11 @@ def main(argv: list[str] | None = None) -> int:
         if subtitle_mode == "soft" and has_sub_input and subtitle_input_index is not None:
             output_args.extend(["-map", f"{subtitle_input_index}:s:0", "-c:s", "mov_text"])
     elif subtitle_mode == "soft":
-        output_args.extend(["-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy"])
+        output_args.extend(["-map", "0:v:0", "-map", audio_label, "-c:v", "copy"])
         if has_sub_input and subtitle_input_index is not None:
             output_args.extend(["-map", f"{subtitle_input_index}:s:0", "-c:s", "mov_text"])
     elif subtitle_mode == "none":
-        output_args.extend(["-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy"])
+        output_args.extend(["-map", "0:v:0", "-map", audio_label, "-c:v", "copy"])
     else:
         # burn
         if selected_subtitle is None:
@@ -736,7 +741,7 @@ def main(argv: list[str] | None = None) -> int:
                 "-map",
                 "0:v:0",
                 "-map",
-                "1:a:0",
+                audio_label,
                 "-c:v",
                 "libx264",
                 "-preset",

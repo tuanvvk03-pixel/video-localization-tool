@@ -47,6 +47,8 @@
     "empty_body": "Click \"Add videos\" to select multiple files at once.",
     "col_video": "Video",
     "col_status": "Status",
+    "tag_no_dub": "No speech · branding only",
+    "tag_dub": "Has speech · dubbed",
     "col_output": "Output",
     "open_output": "Open video",
     "brand_title": "Shared branding (logo · outro · trim)",

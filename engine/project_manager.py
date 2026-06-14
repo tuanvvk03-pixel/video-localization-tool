@@ -312,6 +312,7 @@ def _video_status_snapshot(entry: ProjectVideoEntry) -> dict[str, Any]:
         "voice_edited": st.voice_edited,
         "pipeline_status": vstate.get("status"),
         "current_stage": vstate.get("current_stage"),
+        "no_dub": _job_is_no_dub(jw),
     }
 
 
@@ -359,6 +360,15 @@ def _resolve_max_workers(requested: int | None) -> int:
     return min(int(requested), MAX_PARALLEL_VIDEOS)
 
 
+def _job_is_no_dub(job_workspace: Path) -> bool:
+    """True when run_job classified this video as no-speech (branding-only render)."""
+    try:
+        d = json.loads((job_workspace / "job_state.json").read_text(encoding="utf-8"))
+        return bool(d.get("no_dub"))
+    except (OSError, json.JSONDecodeError):
+        return False
+
+
 def _voice_edit_completed(job_workspace: Path) -> bool:
     st = get_voice_edit_status(job_workspace)
     return bool(st.edited_voice_path) and (
@@ -402,6 +412,9 @@ def _run_translate_one(
     rc = runner(argv)
     if rc != 0:
         return {"video_id": entry.video_id, "ok": False, "error": f"run_job rc={rc}"}
+    # No-speech video: run_job classified it no-dub; nothing to translate/seed.
+    if _job_is_no_dub(jw):
+        return {"video_id": entry.video_id, "ok": True, "no_dub": True}
     translated_voice = jw / "artifacts" / "translate" / "translated_voice.srt"
     if not translated_voice.is_file():
         return {
@@ -424,6 +437,13 @@ def _run_render_one(
     long_video_workers: int,
 ) -> dict[str, Any]:
     jw = Path(entry.workspace)
+    # No-dub (no-speech) videos render directly with original audio + branding;
+    # they have no voice edit to gate on.
+    if _job_is_no_dub(jw):
+        rc = runner(_run_job_argv(jw, cfg, to_stage=to_stage))
+        if rc != 0:
+            return {"video_id": entry.video_id, "ok": False, "error": f"run_job rc={rc}", "no_dub": True}
+        return {"video_id": entry.video_id, "ok": True, "no_dub": True}
     st = get_voice_edit_status(jw)
     if st.edited_voice_path is None:
         return {
@@ -586,12 +606,14 @@ def run_auto_phase(
         long_video_workers=long_video_workers,
     )
     ok_ids = {str(r.get("video_id")) for r in t_results if r.get("ok")}
+    # No-speech videos auto-classified by run_job: rendered branding-only, no approval.
+    no_dub_ids = {str(r.get("video_id")) for r in t_results if r.get("ok") and r.get("no_dub")}
 
     approved: list[str] = []
     approve_errors: list[dict[str, str]] = []
     state = load_project(project_root)
     for entry in state.videos:
-        if entry.video_id not in ok_ids:
+        if entry.video_id not in ok_ids or entry.video_id in no_dub_ids:
             continue
         jw = Path(entry.workspace)
         try:
@@ -601,15 +623,18 @@ def run_auto_phase(
         except VoiceEditError as e:
             approve_errors.append({"video_id": entry.video_id, "error": str(e)})
 
-    # F1.1 — push shared project branding (logo/outro/intro/trim) onto each
-    # video about to render, so a batch is branded consistently in one place.
+    # Render set = approved dubs + auto no-dub videos (order: project order).
+    render_ids = [v.video_id for v in state.videos if v.video_id in (set(approved) | no_dub_ids)]
+
+    # F1.1 — push shared project branding (logo/outro/intro/trim/transform) onto
+    # every video about to render, so a batch is branded consistently in one place.
     try:
         from engine.project_branding import apply_branding_to_video, has_project_branding
 
-        if approved and has_project_branding(project_root):
-            approved_set = set(approved)
+        if render_ids and has_project_branding(project_root):
+            render_set = set(render_ids)
             for entry in state.videos:
-                if entry.video_id in approved_set:
+                if entry.video_id in render_set:
                     try:
                         apply_branding_to_video(project_root, Path(entry.workspace))
                     except OSError as e:
@@ -622,12 +647,13 @@ def run_auto_phase(
         to_stage=to_stage,
         max_workers=max_workers,
         runner=runner,
-        video_ids=approved,
+        video_ids=render_ids,
         long_video_workers=long_video_workers,
     )
     return {
         "translate": t_results,
         "approved": approved,
+        "no_dub": sorted(no_dub_ids),
         "approve_errors": approve_errors,
         "render": r_results,
     }

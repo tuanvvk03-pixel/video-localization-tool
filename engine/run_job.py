@@ -151,6 +151,42 @@ def _block_voice_edit_pending(job_workspace: Path, job_id: str, runner_meta: dic
     )
 
 
+def _count_source_cues(source_srt: Path) -> int:
+    """Number of cues in the transcript; 0 means no speech (no-dub path)."""
+    try:
+        from engine.srt_cues import parse_srt_cues
+
+        return len(parse_srt_cues(source_srt.read_text(encoding="utf-8")))
+    except (OSError, ValueError):
+        return 0
+
+
+def _run_no_dub_render(job_workspace: Path, job_id: str, runner_meta: dict, ns) -> int:
+    """Render the source video with original audio + branding (no translate/TTS)."""
+    rargv = [
+        "--job-workspace", str(job_workspace), "--overwrite",
+        "--audio-source", "original", "--subtitle-mode", "none",
+    ]
+    if (getattr(ns, "render_aspect_ratio", "") or "").strip():
+        rargv.extend(["--aspect-ratio", ns.render_aspect_ratio.strip()])
+    if (getattr(ns, "render_background_image", "") or "").strip():
+        rargv.extend(["--background-image", ns.render_background_image.strip()])
+    if (getattr(ns, "project_root", "") or "").strip():
+        rargv.extend(["--project-root", ns.project_root.strip()])
+    _mark_stage_running(job_workspace, job_id, runner_meta, "rendered")
+    rc = run_render_stage.main(rargv)
+    if rc != 0:
+        print("[run_job] No-dub render failed; see job_state.json.", file=sys.stderr)
+        _merge_job_state(job_workspace, {"runner": runner_meta})
+        return rc
+    _merge_job_state(
+        job_workspace,
+        {"runner": runner_meta, "no_dub": True, "dub_classification": "no_speech"},
+    )
+    print("[run_job] No-dub render completed (original audio + branding).")
+    return 0
+
+
 def _mark_stage_running(job_workspace: Path, job_id: str, runner_meta: dict, stage: str) -> None:
     _merge_job_state(
         job_workspace,
@@ -624,6 +660,30 @@ def _run_pipeline(ns: argparse.Namespace, job_workspace: Path) -> int:
     else:
         print("[run_job] Provenance gate loop exceeded retries.", file=sys.stderr)
         return 1
+
+    # No-speech classification: an empty transcript means there is nothing to dub.
+    # Render the original video with branding only (aspect/logo/outro/transform),
+    # skipping translate/finalize/tts/align/mix. Auto-detected per video so a mixed
+    # batch (some with speech, some without) is handled correctly.
+    source_srt = job_workspace / "artifacts" / "transcribe" / "source.srt"
+    if not skip_translate_for_voice_export and _count_source_cues(source_srt) == 0:
+        _merge_job_state(
+            job_workspace,
+            {
+                "job_id": job_id,
+                "job_workspace": str(job_workspace),
+                "status": "transcribed",
+                "current_stage": "transcribed",
+                "no_dub": True,
+                "dub_classification": "no_speech",
+                "last_error": None,
+                "runner": runner_meta,
+            },
+        )
+        print("[run_job] no_speech detected -> no-dub (branding-only) mode.", file=sys.stderr)
+        if to_rank < rendered_rank:
+            return 0
+        return _run_no_dub_render(job_workspace, job_id, runner_meta, ns)
 
     if not skip_translate_for_voice_export:
         targv: list[str] = [

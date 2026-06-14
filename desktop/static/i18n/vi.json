@@ -47,6 +47,8 @@
     "empty_body": "Bấm \"Thêm video\" để chọn nhiều file cùng lúc.",
     "col_video": "Video",
     "col_status": "Trạng thái",
+    "tag_no_dub": "Không thoại · chỉ branding",
+    "tag_dub": "Có thoại · đã lồng tiếng",
     "col_output": "Kết quả",
     "open_output": "Mở video",
     "brand_title": "Branding chung (logo · outro · cắt)",

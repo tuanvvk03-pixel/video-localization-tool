@@ -346,7 +346,8 @@
                 {@const s = statuses[v.video_id]}
                 <tr>
                   <td><div class="row-title">{v.video_id}</div><div class="small-muted">{(v.source_path || "").split(/[\\/]/).pop()}{v.is_long ? " · long" : ""}</div></td>
-                  <td><StatusBadge kind={statusKind(s)}>{stageOf(s)}</StatusBadge></td>
+                  <td><StatusBadge kind={statusKind(s)}>{stageOf(s)}</StatusBadge>
+                    {#if s?.no_dub}<div class="small-muted">{t("projects.tag_no_dub")}</div>{:else if stageOf(s).includes("rendered")}<div class="small-muted">{t("projects.tag_dub")}</div>{/if}</td>
                   <td>{#if stageOf(s).includes("rendered")}<a href={outputUrl(v)} target="_blank" rel="noopener">{t("projects.open_output")}</a>{:else}—{/if}</td>
                 </tr>
               {/each}
