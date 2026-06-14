@@ -1,628 +1,715 @@
-import { d as kr, p as Pr, s as M, w as Pt, x as Br, c as w, e as p, i as U, g as t, l as r, Q as gt, t as u, j as s, R as mt, m as k, a as _, b as Ar, h as a, f as Ut, o as P, r as We, K as it, z as Nr, n as S, u as h, A as Sr, O as Xe, M as zr } from "./chunks/api-vHpIWCot.js";
-import { o as Er } from "./chunks/index-client-CjB8cgHo.js";
-import { e as Ye, i as Fr } from "./chunks/each-BE197-93.js";
-import { b as Cr } from "./chunks/input-D0G7l_P3.js";
-import { n as G, a as Ir } from "./chunks/helpers-CRY6gGMH.js";
-import { B as L } from "./chunks/Button-GpBM5g0S.js";
-import { S as Lr } from "./chunks/StatusBadge-DT3lodBA.js";
-import { s as Or } from "./chunks/screen-DRq5NjFu.js";
-var Rr = S('<div class="error-banner"><div class="error-code">UI</div><div class="error-message"> </div></div>'), Vr = S('<div class="info-banner"> </div>'), qr = S("<option> </option>"), Dr = S('<div class="toolbar"><input class="input" style="max-width:320px" type="text"/> <!></div> <div class="small-muted"> </div>', 1), Mr = S('<div class="small-muted"> </div> <div class="toolbar"><!> <!> <!></div> <div class="small-muted"> </div>', 1), Ur = S('<div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option><option> </option></select></div>'), Kr = S('<div class="empty-card"><div class="empty-icon">＋</div><h3> </h3><p> </p></div>'), Tr = S('<a target="_blank" rel="noopener"> </a>'), Qr = S('<tr><td><div class="row-title"> </div><div class="small-muted"> </div></td><td><!></td><td><!></td></tr>'), Gr = S('<table class="review-table"><thead><tr><th> </th><th> </th><th> </th></tr></thead><tbody></tbody></table>'), Hr = S('<div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div> <div class="field"><label> </label> <input class="input" type="number" min="0" max="600" step="0.5"/></div> <div class="field"><label> </label> <input class="input" type="number" min="0" max="600" step="0.5"/></div> <!></div> <div class="clip-row"><div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div> <div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div> <div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div></div> <div class="stack" style="gap:6px;margin-top:8px"><div class="card-title"> </div><div class="card-sub"> </div></div> <label class="checkbox-row"><input type="checkbox"/> </label> <div class="field-grid"><div class="field"><label> </label> <input class="input" type="range" min="0.8" max="1.2" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="1" max="1.3" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="-0.2" max="0.2" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="0.7" max="1.3" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="0.5" max="1.5" step="0.01"/></div></div> <div class="toolbar"><!></div></div></div> <div class="card"><div class="card-header"><div><div class="card-title"> </div> <div class="card-sub"> </div></div></div> <div class="card-body"><!></div></div>', 1), Jr = S('<div class="screen stack" data-testid="projects-screen"><!> <!> <div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option>edge_tts</option><option>azure_tts</option></select></div> <div class="field"><label> </label> <select class="input"><option> </option><!></select></div> <div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option></select></div></div> <!></div></div> <!></div>');
-function Wr(ta, Kt) {
-  Pr(Kt, !0);
-  const i = (e, o) => (Kt.ctx?.t ?? ((n) => n))(e, o);
-  let Bt = M(""), g = M(""), z = M(Pt([])), dt = M(Pt({})), Tt = M(Pt([])), y = Pt({
+import { d as Ir, p as Lr, s as E, w as Pt, x as Or, c as w, e as _, i as H, g as t, l as i, Q as ft, t as p, j as o, R as ht, m as z, a as c, b as qr, h as a, f as re, o as A, r as ie, K as vt, z as Rr, n as O, u as y, A as Vr, O as sa, M as Dr } from "./chunks/api-vHpIWCot.js";
+import { o as Mr } from "./chunks/index-client-CjB8cgHo.js";
+import { e as oe, i as la } from "./chunks/each-BE197-93.js";
+import { b as na } from "./chunks/input-D0G7l_P3.js";
+import { n as X, a as Ur } from "./chunks/helpers-CRY6gGMH.js";
+import { B as F } from "./chunks/Button-GpBM5g0S.js";
+import { S as Kr } from "./chunks/StatusBadge-DT3lodBA.js";
+import { s as Tr } from "./chunks/screen-DRq5NjFu.js";
+var Qr = O('<div class="error-banner"><div class="error-code">UI</div><div class="error-message"> </div></div>'), Gr = O('<div class="info-banner"> </div>'), da = O("<option> </option>"), Hr = O('<div class="toolbar"><input class="input" style="max-width:320px" type="text"/> <!></div> <div class="small-muted"> </div>', 1), Jr = O('<div class="small-muted"> </div> <div class="toolbar"><!> <!> <!></div> <div class="small-muted"> </div> <div class="toolbar"><select class="input" style="max-width:240px"><option> </option><!></select> <!> <!></div> <div class="toolbar"><input class="input" style="max-width:240px" type="text"/> <!></div> <div class="small-muted"> </div>', 1), Wr = O('<div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option><option> </option></select></div>'), Xr = O('<div class="empty-card"><div class="empty-icon">＋</div><h3> </h3><p> </p></div>'), Yr = O('<a target="_blank" rel="noopener"> </a>'), Zr = O('<tr><td><div class="row-title"> </div><div class="small-muted"> </div></td><td><!></td><td><!></td></tr>'), ti = O('<table class="review-table"><thead><tr><th> </th><th> </th><th> </th></tr></thead><tbody></tbody></table>'), ei = O('<div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div> <div class="field"><label> </label> <input class="input" type="number" min="0" max="600" step="0.5"/></div> <div class="field"><label> </label> <input class="input" type="number" min="0" max="600" step="0.5"/></div> <!></div> <div class="clip-row"><div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div> <div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div> <div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div></div> <div class="stack" style="gap:6px;margin-top:8px"><div class="card-title"> </div><div class="card-sub"> </div></div> <label class="checkbox-row"><input type="checkbox"/> </label> <div class="field-grid"><div class="field"><label> </label> <input class="input" type="range" min="0.8" max="1.2" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="1" max="1.3" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="-0.2" max="0.2" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="0.7" max="1.3" step="0.01"/></div> <div class="field"><label> </label> <input class="input" type="range" min="0.5" max="1.5" step="0.01"/></div></div> <div class="toolbar"><!></div></div></div> <div class="card"><div class="card-header"><div><div class="card-title"> </div> <div class="card-sub"> </div></div></div> <div class="card-body"><!></div></div>', 1), ai = O('<div class="screen stack" data-testid="projects-screen"><!> <!> <div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option>edge_tts</option><option>azure_tts</option></select></div> <div class="field"><label> </label> <select class="input"><option> </option><!></select></div> <div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option></select></div></div> <!></div></div> <!></div>');
+function ri(va, se) {
+  Lr(se, !0);
+  const r = (e, s) => (se.ctx?.t ?? ((n) => n))(e, s);
+  let Rt = E(""), u = E(""), q = E(Pt([])), bt = E(Pt({})), le = E(Pt([])), k = E(Pt({
     tts_provider: "edge_tts",
     tts_voice: "",
     mix_mode: "replace_original_speech"
-  }), At = M(""), ot = M(!1), Z = M(""), ft = M(""), O = M(null), H = null;
-  Er(() => {
-    H && clearInterval(H);
-  }), Br(() => {
-    ea();
+  })), Vt = E(""), ct = E(!1), J = E(""), At = E(""), U = E(null), ne = E(Pt([])), R = E(""), Bt = E(""), Y = null;
+  Mr(() => {
+    Y && clearInterval(Y);
+  }), Or(() => {
+    ga(), Dt();
   });
-  async function ea() {
+  async function Dt() {
+    try {
+      const e = await w("/api/presets/list", {});
+      _(ne, Array.isArray(e.presets) ? e.presets : [], !0);
+    } catch {
+    }
+  }
+  const ca = () => C("preset_save", async () => {
+    const e = t(Bt).trim();
+    if (!e) throw new Error(r("projects.preset_name_required"));
+    if (!t(u)) throw new Error(r("projects.create_first"));
+    await w("/api/presets/save", { name: e, project_root: t(u) }), _(Bt, ""), _(J, r("projects.preset_saved"), !0), await Dt();
+  }), pa = () => C("preset_apply", async () => {
+    !t(R) || !t(u) || (await w("/api/presets/apply", {
+      preset_id: t(R),
+      project_root: t(u)
+    }), _(J, r("projects.preset_applied"), !0), await xt());
+  }), ua = () => C("preset_delete", async () => {
+    !t(R) || !window.confirm(r("projects.preset_confirm_delete")) || (await w("/api/presets/delete", { preset_id: t(R) }), _(R, ""), await Dt());
+  });
+  async function ga() {
     try {
       const e = await w("/api/list-voices", {});
-      p(
-        Tt,
-        Array.isArray(e.voices) ? e.voices.filter((o) => o && o.voice_id && o.enabled !== !1) : [],
+      _(
+        le,
+        Array.isArray(e.voices) ? e.voices.filter((s) => s && s.voice_id && s.enabled !== !1) : [],
         !0
       );
     } catch {
     }
   }
-  async function K(e, o) {
-    p(ft, ""), p(At, e, !0), p(Z, "");
+  async function C(e, s) {
+    _(At, ""), _(Vt, e, !0), _(J, "");
     try {
-      await o();
+      await s();
     } catch (n) {
-      p(ft, n instanceof Sr ? n.summary || n.message : n?.message || "error", !0);
+      _(At, n instanceof Vr ? n.summary || n.message : n?.message || "error", !0);
     } finally {
-      p(At, "");
+      _(Vt, "");
     }
   }
-  const E = () => !!t(At) || t(ot), aa = () => K("create", async () => {
-    const e = t(Bt).trim();
-    if (!e) throw new Error(i("projects.name_required"));
-    const o = await w("/api/init-project", {
+  const S = () => !!t(Vt) || t(ct), ma = () => C("create", async () => {
+    const e = t(Rt).trim();
+    if (!e) throw new Error(r("projects.name_required"));
+    const s = await w("/api/init-project", {
       project_name: e,
       config_overrides: {
-        tts_provider: y.tts_provider,
-        tts_voice: y.tts_voice.trim(),
-        mix_mode: y.mix_mode,
+        tts_provider: t(k).tts_provider,
+        tts_voice: t(k).tts_voice.trim(),
+        mix_mode: t(k).mix_mode,
         translate_backend: "block_v2"
       }
     });
-    p(g, String(o.project_root || ""), !0), p(Z, i("projects.created"), !0), await bt();
-  }), ra = () => K("add", async () => {
-    if (!t(g)) throw new Error(i("projects.create_first"));
-    const e = await zr({
+    _(u, String(s.project_root || ""), !0), _(J, r("projects.created"), !0), await xt();
+  }), fa = () => C("add", async () => {
+    if (!t(u)) throw new Error(r("projects.create_first"));
+    const e = await Dr({
       filters: ["Video files (*.mp4;*.mov;*.mkv;*.webm)", "All files (*.*)"]
     });
     if (e?.cancelled) return;
-    const o = e?.paths || [];
-    if (!o.length) throw new Error(e?.error || i("projects.pick_unavailable"));
+    const s = e?.paths || [];
+    if (!s.length) throw new Error(e?.error || r("projects.pick_unavailable"));
     let n = 0;
-    const b = [];
-    for (const $ of o)
+    const j = [];
+    for (const B of s)
       try {
-        await w("/api/add-video-to-project", { project_root: t(g), video: $ }), n++;
+        await w("/api/add-video-to-project", { project_root: t(u), video: B }), n++;
       } catch {
-        b.push($.split(/[\\/]/).pop() || $);
+        j.push(B.split(/[\\/]/).pop() || B);
       }
-    p(Z, i("projects.added", { count: n }) + (b.length ? ` (${i("projects.add_failed", { count: b.length })})` : "")), await bt();
+    _(J, r("projects.added", { count: n }) + (j.length ? ` (${r("projects.add_failed", { count: j.length })})` : "")), await xt();
   });
-  async function bt() {
-    if (!t(g)) return;
-    const e = await w("/api/get-project", { project_root: t(g) });
-    p(z, Array.isArray(e.videos) ? e.videos : [], !0);
-    const o = {};
-    for (const n of e.statuses || []) o[String(n.video_id)] = n;
-    p(dt, o, !0), await ia();
+  async function xt() {
+    if (!t(u)) return;
+    const e = await w("/api/get-project", { project_root: t(u) });
+    _(q, Array.isArray(e.videos) ? e.videos : [], !0);
+    const s = {};
+    for (const n of e.statuses || []) s[String(n.video_id)] = n;
+    _(bt, s, !0), e.config && _(
+      k,
+      {
+        tts_provider: e.config.tts_provider || "edge_tts",
+        tts_voice: e.config.tts_voice || "",
+        mix_mode: e.config.mix_mode || "replace_original_speech"
+      },
+      !0
+    ), await ha();
   }
-  async function ia() {
-    if (t(g))
+  async function ha() {
+    if (t(u))
       try {
-        const e = await w("/api/render-settings/status", { job_workspace: t(g) });
-        p(O, G(e.render || {}), !0);
+        const e = await w("/api/render-settings/status", { job_workspace: t(u) });
+        _(U, X(e.render || {}), !0);
       } catch {
       }
   }
-  function Nt() {
-    const e = t(O) || G({}), o = {
+  function Mt() {
+    const e = t(U) || X({}), s = {
       aspect_ratio: e.aspect_ratio,
       background_path: e.background_path,
       background_original_filename: e.background_original_filename,
       head_trim_sec: e.head_trim_sec,
       tail_trim_sec: e.tail_trim_sec
     };
-    return e.logo_path && Object.assign(o, {
+    return e.logo_path && Object.assign(s, {
       logo_path: e.logo_path,
       logo_original_filename: e.logo_original_filename,
       logo_position: e.logo_position,
       logo_scale: e.logo_scale,
       logo_opacity: e.logo_opacity,
       logo_margin: e.logo_margin
-    }), e.intro_clip_path && Object.assign(o, {
+    }), e.intro_clip_path && Object.assign(s, {
       intro_clip_path: e.intro_clip_path,
       intro_original_filename: e.intro_original_filename
-    }), e.outro_clip_path && Object.assign(o, {
+    }), e.outro_clip_path && Object.assign(s, {
       outro_clip_path: e.outro_clip_path,
       outro_original_filename: e.outro_original_filename
-    }), Ir(o, e), o;
+    }), Ur(s, e), s;
   }
-  function R(e) {
-    p(O, G({ ...t(O) || {}, ...e }), !0);
+  function K(e) {
+    _(U, X({ ...t(U) || {}, ...e }), !0);
   }
-  const oa = () => K("brand_save", async () => {
-    const e = await w("/api/render-settings/save", { job_workspace: t(g), render: Nt() });
-    p(O, G(e.render), !0), p(Z, i("projects.brand_saved"), !0);
-  }), sa = () => K("brand_logo", async () => {
-    const e = await Xe({
+  const ba = () => C("brand_save", async () => {
+    const e = await w("/api/render-settings/save", { job_workspace: t(u), render: Mt() });
+    _(U, X(e.render), !0), _(J, r("projects.brand_saved"), !0);
+  }), xa = () => C("brand_logo", async () => {
+    const e = await sa({
       filters: ["Image files (*.png;*.jpg;*.jpeg;*.webp)", "All files (*.*)"]
     });
     if (e?.cancelled) return;
-    if (!e?.ok || !e.path) throw new Error(e?.error || i("projects.pick_unavailable"));
-    await w("/api/render-settings/save", { job_workspace: t(g), render: Nt() });
-    const o = await w("/api/render-logo/upload", { job_workspace: t(g), image_path: e.path });
-    p(O, G(o.render), !0);
-  }), la = () => K("brand_logo_rm", async () => {
-    const e = await w("/api/render-logo/remove", { job_workspace: t(g) });
-    p(O, G(e.render), !0);
-  }), Qt = (e) => K(`brand_${e}`, async () => {
-    const o = await Xe({
+    if (!e?.ok || !e.path) throw new Error(e?.error || r("projects.pick_unavailable"));
+    await w("/api/render-settings/save", { job_workspace: t(u), render: Mt() });
+    const s = await w("/api/render-logo/upload", { job_workspace: t(u), image_path: e.path });
+    _(U, X(s.render), !0);
+  }), ya = () => C("brand_logo_rm", async () => {
+    const e = await w("/api/render-logo/remove", { job_workspace: t(u) });
+    _(U, X(e.render), !0);
+  }), de = (e) => C(`brand_${e}`, async () => {
+    const s = await sa({
       filters: ["Video files (*.mp4;*.mov;*.mkv;*.webm)", "All files (*.*)"]
     });
-    if (o?.cancelled) return;
-    if (!o?.ok || !o.path) throw new Error(o?.error || i("projects.pick_unavailable"));
-    await w("/api/render-settings/save", { job_workspace: t(g), render: Nt() });
-    const n = await w(`/api/render-${e}/upload`, { job_workspace: t(g), clip_path: o.path });
-    p(O, G(n.render), !0);
-  }), Gt = (e) => K(`brand_${e}_rm`, async () => {
-    const o = await w(`/api/render-${e}/remove`, { job_workspace: t(g) });
-    p(O, G(o.render), !0);
-  }), na = () => K("run", async () => {
-    if (!t(g) || !t(z).length) throw new Error(i("projects.no_videos"));
-    p(ot, !0);
+    if (s?.cancelled) return;
+    if (!s?.ok || !s.path) throw new Error(s?.error || r("projects.pick_unavailable"));
+    await w("/api/render-settings/save", { job_workspace: t(u), render: Mt() });
+    const n = await w(`/api/render-${e}/upload`, { job_workspace: t(u), clip_path: s.path });
+    _(U, X(n.render), !0);
+  }), _e = (e) => C(`brand_${e}_rm`, async () => {
+    const s = await w(`/api/render-${e}/remove`, { job_workspace: t(u) });
+    _(U, X(s.render), !0);
+  }), $a = () => C("run", async () => {
+    if (!t(u) || !t(q).length) throw new Error(r("projects.no_videos"));
+    _(ct, !0);
     try {
-      await w("/api/run-project", { project_root: t(g), async: !0 }), da();
+      await w("/api/run-project", { project_root: t(u), async: !0 }), ja();
     } catch (e) {
-      throw p(ot, !1), e;
+      throw _(ct, !1), e;
     }
   });
-  function da() {
-    H && clearInterval(H), H = setInterval(
+  function ja() {
+    Y && clearInterval(Y), Y = setInterval(
       async () => {
         try {
-          await bt(), t(z).length && t(z).every((e) => va(t(dt)[e.video_id])) && (p(ot, !1), H && (clearInterval(H), H = null), p(Z, i("projects.done"), !0));
+          await xt(), t(q).length && t(q).every((e) => wa(t(bt)[e.video_id])) && (_(ct, !1), Y && (clearInterval(Y), Y = null), _(J, r("projects.done"), !0));
         } catch {
         }
       },
       3e3
     );
   }
-  function st(e) {
+  function pt(e) {
     return String(e?.current_stage || e?.status || "queued");
   }
-  function va(e) {
-    const o = st(e);
-    return o.includes("rendered") || o.includes("failed");
+  function wa(e) {
+    const s = pt(e);
+    return s.includes("rendered") || s.includes("failed");
   }
-  function _a(e) {
-    const o = st(e);
-    return o.includes("failed") ? "blocked" : o.includes("rendered") ? "completed" : t(ot) ? "running" : "queued";
+  function ka(e) {
+    const s = pt(e);
+    return s.includes("failed") ? "blocked" : s.includes("rendered") ? "completed" : t(ct) ? "running" : "queued";
   }
-  function ca(e) {
-    const o = String(e?.workspace || "");
-    return o ? `/media?${new URLSearchParams({
-      workspace: o,
+  function Pa(e) {
+    const s = String(e?.workspace || "");
+    return s ? `/media?${new URLSearchParams({
+      workspace: s,
       rel: "artifacts/render/final.mp4",
       v: String(Date.now())
     }).toString()}` : "";
   }
-  const pa = h(() => t(z).filter((e) => st(t(dt)[e.video_id]).includes("rendered")).length), ua = h(() => t(z).filter((e) => st(t(dt)[e.video_id]).includes("failed")).length), d = h(() => t(O) || G({})), St = (e) => (e || "").split(/[\\/]/).pop();
-  var Ht = Jr(), Jt = a(Ht);
+  const Aa = y(() => t(q).filter((e) => pt(t(bt)[e.video_id]).includes("rendered")).length), Ba = y(() => t(q).filter((e) => pt(t(bt)[e.video_id]).includes("failed")).length), d = y(() => t(U) || X({})), Ut = (e) => (e || "").split(/[\\/]/).pop();
+  var ve = ai(), ce = a(ve);
   {
-    var ga = (e) => {
-      var o = Rr(), n = r(a(o)), b = a(n);
-      u(() => s(b, t(ft))), _(e, o);
+    var Na = (e) => {
+      var s = Qr(), n = i(a(s)), j = a(n);
+      p(() => o(j, t(At))), c(e, s);
     };
-    U(Jt, (e) => {
-      t(ft) && e(ga);
+    H(ce, (e) => {
+      t(At) && e(Na);
     });
   }
-  var Wt = r(Jt, 2);
+  var pe = i(ce, 2);
   {
-    var ma = (e) => {
-      var o = Vr(), n = a(o);
-      u(() => s(n, t(Z))), _(e, o);
+    var Sa = (e) => {
+      var s = Gr(), n = a(s);
+      p(() => o(n, t(J))), c(e, s);
     };
-    U(Wt, (e) => {
-      t(Z) && e(ma);
+    H(pe, (e) => {
+      t(J) && e(Sa);
     });
   }
-  var Xt = r(Wt, 2), Yt = a(Xt), fa = a(Yt), Zt = a(fa), ba = a(Zt), ha = r(Zt), xa = a(ha), ya = r(Yt, 2), te = a(ya), ee = a(te), ae = a(ee), $a = a(ae), tt = r(ae, 2), zt = a(tt);
-  zt.value = zt.__value = "edge_tts";
-  var re = r(zt);
-  re.value = re.__value = "azure_tts";
-  var ie;
-  gt(tt);
-  var oe = r(ee, 2), se = a(oe), ja = a(se), et = r(se, 2), ht = a(et), wa = a(ht);
-  ht.value = ht.__value = "";
-  var ka = r(ht);
-  Ye(ka, 17, () => t(Tt), Fr, (e, o) => {
-    var n = qr(), b = a(n), $ = {};
-    u(() => {
-      s(b, t(o).short_name || t(o).label || t(o).voice_id), $ !== ($ = t(o).voice_id) && (n.value = (n.__value = t(o).voice_id) ?? "");
-    }), _(e, n);
+  var ue = i(pe, 2), ge = a(ue), Ea = a(ge), me = a(Ea), za = a(me), Fa = i(me), Ca = a(Fa), Ia = i(ge, 2), fe = a(Ia), he = a(fe), be = a(he), La = a(be), ot = i(be, 2), Kt = a(ot);
+  Kt.value = Kt.__value = "edge_tts";
+  var xe = i(Kt);
+  xe.value = xe.__value = "azure_tts";
+  var ye;
+  ft(ot);
+  var $e = i(he, 2), je = a($e), Oa = a(je), st = i(je, 2), Nt = a(st), qa = a(Nt);
+  Nt.value = Nt.__value = "";
+  var Ra = i(Nt);
+  oe(Ra, 17, () => t(le), la, (e, s) => {
+    var n = da(), j = a(n), B = {};
+    p(() => {
+      o(j, t(s).short_name || t(s).label || t(s).voice_id), B !== (B = t(s).voice_id) && (n.value = (n.__value = t(s).voice_id) ?? "");
+    }), c(e, n);
   });
-  var le;
-  gt(et);
-  var Pa = r(oe, 2), ne = a(Pa), Ba = a(ne), at = r(ne, 2), xt = a(at), Aa = a(xt);
-  xt.value = xt.__value = "replace_original_speech";
-  var yt = r(xt), Na = a(yt);
-  yt.value = yt.__value = "duck_original_speech";
-  var Et = r(yt), Sa = a(Et);
-  Et.value = Et.__value = "keep_music_replace_voice";
-  var de;
-  gt(at);
-  var za = r(te, 2);
+  var we;
+  ft(st);
+  var Va = i($e, 2), ke = a(Va), Da = a(ke), lt = i(ke, 2), St = a(lt), Ma = a(St);
+  St.value = St.__value = "replace_original_speech";
+  var Et = i(St), Ua = a(Et);
+  Et.value = Et.__value = "duck_original_speech";
+  var Tt = i(Et), Ka = a(Tt);
+  Tt.value = Tt.__value = "keep_music_replace_voice";
+  var Pe;
+  ft(lt);
+  var Ta = i(fe, 2);
   {
-    var Ea = (e) => {
-      var o = Dr(), n = Ut(o), b = a(n), $ = r(b, 2);
+    var Qa = (e) => {
+      var s = Hr(), n = re(s), j = a(n), B = i(j, 2);
       {
-        let F = h(E);
-        L($, {
+        let V = y(S);
+        F(B, {
           variant: "primary",
           get disabled() {
-            return t(F);
+            return t(V);
           },
-          onclick: aa,
-          children: (Q, $t) => {
-            var j = P();
-            u((B) => s(j, B), [() => i("projects.create")]), _(Q, j);
+          onclick: ma,
+          children: (T, zt) => {
+            var tt = A();
+            p((I) => o(tt, I), [() => r("projects.create")]), c(T, tt);
           },
           $$slots: { default: !0 }
         });
       }
-      var T = r(n, 2), J = a(T);
-      u(
-        (F, Q) => {
-          We(b, "placeholder", F), s(J, Q);
+      var W = i(n, 2), Z = a(W);
+      p(
+        (V, T) => {
+          ie(j, "placeholder", V), o(Z, T);
         },
         [
-          () => i("projects.name_placeholder"),
-          () => i("projects.create_hint")
+          () => r("projects.name_placeholder"),
+          () => r("projects.create_hint")
         ]
-      ), Cr(b, () => t(Bt), (F) => p(Bt, F)), _(e, o);
-    }, Fa = (e) => {
-      var o = Mr(), n = Ut(o), b = a(n), $ = r(n, 2), T = a($);
+      ), na(j, () => t(Rt), (V) => _(Rt, V)), c(e, s);
+    }, Ga = (e) => {
+      var s = Jr(), n = re(s), j = a(n), B = i(n, 2), W = a(B);
       {
-        let j = h(E);
-        L(T, {
+        let f = y(S);
+        F(W, {
           variant: "secondary",
           get disabled() {
-            return t(j);
+            return t(f);
           },
-          onclick: ra,
-          children: (B, vt) => {
-            var V = P();
-            u((A) => s(V, A), [() => i("projects.add_videos")]), _(B, V);
+          onclick: fa,
+          children: (b, N) => {
+            var m = A();
+            p(($) => o(m, $), [() => r("projects.add_videos")]), c(b, m);
           },
           $$slots: { default: !0 }
         });
       }
-      var J = r(T, 2);
+      var Z = i(W, 2);
       {
-        let j = h(() => E() || !t(z).length);
-        L(J, {
+        let f = y(() => S() || !t(q).length);
+        F(Z, {
           variant: "strong",
           get disabled() {
-            return t(j);
+            return t(f);
           },
-          onclick: na,
-          children: (B, vt) => {
-            var V = P();
-            u((A) => s(V, A), [
-              () => t(ot) ? i("projects.running") : i("projects.run_all")
-            ]), _(B, V);
+          onclick: $a,
+          children: (b, N) => {
+            var m = A();
+            p(($) => o(m, $), [
+              () => t(ct) ? r("projects.running") : r("projects.run_all")
+            ]), c(b, m);
           },
           $$slots: { default: !0 }
         });
       }
-      var F = r(J, 2);
+      var V = i(Z, 2);
       {
-        let j = h(E);
-        L(F, {
+        let f = y(S);
+        F(V, {
           get disabled() {
-            return t(j);
+            return t(f);
           },
-          onclick: () => K("refresh", bt),
-          children: (B, vt) => {
-            var V = P();
-            u((A) => s(V, A), [() => i("projects.refresh")]), _(B, V);
+          onclick: () => C("refresh", xt),
+          children: (b, N) => {
+            var m = A();
+            p(($) => o(m, $), [() => r("projects.refresh")]), c(b, m);
           },
           $$slots: { default: !0 }
         });
       }
-      var Q = r($, 2), $t = a(Q);
-      u(
-        (j, B) => {
-          s(b, `${j ?? ""}: ${t(g) ?? ""}`), s($t, B);
+      var T = i(B, 2), zt = a(T), tt = i(T, 2), I = a(tt), nt = a(I), Qt = a(nt);
+      nt.value = nt.__value = "";
+      var et = i(nt);
+      oe(et, 17, () => t(ne), la, (f, b) => {
+        var N = da(), m = a(N), $ = {};
+        p(() => {
+          o(m, t(b).name), $ !== ($ = t(b).id) && (N.value = (N.__value = t(b).id) ?? "");
+        }), c(f, N);
+      });
+      var dt;
+      ft(I);
+      var Ft = i(I, 2);
+      {
+        let f = y(() => S() || !t(R));
+        F(Ft, {
+          get disabled() {
+            return t(f);
+          },
+          onclick: pa,
+          children: (b, N) => {
+            var m = A();
+            p(($) => o(m, $), [() => r("projects.preset_apply")]), c(b, m);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var yt = i(Ft, 2);
+      {
+        let f = y(() => S() || !t(R));
+        F(yt, {
+          get disabled() {
+            return t(f);
+          },
+          onclick: ua,
+          children: (b, N) => {
+            var m = A();
+            p(($) => o(m, $), [() => r("projects.preset_delete")]), c(b, m);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var Ct = i(tt, 2), ut = a(Ct), It = i(ut, 2);
+      {
+        let f = y(S);
+        F(It, {
+          get disabled() {
+            return t(f);
+          },
+          onclick: ca,
+          children: (b, N) => {
+            var m = A();
+            p(($) => o(m, $), [() => r("projects.preset_save")]), c(b, m);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var Lt = i(Ct, 2), Gt = a(Lt);
+      p(
+        (f, b, N, m, $) => {
+          o(j, `${f ?? ""}: ${t(u) ?? ""}`), o(zt, b), o(Qt, N), dt !== (dt = t(R)) && (I.value = (I.__value = t(R)) ?? "", ht(I, t(R))), ie(ut, "placeholder", m), o(Gt, $);
         },
         [
-          () => i("projects.open_label"),
-          () => i("projects.cfg_locked_hint")
+          () => r("projects.open_label"),
+          () => r("projects.cfg_locked_hint"),
+          () => r("projects.preset_select"),
+          () => r("projects.preset_name_placeholder"),
+          () => r("projects.preset_hint")
         ]
-      ), _(e, o);
+      ), z("change", I, (f) => _(R, f.target.value, !0)), na(ut, () => t(Bt), (f) => _(Bt, f)), c(e, s);
     };
-    U(za, (e) => {
-      t(g) ? e(Fa, -1) : e(Ea);
+    H(Ta, (e) => {
+      t(u) ? e(Ga, -1) : e(Qa);
     });
   }
-  var Ca = r(Xt, 2);
+  var Ha = i(ue, 2);
   {
-    var Ia = (e) => {
-      var o = Hr(), n = Ut(o), b = a(n), $ = a(b), T = a($), J = a(T), F = r(T), Q = a(F), $t = r(b, 2), j = a($t), B = a(j), vt = a(B), V = a(vt), A = r(vt, 2), jt = a(A), La = a(jt);
-      jt.value = jt.__value = "16:9";
-      var Ft = r(jt), Oa = a(Ft);
-      Ft.value = Ft.__value = "9:16";
-      var ve;
-      gt(A);
-      var _e = r(B, 2), ce = a(_e), Ra = a(ce), pe = r(ce, 2), ue = r(_e, 2), ge = a(ue), Va = a(ge), me = r(ge, 2), qa = r(ue, 2);
-      {
-        var Da = (l) => {
-          var c = Ur(), f = a(c), m = a(f), v = r(f, 2), x = a(v), W = a(x);
-          x.value = x.__value = "top-left";
-          var q = r(x), _t = a(q);
-          q.value = q.__value = "top-right";
-          var X = r(q), ct = a(X);
-          X.value = X.__value = "bottom-left";
-          var C = r(X), I = a(C);
-          C.value = C.__value = "bottom-right";
-          var D;
-          gt(v), u(
-            (Y, lt, nt, pt, ut) => {
-              s(m, Y), s(W, lt), s(_t, nt), s(ct, pt), s(I, ut), D !== (D = t(d).logo_position) && (v.value = (v.__value = t(d).logo_position) ?? "", mt(v, t(d).logo_position));
-            },
-            [
-              () => i("settings.render_layout.logo_position"),
-              () => i("settings.render_layout.pos_top_left"),
-              () => i("settings.render_layout.pos_top_right"),
-              () => i("settings.render_layout.pos_bottom_left"),
-              () => i("settings.render_layout.pos_bottom_right")
-            ]
-          ), k("change", v, (Y) => R({ logo_position: Y.target.value })), _(l, c);
-        };
-        U(qa, (l) => {
-          t(d).logo_path && l(Da);
-        });
-      }
-      var fe = r(j, 2), be = a(fe), he = a(be), Ma = a(he), xe = r(he, 2), Ua = a(xe), Ka = r(xe, 2), ye = a(Ka);
-      {
-        let l = h(E);
-        L(ye, {
-          variant: "secondary",
-          get disabled() {
-            return t(l);
-          },
-          onclick: sa,
-          children: (c, f) => {
-            var m = P();
-            u((v) => s(m, v), [() => i("settings.render_layout.upload_logo")]), _(c, m);
-          },
-          $$slots: { default: !0 }
-        });
-      }
-      var Ta = r(ye, 2);
-      {
-        var Qa = (l) => {
-          {
-            let c = h(E);
-            L(l, {
-              get disabled() {
-                return t(c);
-              },
-              onclick: la,
-              children: (f, m) => {
-                var v = P();
-                u((x) => s(v, x), [() => i("settings.render_layout.remove_logo")]), _(f, v);
-              },
-              $$slots: { default: !0 }
-            });
-          }
-        };
-        U(Ta, (l) => {
-          t(d).logo_path && l(Qa);
-        });
-      }
-      var $e = r(be, 2), je = a($e), Ga = a(je), we = r(je, 2), Ha = a(we), Ja = r(we, 2), ke = a(Ja);
-      {
-        let l = h(E);
-        L(ke, {
-          variant: "secondary",
-          get disabled() {
-            return t(l);
-          },
-          onclick: () => Qt("intro"),
-          children: (c, f) => {
-            var m = P();
-            u((v) => s(m, v), [() => i("settings.render_layout.upload_intro")]), _(c, m);
-          },
-          $$slots: { default: !0 }
-        });
-      }
-      var Wa = r(ke, 2);
+    var Ja = (e) => {
+      var s = ei(), n = re(s), j = a(n), B = a(j), W = a(B), Z = a(W), V = i(W), T = a(V), zt = i(j, 2), tt = a(zt), I = a(tt), nt = a(I), Qt = a(nt), et = i(nt, 2), dt = a(et), Ft = a(dt);
+      dt.value = dt.__value = "16:9";
+      var yt = i(dt), Ct = a(yt);
+      yt.value = yt.__value = "9:16";
+      var ut;
+      ft(et);
+      var It = i(I, 2), Lt = a(It), Gt = a(Lt), f = i(Lt, 2), b = i(It, 2), N = a(b), m = a(N), $ = i(N, 2), Wa = i(b, 2);
       {
         var Xa = (l) => {
-          {
-            let c = h(E);
-            L(l, {
-              get disabled() {
-                return t(c);
-              },
-              onclick: () => Gt("intro"),
-              children: (f, m) => {
-                var v = P();
-                u((x) => s(v, x), [() => i("settings.render_layout.remove_clip")]), _(f, v);
-              },
-              $$slots: { default: !0 }
-            });
-          }
+          var g = Wr(), x = a(g), h = a(x), v = i(x, 2), P = a(v), at = a(P);
+          P.value = P.__value = "top-left";
+          var Q = i(P), $t = a(Q);
+          Q.value = Q.__value = "top-right";
+          var rt = i(Q), jt = a(rt);
+          rt.value = rt.__value = "bottom-left";
+          var D = i(rt), M = a(D);
+          D.value = D.__value = "bottom-right";
+          var G;
+          ft(v), p(
+            (it, gt, mt, wt, kt) => {
+              o(h, it), o(at, gt), o($t, mt), o(jt, wt), o(M, kt), G !== (G = t(d).logo_position) && (v.value = (v.__value = t(d).logo_position) ?? "", ht(v, t(d).logo_position));
+            },
+            [
+              () => r("settings.render_layout.logo_position"),
+              () => r("settings.render_layout.pos_top_left"),
+              () => r("settings.render_layout.pos_top_right"),
+              () => r("settings.render_layout.pos_bottom_left"),
+              () => r("settings.render_layout.pos_bottom_right")
+            ]
+          ), z("change", v, (it) => K({ logo_position: it.target.value })), c(l, g);
         };
-        U(Wa, (l) => {
-          t(d).intro_clip_path && l(Xa);
+        H(Wa, (l) => {
+          t(d).logo_path && l(Xa);
         });
       }
-      var Ya = r($e, 2), Pe = a(Ya), Za = a(Pe), Be = r(Pe, 2), tr = a(Be), er = r(Be, 2), Ae = a(er);
+      var Ae = i(tt, 2), Be = a(Ae), Ne = a(Be), Ya = a(Ne), Se = i(Ne, 2), Za = a(Se), tr = i(Se, 2), Ee = a(tr);
       {
-        let l = h(E);
-        L(Ae, {
+        let l = y(S);
+        F(Ee, {
           variant: "secondary",
           get disabled() {
             return t(l);
           },
-          onclick: () => Qt("outro"),
-          children: (c, f) => {
-            var m = P();
-            u((v) => s(m, v), [() => i("settings.render_layout.upload_outro")]), _(c, m);
+          onclick: xa,
+          children: (g, x) => {
+            var h = A();
+            p((v) => o(h, v), [() => r("settings.render_layout.upload_logo")]), c(g, h);
           },
           $$slots: { default: !0 }
         });
       }
-      var ar = r(Ae, 2);
+      var er = i(Ee, 2);
       {
-        var rr = (l) => {
+        var ar = (l) => {
           {
-            let c = h(E);
-            L(l, {
+            let g = y(S);
+            F(l, {
               get disabled() {
-                return t(c);
+                return t(g);
               },
-              onclick: () => Gt("outro"),
-              children: (f, m) => {
-                var v = P();
-                u((x) => s(v, x), [() => i("settings.render_layout.remove_clip")]), _(f, v);
+              onclick: ya,
+              children: (x, h) => {
+                var v = A();
+                p((P) => o(v, P), [() => r("settings.render_layout.remove_logo")]), c(x, v);
               },
               $$slots: { default: !0 }
             });
           }
         };
-        U(ar, (l) => {
-          t(d).outro_clip_path && l(rr);
+        H(er, (l) => {
+          t(d).logo_path && l(ar);
         });
       }
-      var Ne = r(fe, 2), Se = a(Ne), ir = a(Se), or = r(Se), sr = a(or), ze = r(Ne, 2), Ct = a(ze), lr = r(Ct, 1, !0), Ee = r(ze, 2), Fe = a(Ee), Ce = a(Fe), nr = a(Ce), Ie = r(Ce, 2), Le = r(Fe, 2), Oe = a(Le), dr = a(Oe), Re = r(Oe, 2), Ve = r(Le, 2), qe = a(Ve), vr = a(qe), De = r(qe, 2), Me = r(Ve, 2), Ue = a(Me), _r = a(Ue), Ke = r(Ue, 2), cr = r(Me, 2), Te = a(cr), pr = a(Te), Qe = r(Te, 2), ur = r(Ee, 2), gr = a(ur);
+      var ze = i(Be, 2), Fe = a(ze), rr = a(Fe), Ce = i(Fe, 2), ir = a(Ce), or = i(Ce, 2), Ie = a(or);
       {
-        let l = h(E);
-        L(gr, {
+        let l = y(S);
+        F(Ie, {
+          variant: "secondary",
+          get disabled() {
+            return t(l);
+          },
+          onclick: () => de("intro"),
+          children: (g, x) => {
+            var h = A();
+            p((v) => o(h, v), [() => r("settings.render_layout.upload_intro")]), c(g, h);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var sr = i(Ie, 2);
+      {
+        var lr = (l) => {
+          {
+            let g = y(S);
+            F(l, {
+              get disabled() {
+                return t(g);
+              },
+              onclick: () => _e("intro"),
+              children: (x, h) => {
+                var v = A();
+                p((P) => o(v, P), [() => r("settings.render_layout.remove_clip")]), c(x, v);
+              },
+              $$slots: { default: !0 }
+            });
+          }
+        };
+        H(sr, (l) => {
+          t(d).intro_clip_path && l(lr);
+        });
+      }
+      var nr = i(ze, 2), Le = a(nr), dr = a(Le), Oe = i(Le, 2), _r = a(Oe), vr = i(Oe, 2), qe = a(vr);
+      {
+        let l = y(S);
+        F(qe, {
+          variant: "secondary",
+          get disabled() {
+            return t(l);
+          },
+          onclick: () => de("outro"),
+          children: (g, x) => {
+            var h = A();
+            p((v) => o(h, v), [() => r("settings.render_layout.upload_outro")]), c(g, h);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var cr = i(qe, 2);
+      {
+        var pr = (l) => {
+          {
+            let g = y(S);
+            F(l, {
+              get disabled() {
+                return t(g);
+              },
+              onclick: () => _e("outro"),
+              children: (x, h) => {
+                var v = A();
+                p((P) => o(v, P), [() => r("settings.render_layout.remove_clip")]), c(x, v);
+              },
+              $$slots: { default: !0 }
+            });
+          }
+        };
+        H(cr, (l) => {
+          t(d).outro_clip_path && l(pr);
+        });
+      }
+      var Re = i(Ae, 2), Ve = a(Re), ur = a(Ve), gr = i(Ve), mr = a(gr), De = i(Re, 2), Ht = a(De), fr = i(Ht, 1, !0), Me = i(De, 2), Ue = a(Me), Ke = a(Ue), hr = a(Ke), Te = i(Ke, 2), Qe = i(Ue, 2), Ge = a(Qe), br = a(Ge), He = i(Ge, 2), Je = i(Qe, 2), We = a(Je), xr = a(We), Xe = i(We, 2), Ye = i(Je, 2), Ze = a(Ye), yr = a(Ze), ta = i(Ze, 2), $r = i(Ye, 2), ea = a($r), jr = a(ea), aa = i(ea, 2), wr = i(Me, 2), kr = a(wr);
+      {
+        let l = y(S);
+        F(kr, {
           variant: "primary",
           get disabled() {
             return t(l);
           },
-          onclick: oa,
-          children: (c, f) => {
-            var m = P();
-            u((v) => s(m, v), [() => i("settings.render_layout.save")]), _(c, m);
+          onclick: ba,
+          children: (g, x) => {
+            var h = A();
+            p((v) => o(h, v), [() => r("settings.render_layout.save")]), c(g, h);
           },
           $$slots: { default: !0 }
         });
       }
-      var mr = r(n, 2), Ge = a(mr), fr = a(Ge), He = a(fr), br = a(He), hr = r(He, 2), xr = a(hr), yr = r(Ge, 2), $r = a(yr);
+      var Pr = i(n, 2), ra = a(Pr), Ar = a(ra), ia = a(Ar), Br = a(ia), Nr = i(ia, 2), Sr = a(Nr), Er = i(ra, 2), zr = a(Er);
       {
-        var jr = (l) => {
-          var c = Kr(), f = r(a(c)), m = a(f), v = r(f), x = a(v);
-          u(
-            (W, q) => {
-              s(m, W), s(x, q);
+        var Fr = (l) => {
+          var g = Xr(), x = i(a(g)), h = a(x), v = i(x), P = a(v);
+          p(
+            (at, Q) => {
+              o(h, at), o(P, Q);
             },
             [
-              () => i("projects.empty_title"),
-              () => i("projects.empty_body")
+              () => r("projects.empty_title"),
+              () => r("projects.empty_body")
             ]
-          ), _(l, c);
-        }, wr = (l) => {
-          var c = Gr(), f = a(c), m = a(f), v = a(m), x = a(v), W = r(v), q = a(W), _t = r(W), X = a(_t), ct = r(f);
-          Ye(ct, 21, () => t(z), (C) => C.video_id, (C, I) => {
-            const D = h(() => t(dt)[t(I).video_id]);
-            var Y = Qr(), lt = a(Y), nt = a(lt), pt = a(nt), ut = r(nt), It = a(ut), wt = r(lt), Lt = a(wt);
+          ), c(l, g);
+        }, Cr = (l) => {
+          var g = ti(), x = a(g), h = a(x), v = a(h), P = a(v), at = i(v), Q = a(at), $t = i(at), rt = a($t), jt = i(x);
+          oe(jt, 21, () => t(q), (D) => D.video_id, (D, M) => {
+            const G = y(() => t(bt)[t(M).video_id]);
+            var it = Zr(), gt = a(it), mt = a(gt), wt = a(mt), kt = i(mt), Jt = a(kt), Ot = i(gt), Wt = a(Ot);
             {
-              let N = h(() => _a(t(D)));
-              Lr(Lt, {
+              let L = y(() => ka(t(G)));
+              Kr(Wt, {
                 get kind() {
-                  return t(N);
+                  return t(L);
                 },
-                children: (rt, Je) => {
-                  var kt = P();
-                  u((Mt) => s(kt, Mt), [() => st(t(D))]), _(rt, kt);
+                children: (_t, oa) => {
+                  var qt = A();
+                  p((ae) => o(qt, ae), [() => pt(t(G))]), c(_t, qt);
                 },
                 $$slots: { default: !0 }
               });
             }
-            var Ot = r(wt), Rt = a(Ot);
+            var Xt = i(Ot), Yt = a(Xt);
             {
-              var Vt = (N) => {
-                var rt = Tr(), Je = a(rt);
-                u(
-                  (kt, Mt) => {
-                    We(rt, "href", kt), s(Je, Mt);
+              var Zt = (L) => {
+                var _t = Yr(), oa = a(_t);
+                p(
+                  (qt, ae) => {
+                    ie(_t, "href", qt), o(oa, ae);
                   },
-                  [() => ca(t(I)), () => i("projects.open_output")]
-                ), _(N, rt);
-              }, qt = h(() => st(t(D)).includes("rendered")), Dt = (N) => {
-                var rt = P("—");
-                _(N, rt);
+                  [() => Pa(t(M)), () => r("projects.open_output")]
+                ), c(L, _t);
+              }, te = y(() => pt(t(G)).includes("rendered")), ee = (L) => {
+                var _t = A("—");
+                c(L, _t);
               };
-              U(Rt, (N) => {
-                t(qt) ? N(Vt) : N(Dt, -1);
+              H(Yt, (L) => {
+                t(te) ? L(Zt) : L(ee, -1);
               });
             }
-            u(
-              (N) => {
-                s(pt, t(I).video_id), s(It, `${N ?? ""}${t(I).is_long ? " · long" : ""}`);
+            p(
+              (L) => {
+                o(wt, t(M).video_id), o(Jt, `${L ?? ""}${t(M).is_long ? " · long" : ""}`);
               },
-              [() => (t(I).source_path || "").split(/[\\/]/).pop()]
-            ), _(C, Y);
-          }), u(
-            (C, I, D) => {
-              s(x, C), s(q, I), s(X, D);
+              [() => (t(M).source_path || "").split(/[\\/]/).pop()]
+            ), c(D, it);
+          }), p(
+            (D, M, G) => {
+              o(P, D), o(Q, M), o(rt, G);
             },
             [
-              () => i("projects.col_video"),
-              () => i("projects.col_status"),
-              () => i("projects.col_output")
+              () => r("projects.col_video"),
+              () => r("projects.col_status"),
+              () => r("projects.col_output")
             ]
-          ), _(l, c);
+          ), c(l, g);
         };
-        U($r, (l) => {
-          t(z).length ? l(wr, -1) : l(jr);
+        H(zr, (l) => {
+          t(q).length ? l(Cr, -1) : l(Fr);
         });
       }
-      u(
-        (l, c, f, m, v, x, W, q, _t, X, ct, C, I, D, Y, lt, nt, pt, ut, It, wt, Lt, Ot, Rt, Vt, qt, Dt, N) => {
-          s(J, l), s(Q, c), s(V, f), s(La, m), s(Oa, v), ve !== (ve = t(d).aspect_ratio) && (A.value = (A.__value = t(d).aspect_ratio) ?? "", mt(A, t(d).aspect_ratio)), s(Ra, `${x ?? ""} (${t(d).head_trim_sec ?? ""}s)`), it(pe, t(d).head_trim_sec), s(Va, `${W ?? ""} (${t(d).tail_trim_sec ?? ""}s)`), it(me, t(d).tail_trim_sec), s(Ma, q), s(Ua, _t), s(Ga, X), s(Ha, ct), s(Za, C), s(tr, I), s(ir, D), s(sr, Y), Nr(Ct, t(d).transform_hflip), s(lr, lt), s(nr, `${nt ?? ""} (${pt ?? ""}x)`), it(Ie, t(d).transform_speed), s(dr, `${ut ?? ""} (${It ?? ""}%)`), it(Re, t(d).transform_zoom), s(vr, `${wt ?? ""} (${Lt ?? ""})`), it(De, t(d).transform_brightness), s(_r, `${Ot ?? ""} (${Rt ?? ""})`), it(Ke, t(d).transform_contrast), s(pr, `${Vt ?? ""} (${qt ?? ""})`), it(Qe, t(d).transform_saturation), s(br, Dt), s(xr, N);
+      p(
+        (l, g, x, h, v, P, at, Q, $t, rt, jt, D, M, G, it, gt, mt, wt, kt, Jt, Ot, Wt, Xt, Yt, Zt, te, ee, L) => {
+          o(Z, l), o(T, g), o(Qt, x), o(Ft, h), o(Ct, v), ut !== (ut = t(d).aspect_ratio) && (et.value = (et.__value = t(d).aspect_ratio) ?? "", ht(et, t(d).aspect_ratio)), o(Gt, `${P ?? ""} (${t(d).head_trim_sec ?? ""}s)`), vt(f, t(d).head_trim_sec), o(m, `${at ?? ""} (${t(d).tail_trim_sec ?? ""}s)`), vt($, t(d).tail_trim_sec), o(Ya, Q), o(Za, $t), o(rr, rt), o(ir, jt), o(dr, D), o(_r, M), o(ur, G), o(mr, it), Rr(Ht, t(d).transform_hflip), o(fr, gt), o(hr, `${mt ?? ""} (${wt ?? ""}x)`), vt(Te, t(d).transform_speed), o(br, `${kt ?? ""} (${Jt ?? ""}%)`), vt(He, t(d).transform_zoom), o(xr, `${Ot ?? ""} (${Wt ?? ""})`), vt(Xe, t(d).transform_brightness), o(yr, `${Xt ?? ""} (${Yt ?? ""})`), vt(ta, t(d).transform_contrast), o(jr, `${Zt ?? ""} (${te ?? ""})`), vt(aa, t(d).transform_saturation), o(Br, ee), o(Sr, L);
         },
         [
-          () => i("projects.brand_title"),
-          () => i("projects.brand_sub"),
-          () => i("settings.render_layout.aspect_ratio"),
-          () => i("settings.render_layout.aspect_16_9"),
-          () => i("settings.render_layout.aspect_9_16"),
-          () => i("settings.render_layout.head_trim"),
-          () => i("settings.render_layout.tail_trim"),
-          () => i("settings.render_layout.logo_title"),
-          () => t(d).logo_path ? St(t(d).logo_original_filename || t(d).logo_path) : i("settings.render_layout.no_logo"),
-          () => i("settings.render_layout.intro_clip"),
-          () => t(d).intro_clip_path ? St(t(d).intro_original_filename || t(d).intro_clip_path) : i("settings.render_layout.no_clip"),
-          () => i("settings.render_layout.outro_clip"),
-          () => t(d).outro_clip_path ? St(t(d).outro_original_filename || t(d).outro_clip_path) : i("settings.render_layout.no_clip"),
-          () => i("settings.render_layout.tx_title"),
-          () => i("settings.render_layout.tx_sub"),
-          () => i("settings.render_layout.tx_hflip"),
-          () => i("settings.render_layout.tx_speed"),
+          () => r("projects.brand_title"),
+          () => r("projects.brand_sub"),
+          () => r("settings.render_layout.aspect_ratio"),
+          () => r("settings.render_layout.aspect_16_9"),
+          () => r("settings.render_layout.aspect_9_16"),
+          () => r("settings.render_layout.head_trim"),
+          () => r("settings.render_layout.tail_trim"),
+          () => r("settings.render_layout.logo_title"),
+          () => t(d).logo_path ? Ut(t(d).logo_original_filename || t(d).logo_path) : r("settings.render_layout.no_logo"),
+          () => r("settings.render_layout.intro_clip"),
+          () => t(d).intro_clip_path ? Ut(t(d).intro_original_filename || t(d).intro_clip_path) : r("settings.render_layout.no_clip"),
+          () => r("settings.render_layout.outro_clip"),
+          () => t(d).outro_clip_path ? Ut(t(d).outro_original_filename || t(d).outro_clip_path) : r("settings.render_layout.no_clip"),
+          () => r("settings.render_layout.tx_title"),
+          () => r("settings.render_layout.tx_sub"),
+          () => r("settings.render_layout.tx_hflip"),
+          () => r("settings.render_layout.tx_speed"),
           () => t(d).transform_speed.toFixed(2),
-          () => i("settings.render_layout.tx_zoom"),
+          () => r("settings.render_layout.tx_zoom"),
           () => Math.round((t(d).transform_zoom - 1) * 100),
-          () => i("settings.render_layout.tx_brightness"),
+          () => r("settings.render_layout.tx_brightness"),
           () => t(d).transform_brightness.toFixed(2),
-          () => i("settings.render_layout.tx_contrast"),
+          () => r("settings.render_layout.tx_contrast"),
           () => t(d).transform_contrast.toFixed(2),
-          () => i("settings.render_layout.tx_saturation"),
+          () => r("settings.render_layout.tx_saturation"),
           () => t(d).transform_saturation.toFixed(2),
-          () => i("projects.videos_title", { count: t(z).length }),
-          () => i("projects.progress_summary", {
-            done: t(pa),
-            failed: t(ua),
-            total: t(z).length
+          () => r("projects.videos_title", { count: t(q).length }),
+          () => r("projects.progress_summary", {
+            done: t(Aa),
+            failed: t(Ba),
+            total: t(q).length
           })
         ]
-      ), k("change", A, (l) => R({ aspect_ratio: l.target.value })), k("change", pe, (l) => R({ head_trim_sec: Number(l.target.value) })), k("change", me, (l) => R({ tail_trim_sec: Number(l.target.value) })), k("change", Ct, (l) => R({ transform_hflip: l.target.checked })), k("input", Ie, (l) => R({ transform_speed: Number(l.target.value) })), k("input", Re, (l) => R({ transform_zoom: Number(l.target.value) })), k("input", De, (l) => R({ transform_brightness: Number(l.target.value) })), k("input", Ke, (l) => R({ transform_contrast: Number(l.target.value) })), k("input", Qe, (l) => R({ transform_saturation: Number(l.target.value) })), _(e, o);
+      ), z("change", et, (l) => K({ aspect_ratio: l.target.value })), z("change", f, (l) => K({ head_trim_sec: Number(l.target.value) })), z("change", $, (l) => K({ tail_trim_sec: Number(l.target.value) })), z("change", Ht, (l) => K({ transform_hflip: l.target.checked })), z("input", Te, (l) => K({ transform_speed: Number(l.target.value) })), z("input", He, (l) => K({ transform_zoom: Number(l.target.value) })), z("input", Xe, (l) => K({ transform_brightness: Number(l.target.value) })), z("input", ta, (l) => K({ transform_contrast: Number(l.target.value) })), z("input", aa, (l) => K({ transform_saturation: Number(l.target.value) })), c(e, s);
     };
-    U(Ca, (e) => {
-      t(g) && e(Ia);
+    H(Ha, (e) => {
+      t(u) && e(Ja);
     });
   }
-  u(
-    (e, o, n, b, $, T, J, F, Q) => {
-      s(ba, e), s(xa, o), s($a, n), tt.disabled = !!t(g), ie !== (ie = y.tts_provider) && (tt.value = (tt.__value = y.tts_provider) ?? "", mt(tt, y.tts_provider)), s(ja, b), et.disabled = !!t(g), s(wa, $), le !== (le = y.tts_voice) && (et.value = (et.__value = y.tts_voice) ?? "", mt(et, y.tts_voice)), s(Ba, T), at.disabled = !!t(g), s(Aa, J), s(Na, F), s(Sa, Q), de !== (de = y.mix_mode) && (at.value = (at.__value = y.mix_mode) ?? "", mt(at, y.mix_mode));
+  p(
+    (e, s, n, j, B, W, Z, V, T) => {
+      o(za, e), o(Ca, s), o(La, n), ot.disabled = !!t(u), ye !== (ye = t(k).tts_provider) && (ot.value = (ot.__value = t(k).tts_provider) ?? "", ht(ot, t(k).tts_provider)), o(Oa, j), st.disabled = !!t(u), o(qa, B), we !== (we = t(k).tts_voice) && (st.value = (st.__value = t(k).tts_voice) ?? "", ht(st, t(k).tts_voice)), o(Da, W), lt.disabled = !!t(u), o(Ma, Z), o(Ua, V), o(Ka, T), Pe !== (Pe = t(k).mix_mode) && (lt.value = (lt.__value = t(k).mix_mode) ?? "", ht(lt, t(k).mix_mode));
     },
     [
-      () => i("projects.title"),
-      () => i("projects.sub"),
-      () => i("projects.cfg_provider"),
-      () => i("projects.cfg_voice"),
-      () => i("projects.cfg_voice_default"),
-      () => i("projects.cfg_mix"),
-      () => i("settings.tts.mix_replace"),
-      () => i("settings.tts.mix_duck"),
-      () => i("settings.tts.mix_keep_music")
+      () => r("projects.title"),
+      () => r("projects.sub"),
+      () => r("projects.cfg_provider"),
+      () => r("projects.cfg_voice"),
+      () => r("projects.cfg_voice_default"),
+      () => r("projects.cfg_mix"),
+      () => r("settings.tts.mix_replace"),
+      () => r("settings.tts.mix_duck"),
+      () => r("settings.tts.mix_keep_music")
     ]
-  ), k("change", tt, (e) => y.tts_provider = e.target.value), k("change", et, (e) => y.tts_voice = e.target.value), k("change", at, (e) => y.mix_mode = e.target.value), _(ta, Ht), Ar();
+  ), z("change", ot, (e) => t(k).tts_provider = e.target.value), z("change", st, (e) => t(k).tts_voice = e.target.value), z("change", lt, (e) => t(k).mix_mode = e.target.value), c(va, ve), qr();
 }
-kr(["change", "input"]);
-const Ze = Or(Wr), oi = Ze.mount, si = Ze.unmount;
+Ir(["change", "input"]);
+const _a = Tr(ri), ci = _a.mount, pi = _a.unmount;
 export {
-  oi as mount,
-  si as unmount
+  ci as mount,
+  pi as unmount
 };
 //# sourceMappingURL=projects.js.map

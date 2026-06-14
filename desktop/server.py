@@ -222,6 +222,12 @@ from desktop.server_voice_samples import (  # noqa: E402
     handle_remove_voice_sample,
     handle_upload_voice_sample,
 )
+from desktop.server_presets import (  # noqa: E402
+    handle_presets_apply,
+    handle_presets_delete,
+    handle_presets_list,
+    handle_presets_save,
+)
 from engine.run_tts_stage import DEFAULT_TTS_VOICE  # noqa: E402
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -1907,6 +1913,10 @@ ROUTES: dict[str, Callable[[dict[str, Any]], tuple[int, dict[str, Any]]]] = {
     "/api/save-video-override": handle_save_video_override,
     "/api/get-project": handle_get_project,
     "/api/run-project": handle_run_project,
+    "/api/presets/list": handle_presets_list,
+    "/api/presets/save": handle_presets_save,
+    "/api/presets/apply": handle_presets_apply,
+    "/api/presets/delete": handle_presets_delete,
     "/api/inspect-local-video": handle_inspect_local_video,
     "/api/ocr-test-frame": handle_ocr_test_frame,
     "/api/ocr-diagnostics": handle_ocr_diagnostics,

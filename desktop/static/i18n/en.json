@@ -49,7 +49,17 @@
     "open_output": "Open video",
     "brand_title": "Shared branding (logo · outro · trim)",
     "brand_sub": "Apply logo / intro / outro / head-tail trim to ALL videos in the project at run time. Set it once here.",
-    "brand_saved": "Shared branding saved."
+    "brand_saved": "Shared branding saved.",
+    "preset_select": "— Pick a preset —",
+    "preset_apply": "Apply preset",
+    "preset_delete": "Delete preset",
+    "preset_name_placeholder": "New preset name...",
+    "preset_save": "Save as preset",
+    "preset_hint": "A preset stores voice + mix + branding + transforms to reuse across projects.",
+    "preset_name_required": "Enter a preset name.",
+    "preset_saved": "Preset saved.",
+    "preset_applied": "Preset applied.",
+    "preset_confirm_delete": "Delete this preset?"
   },
   "topbar": {
     "eyebrow": "Dubbing & subtitles",

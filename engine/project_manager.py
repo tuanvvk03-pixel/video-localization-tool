@@ -129,6 +129,22 @@ def _write_state(state: ProjectState) -> None:
     write_json_atomic(path, payload)
 
 
+_SHARED_CONFIG_KEYS = {
+    "translate_backend", "tts_provider", "tts_voice", "mix_mode",
+    "enable_source_cleanup", "enable_translation_qa", "api_key",
+}
+
+
+def set_project_config(project_root: Path, patch: dict[str, Any]) -> dict[str, Any]:
+    """Update shared project config fields (used by preset apply). Unknown keys ignored."""
+    state = load_project(project_root)
+    for k, v in (patch or {}).items():
+        if k in _SHARED_CONFIG_KEYS and v is not None:
+            setattr(state.config, k, v)
+    _write_state(state)
+    return asdict(state.config)
+
+
 def load_project(project_root: Path) -> ProjectState:
     path = _state_path(project_root)
     if not path.is_file():

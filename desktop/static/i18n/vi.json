@@ -49,7 +49,17 @@
     "open_output": "Mở video",
     "brand_title": "Branding chung (logo · outro · cắt)",
     "brand_sub": "Áp logo / intro / outro / cắt đầu-cuối cho TẤT CẢ video trong dự án khi chạy. Đặt một lần ở đây.",
-    "brand_saved": "Đã lưu branding chung."
+    "brand_saved": "Đã lưu branding chung.",
+    "preset_select": "— Chọn preset —",
+    "preset_apply": "Áp preset",
+    "preset_delete": "Xóa preset",
+    "preset_name_placeholder": "Tên preset mới...",
+    "preset_save": "Lưu thành preset",
+    "preset_hint": "Preset lưu giọng + mix + branding + transform để tái dùng cho dự án khác.",
+    "preset_name_required": "Hãy nhập tên preset.",
+    "preset_saved": "Đã lưu preset.",
+    "preset_applied": "Đã áp preset.",
+    "preset_confirm_delete": "Xóa preset này?"
   },
   "topbar": {
     "eyebrow": "Lồng tiếng & phụ đề",

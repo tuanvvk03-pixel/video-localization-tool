@@ -6,6 +6,8 @@
 # Local agent + scratch data (never tracked)
 .claude/
 /Projects/
+# Saved config presets (user data; F3)
+/Presets/
 # Downloaded source videos (multi-GB; never tracked)
 /yt/
 

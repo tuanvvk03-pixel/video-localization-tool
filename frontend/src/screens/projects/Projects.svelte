@@ -20,11 +20,34 @@
   let notice = $state("");
   let errorMsg = $state("");
   let branding = $state<RenderLayout | null>(null);
+  let presets = $state<any[]>([]);
+  let selectedPreset = $state("");
+  let presetSaveName = $state("");
   let pollTimer: ReturnType<typeof setInterval> | null = null;
 
   onDestroy(() => { if (pollTimer) clearInterval(pollTimer); });
 
-  $effect(() => { void loadVoices(); });
+  $effect(() => { void loadVoices(); void loadPresets(); });
+  async function loadPresets() {
+    try { const d = await post<any>("/api/presets/list", {}); presets = Array.isArray(d.presets) ? d.presets : []; }
+    catch { /* non-fatal */ }
+  }
+  const savePreset = () => run("preset_save", async () => {
+    const nm = presetSaveName.trim();
+    if (!nm) throw new Error(t("projects.preset_name_required"));
+    if (!projectRoot) throw new Error(t("projects.create_first"));
+    await post("/api/presets/save", { name: nm, project_root: projectRoot });
+    presetSaveName = ""; notice = t("projects.preset_saved"); await loadPresets();
+  });
+  const applyPreset = () => run("preset_apply", async () => {
+    if (!selectedPreset || !projectRoot) return;
+    await post("/api/presets/apply", { preset_id: selectedPreset, project_root: projectRoot });
+    notice = t("projects.preset_applied"); await refresh();
+  });
+  const deletePreset = () => run("preset_delete", async () => {
+    if (!selectedPreset || !window.confirm(t("projects.preset_confirm_delete"))) return;
+    await post("/api/presets/delete", { preset_id: selectedPreset }); selectedPreset = ""; await loadPresets();
+  });
   async function loadVoices() {
     try {
       const d = await post<any>("/api/list-voices", {});
@@ -80,6 +103,7 @@
     const map: Record<string, any> = {};
     for (const s of (d.statuses || [])) map[String(s.video_id)] = s;
     statuses = map;
+    if (d.config) cfg = { tts_provider: d.config.tts_provider || "edge_tts", tts_voice: d.config.tts_voice || "", mix_mode: d.config.mix_mode || "replace_original_speech" };
     await loadBranding();
   }
 
@@ -222,6 +246,19 @@
           <Button disabled={isBusy()} onclick={() => run("refresh", refresh)}>{t("projects.refresh")}</Button>
         </div>
         <div class="small-muted">{t("projects.cfg_locked_hint")}</div>
+        <div class="toolbar">
+          <select class="input" style="max-width:240px" value={selectedPreset} onchange={(e) => (selectedPreset = (e.target as HTMLSelectElement).value)}>
+            <option value="">{t("projects.preset_select")}</option>
+            {#each presets as p}<option value={p.id}>{p.name}</option>{/each}
+          </select>
+          <Button disabled={isBusy() || !selectedPreset} onclick={applyPreset}>{t("projects.preset_apply")}</Button>
+          <Button disabled={isBusy() || !selectedPreset} onclick={deletePreset}>{t("projects.preset_delete")}</Button>
+        </div>
+        <div class="toolbar">
+          <input class="input" style="max-width:240px" type="text" placeholder={t("projects.preset_name_placeholder")} bind:value={presetSaveName} />
+          <Button disabled={isBusy()} onclick={savePreset}>{t("projects.preset_save")}</Button>
+        </div>
+        <div class="small-muted">{t("projects.preset_hint")}</div>
       {/if}
     </div>
   </div>
