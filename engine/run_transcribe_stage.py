@@ -339,6 +339,15 @@ def _is_cuda_runtime_error(exc: BaseException) -> bool:
     return any(n.lower() in msg.lower() for n in needles)
 
 
+def _is_unsupported_compute_error(exc: BaseException) -> bool:
+    """True when the device/backend rejects the requested compute type (e.g. a
+    CUDA GPU without efficient float16). CTranslate2 message:
+    'Requested float16 compute type, but the target device or backend do not
+    support efficient float16 computation.'"""
+    msg = (str(exc) or "").lower()
+    return "compute type" in msg and ("do not support" in msg or "does not support" in msg or "not support efficient" in msg)
+
+
 def _is_missing_vad_asset_error(exc: BaseException) -> bool:
     """Return True when faster-whisper VAD failed because the bundled ONNX file is missing."""
     msg = (str(exc) or "").lower()
@@ -551,42 +560,54 @@ def _run_asr_to_srt(
             vad_fallback_reason,
         )
 
-    try:
-        (
-            model,
-            segments,
-            _info,
-            effective_vad_filter,
-            effective_vad_parameters,
-            vad_fallback_reason,
-        ) = _load_and_transcribe(dev, compute_type)
-    except Exception as exc:
-        if dev == "cuda" and _is_cuda_runtime_error(exc):
-            print(
-                f"[transcribe] WARNING: CUDA inference failed ({exc}); "
-                "retrying on CPU.",
-                file=sys.stderr,
-            )
-            dev = "cpu"
-            compute_type = _resolve_compute_type(dev, ns.compute_type)
-            try:
-                (
-                    model,
-                    segments,
-                    _info,
-                    effective_vad_filter,
-                    effective_vad_parameters,
-                    vad_fallback_reason,
-                ) = _load_and_transcribe(dev, compute_type)
-            except Exception as cpu_exc:
-                raise RuntimeError(_format_asr_error_guidance(cpu_exc, "cpu")) from cpu_exc
-        elif _is_cuda_runtime_error(exc):
-            # CPU path raised a DLL / binary load error (WinError 127 etc).
-            # This usually means CTranslate2's CPU runtime deps (Intel MKL,
-            # libomp) are missing or mismatched on this machine.
-            raise RuntimeError(_format_asr_error_guidance(exc, dev)) from exc
-        else:
-            raise
+    # Device/compute fallback ladder. A CUDA GPU may reject float16 (older cards
+    # / CT2 build) — step down to int8_float16, then int8, then CPU. CUDA runtime
+    # / DLL failures also fall through to CPU.
+    if dev == "cuda":
+        candidates: list[tuple[str, str]] = [
+            (dev, compute_type),
+            ("cuda", "int8_float16"),
+            ("cuda", "int8"),
+            ("cpu", _resolve_compute_type("cpu", ns.compute_type)),
+        ]
+    else:
+        candidates = [(dev, compute_type)]
+    seen: set[tuple[str, str]] = set()
+    candidates = [c for c in candidates if not (c in seen or seen.add(c))]
+
+    result = None
+    last_exc: BaseException | None = None
+    for idx, (cand_dev, cand_ct) in enumerate(candidates):
+        try:
+            result = _load_and_transcribe(cand_dev, cand_ct)
+            dev, compute_type = cand_dev, cand_ct
+            if idx > 0:
+                print(
+                    f"[transcribe] using device={dev} compute_type={compute_type} after fallback.",
+                    file=sys.stderr,
+                )
+            break
+        except Exception as exc:  # noqa: BLE001
+            last_exc = exc
+            fallbackable = _is_cuda_runtime_error(exc) or _is_unsupported_compute_error(exc)
+            if not fallbackable:
+                raise
+            if idx < len(candidates) - 1:
+                print(
+                    f"[transcribe] WARNING: device={cand_dev} compute_type={cand_ct} failed "
+                    f"({str(exc)[:160]}); trying next fallback.",
+                    file=sys.stderr,
+                )
+    if result is None:
+        raise RuntimeError(_format_asr_error_guidance(last_exc or RuntimeError("transcribe failed"), dev))
+    (
+        model,
+        segments,
+        _info,
+        effective_vad_filter,
+        effective_vad_parameters,
+        vad_fallback_reason,
+    ) = result
 
     report_body = build_transcription_report(
         segments=segments,
