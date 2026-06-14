@@ -11,6 +11,7 @@ import argparse
 import asyncio
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any, Optional
@@ -263,6 +264,15 @@ def _rel_posix(path: Path, job_workspace: Path) -> str:
         return str(path).replace("\\", "/")
 
 
+def _tts_concurrency() -> int:
+    """Parallel cue synthesis for network TTS (edge_tts). Env VL_TTS_CONCURRENCY (default 4)."""
+    try:
+        n = int(os.environ.get("VL_TTS_CONCURRENCY", "4"))
+    except (TypeError, ValueError):
+        n = 4
+    return max(1, min(8, n))
+
+
 async def _synthesize_all(
     job_workspace: Path,
     cues: list[SRTCue],
@@ -293,7 +303,8 @@ async def _synthesize_all(
             providers[key] = get_tts_provider(name)
         return providers[key]
 
-    for cue in cues:
+    async def _synth_one(cue: SRTCue) -> dict:
+        nonlocal active_provider_idx
         # Per-cue effective voice/rate/provider: a sidecar override wins over the
         # job default, so one cue can use a different (e.g. cloned) voice. The
         # cache key below uses these effective values, so editing one cue's voice
@@ -329,25 +340,22 @@ async def _synthesize_all(
 
         if skip_ok:
             rel_audio = _rel_posix(out_wav, job_workspace)
-            manifest_cues.append(
-                {
-                    "index": cue.index,
-                    "start_ms": cue.start_ms,
-                    "end_ms": cue.end_ms,
-                    "text": cue.text,
-                    "text_hash": text_hash,
-                    "audio_path": rel_audio,
-                    "audio_duration_ms": existing_ms,
-                    "provider": eff_provider_name,
-                    "voice": eff_voice,
-                    "rate": eff_rate,
-                }
-            )
             print(
                 f"{diag_prefix} skip_existing_wav_matched audio_duration_ms={existing_ms} wav={rel_audio}",
                 file=sys.stderr,
             )
-            continue
+            return {
+                "index": cue.index,
+                "start_ms": cue.start_ms,
+                "end_ms": cue.end_ms,
+                "text": cue.text,
+                "text_hash": text_hash,
+                "audio_path": rel_audio,
+                "audio_duration_ms": existing_ms,
+                "provider": eff_provider_name,
+                "voice": eff_voice,
+                "rate": eff_rate,
+            }
 
         if existing_ms is not None:
             if not prev_hash_ok or prev_hash != text_hash:
@@ -428,27 +436,42 @@ async def _synthesize_all(
                     f"cue_failed index={cue.index} voice={eff_voice} text={preview!r} | {e}"
                 ) from e
         rel_audio = _rel_posix(out_wav, job_workspace)
-        manifest_cues.append(
-            {
-                "index": cue.index,
-                "start_ms": cue.start_ms,
-                "end_ms": cue.end_ms,
-                "text": cue.text,
-                "text_hash": text_hash,
-                "audio_path": rel_audio,
-                "audio_duration_ms": audio_duration_ms,
-                "provider": eff_provider_name,
-                "voice": eff_voice,
-                "rate": eff_rate,
-                "provider_profile": provider_profile_label or None,
-            }
-        )
         extra = f" profile={provider_profile_label}" if provider_profile_label else ""
         print(
             f"{diag_prefix}{extra} ok audio_duration_ms={audio_duration_ms} wav={rel_audio}",
             file=sys.stderr,
         )
+        return {
+            "index": cue.index,
+            "start_ms": cue.start_ms,
+            "end_ms": cue.end_ms,
+            "text": cue.text,
+            "text_hash": text_hash,
+            "audio_path": rel_audio,
+            "audio_duration_ms": audio_duration_ms,
+            "provider": eff_provider_name,
+            "voice": eff_voice,
+            "rate": eff_rate,
+            "provider_profile": provider_profile_label or None,
+        }
 
+    # F4 — parallelize cue synthesis for the network edge_tts default path (cues
+    # are independent there). Azure failover (shared profile state) and per-cue
+    # overrides (e.g. XTTS GPU clones) stay sequential.
+    concurrency = _tts_concurrency()
+    use_parallel = concurrency > 1 and pk_norm == "edge_tts" and not overrides
+    if use_parallel and len(cues) > 1:
+        print(f"[tts] parallel synthesis: {len(cues)} cues, concurrency={concurrency}", file=sys.stderr)
+        sem = asyncio.Semaphore(concurrency)
+
+        async def _guarded(c: SRTCue) -> dict:
+            async with sem:
+                return await _synth_one(c)
+
+        manifest_cues = list(await asyncio.gather(*[_guarded(c) for c in cues]))
+    else:
+        for cue in cues:
+            manifest_cues.append(await _synth_one(cue))
     return manifest_cues
 
 
