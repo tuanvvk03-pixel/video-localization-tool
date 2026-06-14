@@ -42,6 +42,7 @@ from engine.segment_manager import (
 from engine.voice_edit_api import (
     VoiceEditError,
     get_voice_edit_status,
+    mark_voice_edited,
     seed_edited_voice,
 )
 
@@ -544,3 +545,57 @@ def run_render_phase(
             results.append(fut.result())
     results.sort(key=lambda r: str(r.get("video_id") or ""))
     return results
+
+
+def run_auto_phase(
+    project_root: Path,
+    *,
+    to_stage: str = "rendered",
+    max_workers: int | None = None,
+    runner: Callable[[list[str]], int] | None = None,
+    video_ids: list[str] | None = None,
+    long_video_workers: int = LONG_VIDEO_INNER_WORKERS_DEFAULT,
+) -> dict[str, Any]:
+    """Bulk auto pipeline (F2): translate + seed -> auto-approve voice edit -> render.
+
+    The no-manual-review path for batch processing: each video that translates +
+    seeds OK is automatically marked voice_edited, then rendered in parallel.
+    Videos that fail translate are left untouched for inspection (not rendered).
+    """
+    t_results = run_translate_phase(
+        project_root,
+        max_workers=max_workers,
+        runner=runner,
+        video_ids=video_ids,
+        long_video_workers=long_video_workers,
+    )
+    ok_ids = {str(r.get("video_id")) for r in t_results if r.get("ok")}
+
+    approved: list[str] = []
+    approve_errors: list[dict[str, str]] = []
+    state = load_project(project_root)
+    for entry in state.videos:
+        if entry.video_id not in ok_ids:
+            continue
+        jw = Path(entry.workspace)
+        try:
+            if get_voice_edit_status(jw).edited_voice_path is not None and not _voice_edit_completed(jw):
+                mark_voice_edited(jw)
+            approved.append(entry.video_id)
+        except VoiceEditError as e:
+            approve_errors.append({"video_id": entry.video_id, "error": str(e)})
+
+    r_results = run_render_phase(
+        project_root,
+        to_stage=to_stage,
+        max_workers=max_workers,
+        runner=runner,
+        video_ids=approved,
+        long_video_workers=long_video_workers,
+    )
+    return {
+        "translate": t_results,
+        "approved": approved,
+        "approve_errors": approve_errors,
+        "render": r_results,
+    }

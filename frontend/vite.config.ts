@@ -32,6 +32,7 @@ export default defineConfig({
         auth: resolve(__dirname, "src/entries/auth.ts"),
         account: resolve(__dirname, "src/entries/account.ts"),
         app_settings: resolve(__dirname, "src/entries/app_settings.ts"),
+        projects: resolve(__dirname, "src/entries/projects.ts"),
       },
       formats: ["es"],
     },

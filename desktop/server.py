@@ -1401,6 +1401,36 @@ def handle_run_after_edit(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
     return _dispatch_job(body, jw, _run_after_edit_work)
 
 
+def handle_run_project(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    """F1/F2 — bulk auto run for a multi-video project (translate -> auto-approve
+    -> render in parallel). Async when ``async`` is set; the UI polls /api/get-project
+    for per-video status. Keyed on the project root so a second run is rejected."""
+    missing = _require(body, "project_root")
+    if missing:
+        return _err("missing_field", f"Missing required field: {missing}")
+    pr = Path(str(body["project_root"])).expanduser().resolve()
+    if not pr.is_dir():
+        return _err("project_not_found", f"Project directory not found: {pr}")
+    to_stage = str(body.get("to_stage") or "rendered").strip() or "rendered"
+
+    from engine.project_manager import ProjectError, run_auto_phase
+
+    def work(_cancel: Any = None) -> tuple[int, dict[str, Any]]:
+        try:
+            data = run_auto_phase(pr, to_stage=to_stage)
+            return _ok(data)
+        except ProjectError as e:
+            return _err("run_project_failed", str(e))
+
+    if not _wants_async(body):
+        return work()
+    try:
+        JOB_MANAGER.submit(str(pr), work)
+    except JobBusyError:
+        return _err("job_busy", "A run is already in progress for this project.", HTTPStatus.CONFLICT)
+    return _ok({"job_id": str(pr), "state": "running", "async": True})
+
+
 def _run_after_edit_work(body: dict[str, Any], jw: Path) -> tuple[int, dict[str, Any]]:
     edited = jw / "artifacts" / "edit" / "edited_voice.srt"
     if not edited.is_file():
@@ -1876,6 +1906,7 @@ ROUTES: dict[str, Callable[[dict[str, Any]], tuple[int, dict[str, Any]]]] = {
     "/api/add-video-to-project": handle_add_video_to_project,
     "/api/save-video-override": handle_save_video_override,
     "/api/get-project": handle_get_project,
+    "/api/run-project": handle_run_project,
     "/api/inspect-local-video": handle_inspect_local_video,
     "/api/ocr-test-frame": handle_ocr_test_frame,
     "/api/ocr-diagnostics": handle_ocr_diagnostics,

@@ -14,6 +14,7 @@ import { mount as mountEdit, unmount as unmountEdit } from "./screens/edit.js";
 import { mount as mountDownload, unmount as unmountDownload } from "./next/download.js";
 import { mount as mountAccount, unmount as unmountAccount } from "./next/account.js";
 import { mount as mountAppSettings, unmount as unmountAppSettings } from "./next/app_settings.js";
+import { mount as mountProjects, unmount as unmountProjects } from "./next/projects.js";
 
 const WORKSPACE_LS_KEY = "workspace_root";
 
@@ -65,6 +66,7 @@ const DEST = {
   // folds onto the wizard. The gear + Settings' "go to app settings" both use
   // navigate("app_settings") to reach this top-level screen.
   app_settings: { mount: (h) => mountAppSettings(h, ctx), unmount: unmountAppSettings },
+  projects: { mount: (h) => mountProjects(h, ctx), unmount: unmountProjects },
 };
 
 // edit-wizard sub-steps fold onto the "work" destination
