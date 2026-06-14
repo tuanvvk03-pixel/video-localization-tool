@@ -1,375 +1,615 @@
-import { d as Be, p as Ce, s as k, w as et, x as qe, c as N, e as _, i as z, g as e, l as s, Q as nt, t as p, j as d, R as _t, m as pt, a as l, b as De, h as r, f as Vt, o as F, r as zt, n as y, u as P, A as Re, M as Ue } from "./chunks/api-vHpIWCot.js";
-import { o as Ve } from "./chunks/index-client-CjB8cgHo.js";
-import { e as Ft, i as ze } from "./chunks/each-BE197-93.js";
-import { b as Fe } from "./chunks/input-D0G7l_P3.js";
-import { B as rt } from "./chunks/Button-GpBM5g0S.js";
-import { S as Le } from "./chunks/StatusBadge-DT3lodBA.js";
-import { s as Me } from "./chunks/screen-DRq5NjFu.js";
-var Ke = y('<div class="error-banner"><div class="error-code">UI</div><div class="error-message"> </div></div>'), Ne = y('<div class="info-banner"> </div>'), Oe = y("<option> </option>"), Qe = y('<div class="toolbar"><input class="input" style="max-width:320px" type="text"/> <!></div> <div class="small-muted"> </div>', 1), Te = y('<div class="small-muted"> </div> <div class="toolbar"><!> <!> <!></div> <div class="small-muted"> </div>', 1), Ge = y('<div class="empty-card"><div class="empty-icon">＋</div><h3> </h3><p> </p></div>'), He = y('<a target="_blank" rel="noopener"> </a>'), Je = y('<tr><td><div class="row-title"> </div><div class="small-muted"> </div></td><td><!></td><td><!></td></tr>'), We = y('<table class="review-table"><thead><tr><th> </th><th> </th><th> </th></tr></thead><tbody></tbody></table>'), Xe = y('<div class="card"><div class="card-header"><div><div class="card-title"> </div> <div class="card-sub"> </div></div></div> <div class="card-body"><!></div></div>'), Ye = y('<div class="screen stack" data-testid="projects-screen"><!> <!> <div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option>edge_tts</option><option>azure_tts</option></select></div> <div class="field"><label> </label> <select class="input"><option> </option><!></select></div> <div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option></select></div></div> <!></div></div> <!></div>');
-function Ze(Mt, ut) {
-  Ce(ut, !0);
-  const i = (t, a) => (ut.ctx?.t ?? ((o) => o))(t, a);
-  let at = k(""), f = k(""), g = k(et([])), L = k(et({})), ft = k(et([])), u = et({
+import { d as Wa, p as Xa, s as D, w as $t, x as Ya, c as w, e as c, i as F, g as e, l as i, Q as nt, t as p, j as s, R as vt, m as at, a as v, b as Za, h as a, f as Lt, o as k, r as je, K as we, n as A, u as b, A as tr, O as ke, M as er } from "./chunks/api-vHpIWCot.js";
+import { o as ar } from "./chunks/index-client-CjB8cgHo.js";
+import { e as Pe, i as rr } from "./chunks/each-BE197-93.js";
+import { b as or } from "./chunks/input-D0G7l_P3.js";
+import { n as Q } from "./chunks/helpers-BtNcAVZn.js";
+import { B as O } from "./chunks/Button-GpBM5g0S.js";
+import { S as ir } from "./chunks/StatusBadge-DT3lodBA.js";
+import { s as sr } from "./chunks/screen-DRq5NjFu.js";
+var lr = A('<div class="error-banner"><div class="error-code">UI</div><div class="error-message"> </div></div>'), dr = A('<div class="info-banner"> </div>'), nr = A("<option> </option>"), vr = A('<div class="toolbar"><input class="input" style="max-width:320px" type="text"/> <!></div> <div class="small-muted"> </div>', 1), _r = A('<div class="small-muted"> </div> <div class="toolbar"><!> <!> <!></div> <div class="small-muted"> </div>', 1), cr = A('<div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option><option> </option></select></div>'), pr = A('<div class="empty-card"><div class="empty-icon">＋</div><h3> </h3><p> </p></div>'), ur = A('<a target="_blank" rel="noopener"> </a>'), gr = A('<tr><td><div class="row-title"> </div><div class="small-muted"> </div></td><td><!></td><td><!></td></tr>'), fr = A('<table class="review-table"><thead><tr><th> </th><th> </th><th> </th></tr></thead><tbody></tbody></table>'), mr = A('<div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option> </option><option> </option></select></div> <div class="field"><label> </label> <input class="input" type="number" min="0" max="600" step="0.5"/></div> <div class="field"><label> </label> <input class="input" type="number" min="0" max="600" step="0.5"/></div> <!></div> <div class="clip-row"><div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div> <div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div> <div class="clip-col"><div class="row-title"> </div> <div class="small-muted"> </div> <div class="toolbar"><!> <!></div></div></div> <div class="toolbar"><!></div></div></div> <div class="card"><div class="card-header"><div><div class="card-title"> </div> <div class="card-sub"> </div></div></div> <div class="card-body"><!></div></div>', 1), hr = A('<div class="screen stack" data-testid="projects-screen"><!> <!> <div class="card"><div class="card-header"><div><div class="card-title"> </div><div class="card-sub"> </div></div></div> <div class="card-body stack"><div class="field-grid"><div class="field"><label> </label> <select class="input"><option>edge_tts</option><option>azure_tts</option></select></div> <div class="field"><label> </label> <select class="input"><option> </option><!></select></div> <div class="field"><label> </label> <select class="input"><option> </option><option> </option><option> </option></select></div></div> <!></div></div> <!></div>');
+function br(Ae, Ot) {
+  Xa(Ot, !0);
+  const r = (t, o) => (Ot.ctx?.t ?? ((d) => d))(t, o);
+  let jt = D(""), g = D(""), S = D($t([])), it = D($t({})), Nt = D($t([])), x = $t({
     tts_provider: "edge_tts",
     tts_voice: "",
     mix_mode: "replace_original_speech"
-  }), it = k(""), R = k(!1), U = k(""), O = k(""), S = null;
-  Ve(() => {
-    S && clearInterval(S);
-  }), qe(() => {
-    Kt();
+  }), wt = D(""), rt = D(!1), X = D(""), _t = D(""), N = D(null), T = null;
+  ar(() => {
+    T && clearInterval(T);
+  }), Ya(() => {
+    Se();
   });
-  async function Kt() {
+  async function Se() {
     try {
-      const t = await N("/api/list-voices", {});
-      _(
-        ft,
-        Array.isArray(t.voices) ? t.voices.filter((a) => a && a.voice_id && a.enabled !== !1) : [],
+      const t = await w("/api/list-voices", {});
+      c(
+        Nt,
+        Array.isArray(t.voices) ? t.voices.filter((o) => o && o.voice_id && o.enabled !== !1) : [],
         !0
       );
     } catch {
     }
   }
-  async function Q(t, a) {
-    _(O, ""), _(it, t, !0), _(U, "");
+  async function U(t, o) {
+    c(_t, ""), c(wt, t, !0), c(X, "");
     try {
-      await a();
-    } catch (o) {
-      _(O, o instanceof Re ? o.summary || o.message : o?.message || "error", !0);
+      await o();
+    } catch (d) {
+      c(_t, d instanceof tr ? d.summary || d.message : d?.message || "error", !0);
     } finally {
-      _(it, "");
+      c(wt, "");
     }
   }
-  const T = () => !!e(it) || e(R), Nt = () => Q("create", async () => {
-    const t = e(at).trim();
-    if (!t) throw new Error(i("projects.name_required"));
-    const a = await N("/api/init-project", {
+  const E = () => !!e(wt) || e(rt), Ee = () => U("create", async () => {
+    const t = e(jt).trim();
+    if (!t) throw new Error(r("projects.name_required"));
+    const o = await w("/api/init-project", {
       project_name: t,
       config_overrides: {
-        tts_provider: u.tts_provider,
-        tts_voice: u.tts_voice.trim(),
-        mix_mode: u.mix_mode,
+        tts_provider: x.tts_provider,
+        tts_voice: x.tts_voice.trim(),
+        mix_mode: x.mix_mode,
         translate_backend: "block_v2"
       }
     });
-    _(f, String(a.project_root || ""), !0), _(U, i("projects.created"), !0), await G();
-  }), Ot = () => Q("add", async () => {
-    if (!e(f)) throw new Error(i("projects.create_first"));
-    const t = await Ue({
+    c(g, String(o.project_root || ""), !0), c(X, r("projects.created"), !0), await ct();
+  }), Ce = () => U("add", async () => {
+    if (!e(g)) throw new Error(r("projects.create_first"));
+    const t = await er({
       filters: ["Video files (*.mp4;*.mov;*.mkv;*.webm)", "All files (*.*)"]
     });
     if (t?.cancelled) return;
-    const a = t?.paths || [];
-    if (!a.length) throw new Error(t?.error || i("projects.pick_unavailable"));
-    let o = 0;
-    const v = [];
-    for (const c of a)
+    const o = t?.paths || [];
+    if (!o.length) throw new Error(t?.error || r("projects.pick_unavailable"));
+    let d = 0;
+    const h = [];
+    for (const $ of o)
       try {
-        await N("/api/add-video-to-project", { project_root: e(f), video: c }), o++;
+        await w("/api/add-video-to-project", { project_root: e(g), video: $ }), d++;
       } catch {
-        v.push(c.split(/[\\/]/).pop() || c);
+        h.push($.split(/[\\/]/).pop() || $);
       }
-    _(U, i("projects.added", { count: o }) + (v.length ? ` (${i("projects.add_failed", { count: v.length })})` : "")), await G();
+    c(X, r("projects.added", { count: d }) + (h.length ? ` (${r("projects.add_failed", { count: h.length })})` : "")), await ct();
   });
-  async function G() {
-    if (!e(f)) return;
-    const t = await N("/api/get-project", { project_root: e(f) });
-    _(g, Array.isArray(t.videos) ? t.videos : [], !0);
-    const a = {};
-    for (const o of t.statuses || []) a[String(o.video_id)] = o;
-    _(L, a, !0);
+  async function ct() {
+    if (!e(g)) return;
+    const t = await w("/api/get-project", { project_root: e(g) });
+    c(S, Array.isArray(t.videos) ? t.videos : [], !0);
+    const o = {};
+    for (const d of t.statuses || []) o[String(d.video_id)] = d;
+    c(it, o, !0), await Ie();
   }
-  const Qt = () => Q("run", async () => {
-    if (!e(f) || !e(g).length) throw new Error(i("projects.no_videos"));
-    _(R, !0);
+  async function Ie() {
+    if (e(g))
+      try {
+        const t = await w("/api/render-settings/status", { job_workspace: e(g) });
+        c(N, Q(t.render || {}), !0);
+      } catch {
+      }
+  }
+  function kt() {
+    const t = e(N) || Q({}), o = {
+      aspect_ratio: t.aspect_ratio,
+      background_path: t.background_path,
+      background_original_filename: t.background_original_filename,
+      head_trim_sec: t.head_trim_sec,
+      tail_trim_sec: t.tail_trim_sec
+    };
+    return t.logo_path && Object.assign(o, {
+      logo_path: t.logo_path,
+      logo_original_filename: t.logo_original_filename,
+      logo_position: t.logo_position,
+      logo_scale: t.logo_scale,
+      logo_opacity: t.logo_opacity,
+      logo_margin: t.logo_margin
+    }), t.intro_clip_path && Object.assign(o, {
+      intro_clip_path: t.intro_clip_path,
+      intro_original_filename: t.intro_original_filename
+    }), t.outro_clip_path && Object.assign(o, {
+      outro_clip_path: t.outro_clip_path,
+      outro_original_filename: t.outro_original_filename
+    }), o;
+  }
+  function pt(t) {
+    c(N, Q({ ...e(N) || {}, ...t }), !0);
+  }
+  const Le = () => U("brand_save", async () => {
+    const t = await w("/api/render-settings/save", { job_workspace: e(g), render: kt() });
+    c(N, Q(t.render), !0), c(X, r("projects.brand_saved"), !0);
+  }), Oe = () => U("brand_logo", async () => {
+    const t = await ke({
+      filters: ["Image files (*.png;*.jpg;*.jpeg;*.webp)", "All files (*.*)"]
+    });
+    if (t?.cancelled) return;
+    if (!t?.ok || !t.path) throw new Error(t?.error || r("projects.pick_unavailable"));
+    await w("/api/render-settings/save", { job_workspace: e(g), render: kt() });
+    const o = await w("/api/render-logo/upload", { job_workspace: e(g), image_path: t.path });
+    c(N, Q(o.render), !0);
+  }), Ne = () => U("brand_logo_rm", async () => {
+    const t = await w("/api/render-logo/remove", { job_workspace: e(g) });
+    c(N, Q(t.render), !0);
+  }), Rt = (t) => U(`brand_${t}`, async () => {
+    const o = await ke({
+      filters: ["Video files (*.mp4;*.mov;*.mkv;*.webm)", "All files (*.*)"]
+    });
+    if (o?.cancelled) return;
+    if (!o?.ok || !o.path) throw new Error(o?.error || r("projects.pick_unavailable"));
+    await w("/api/render-settings/save", { job_workspace: e(g), render: kt() });
+    const d = await w(`/api/render-${t}/upload`, { job_workspace: e(g), clip_path: o.path });
+    c(N, Q(d.render), !0);
+  }), Vt = (t) => U(`brand_${t}_rm`, async () => {
+    const o = await w(`/api/render-${t}/remove`, { job_workspace: e(g) });
+    c(N, Q(o.render), !0);
+  }), Re = () => U("run", async () => {
+    if (!e(g) || !e(S).length) throw new Error(r("projects.no_videos"));
+    c(rt, !0);
     try {
-      await N("/api/run-project", { project_root: e(f), async: !0 }), Tt();
+      await w("/api/run-project", { project_root: e(g), async: !0 }), Ve();
     } catch (t) {
-      throw _(R, !1), t;
+      throw c(rt, !1), t;
     }
   });
-  function Tt() {
-    S && clearInterval(S), S = setInterval(
+  function Ve() {
+    T && clearInterval(T), T = setInterval(
       async () => {
         try {
-          await G(), e(g).length && e(g).every((t) => Gt(e(L)[t.video_id])) && (_(R, !1), S && (clearInterval(S), S = null), _(U, i("projects.done"), !0));
+          await ct(), e(S).length && e(S).every((t) => qe(e(it)[t.video_id])) && (c(rt, !1), T && (clearInterval(T), T = null), c(X, r("projects.done"), !0));
         } catch {
         }
       },
       3e3
     );
   }
-  function V(t) {
+  function ot(t) {
     return String(t?.current_stage || t?.status || "queued");
   }
-  function Gt(t) {
-    const a = V(t);
-    return a.includes("rendered") || a.includes("failed");
+  function qe(t) {
+    const o = ot(t);
+    return o.includes("rendered") || o.includes("failed");
   }
-  function Ht(t) {
-    const a = V(t);
-    return a.includes("failed") ? "blocked" : a.includes("rendered") ? "completed" : e(R) ? "running" : "queued";
+  function ze(t) {
+    const o = ot(t);
+    return o.includes("failed") ? "blocked" : o.includes("rendered") ? "completed" : e(rt) ? "running" : "queued";
   }
-  function Jt(t) {
-    const a = String(t?.workspace || "");
-    return a ? `/media?${new URLSearchParams({
-      workspace: a,
+  function De(t) {
+    const o = String(t?.workspace || "");
+    return o ? `/media?${new URLSearchParams({
+      workspace: o,
       rel: "artifacts/render/final.mp4",
       v: String(Date.now())
     }).toString()}` : "";
   }
-  const Wt = P(() => e(g).filter((t) => V(e(L)[t.video_id]).includes("rendered")).length), Xt = P(() => e(g).filter((t) => V(e(L)[t.video_id]).includes("failed")).length);
-  var mt = Ye(), gt = r(mt);
+  const Fe = b(() => e(S).filter((t) => ot(e(it)[t.video_id]).includes("rendered")).length), Ue = b(() => e(S).filter((t) => ot(e(it)[t.video_id]).includes("failed")).length), u = b(() => e(N) || Q({})), Pt = (t) => (t || "").split(/[\\/]/).pop();
+  var qt = hr(), zt = a(qt);
   {
-    var Yt = (t) => {
-      var a = Ke(), o = s(r(a)), v = r(o);
-      p(() => d(v, e(O))), l(t, a);
+    var Ke = (t) => {
+      var o = lr(), d = i(a(o)), h = a(d);
+      p(() => s(h, e(_t))), v(t, o);
     };
-    z(gt, (t) => {
-      e(O) && t(Yt);
+    F(zt, (t) => {
+      e(_t) && t(Ke);
     });
   }
-  var ht = s(gt, 2);
+  var Dt = i(zt, 2);
   {
-    var Zt = (t) => {
-      var a = Ne(), o = r(a);
-      p(() => d(o, e(U))), l(t, a);
+    var Me = (t) => {
+      var o = dr(), d = a(o);
+      p(() => s(d, e(X))), v(t, o);
     };
-    z(ht, (t) => {
-      e(U) && t(Zt);
+    F(Dt, (t) => {
+      e(X) && t(Me);
     });
   }
-  var xt = s(ht, 2), bt = r(xt), te = r(bt), jt = r(te), ee = r(jt), re = s(jt), ae = r(re), ie = s(bt, 2), yt = r(ie), wt = r(yt), $t = r(wt), oe = r($t), I = s($t, 2), ot = r(I);
-  ot.value = ot.__value = "edge_tts";
-  var kt = s(ot);
-  kt.value = kt.__value = "azure_tts";
-  var Pt;
-  nt(I);
-  var St = s(wt, 2), At = r(St), se = r(At), B = s(At, 2), H = r(B), de = r(H);
-  H.value = H.__value = "";
-  var ve = s(H);
-  Ft(ve, 17, () => e(ft), ze, (t, a) => {
-    var o = Oe(), v = r(o), c = {};
+  var Ft = i(Dt, 2), Ut = a(Ft), Qe = a(Ut), Kt = a(Qe), Te = a(Kt), Ge = i(Kt), He = a(Ge), Je = i(Ut, 2), Mt = a(Je), Qt = a(Mt), Tt = a(Qt), We = a(Tt), Y = i(Tt, 2), Bt = a(Y);
+  Bt.value = Bt.__value = "edge_tts";
+  var Gt = i(Bt);
+  Gt.value = Gt.__value = "azure_tts";
+  var Ht;
+  nt(Y);
+  var Jt = i(Qt, 2), Wt = a(Jt), Xe = a(Wt), Z = i(Wt, 2), ut = a(Z), Ye = a(ut);
+  ut.value = ut.__value = "";
+  var Ze = i(ut);
+  Pe(Ze, 17, () => e(Nt), rr, (t, o) => {
+    var d = nr(), h = a(d), $ = {};
     p(() => {
-      d(v, e(a).short_name || e(a).label || e(a).voice_id), c !== (c = e(a).voice_id) && (o.value = (o.__value = e(a).voice_id) ?? "");
-    }), l(t, o);
+      s(h, e(o).short_name || e(o).label || e(o).voice_id), $ !== ($ = e(o).voice_id) && (d.value = (d.__value = e(o).voice_id) ?? "");
+    }), v(t, d);
   });
-  var Et;
-  nt(B);
-  var le = s(St, 2), It = r(le), ce = r(It), C = s(It, 2), J = r(C), ne = r(J);
-  J.value = J.__value = "replace_original_speech";
-  var W = s(J), _e = r(W);
-  W.value = W.__value = "duck_original_speech";
-  var st = s(W), pe = r(st);
-  st.value = st.__value = "keep_music_replace_voice";
-  var Bt;
-  nt(C);
-  var ue = s(yt, 2);
+  var Xt;
+  nt(Z);
+  var ta = i(Jt, 2), Yt = a(ta), ea = a(Yt), tt = i(Yt, 2), gt = a(tt), aa = a(gt);
+  gt.value = gt.__value = "replace_original_speech";
+  var ft = i(gt), ra = a(ft);
+  ft.value = ft.__value = "duck_original_speech";
+  var At = i(ft), oa = a(At);
+  At.value = At.__value = "keep_music_replace_voice";
+  var Zt;
+  nt(tt);
+  var ia = i(Mt, 2);
   {
-    var fe = (t) => {
-      var a = Qe(), o = Vt(a), v = r(o), c = s(v, 2);
+    var sa = (t) => {
+      var o = vr(), d = Lt(o), h = a(d), $ = i(h, 2);
       {
-        let h = P(T);
-        rt(c, {
+        let C = b(E);
+        O($, {
           variant: "primary",
           get disabled() {
-            return e(h);
+            return e(C);
           },
-          onclick: Nt,
-          children: ($, X) => {
-            var m = F();
-            p((x) => d(m, x), [() => i("projects.create")]), l($, m);
+          onclick: Ee,
+          children: (M, mt) => {
+            var j = k();
+            p((P) => s(j, P), [() => r("projects.create")]), v(M, j);
           },
           $$slots: { default: !0 }
         });
       }
-      var A = s(o, 2), E = r(A);
+      var K = i(d, 2), G = a(K);
       p(
-        (h, $) => {
-          zt(v, "placeholder", h), d(E, $);
+        (C, M) => {
+          je(h, "placeholder", C), s(G, M);
         },
         [
-          () => i("projects.name_placeholder"),
-          () => i("projects.create_hint")
+          () => r("projects.name_placeholder"),
+          () => r("projects.create_hint")
         ]
-      ), Fe(v, () => e(at), (h) => _(at, h)), l(t, a);
-    }, me = (t) => {
-      var a = Te(), o = Vt(a), v = r(o), c = s(o, 2), A = r(c);
+      ), or(h, () => e(jt), (C) => c(jt, C)), v(t, o);
+    }, la = (t) => {
+      var o = _r(), d = Lt(o), h = a(d), $ = i(d, 2), K = a($);
       {
-        let m = P(T);
-        rt(A, {
+        let j = b(E);
+        O(K, {
           variant: "secondary",
           get disabled() {
-            return e(m);
+            return e(j);
           },
-          onclick: Ot,
-          children: (x, b) => {
-            var n = F();
-            p((j) => d(n, j), [() => i("projects.add_videos")]), l(x, n);
+          onclick: Ce,
+          children: (P, st) => {
+            var R = k();
+            p((B) => s(R, B), [() => r("projects.add_videos")]), v(P, R);
           },
           $$slots: { default: !0 }
         });
       }
-      var E = s(A, 2);
+      var G = i(K, 2);
       {
-        let m = P(() => T() || !e(g).length);
-        rt(E, {
+        let j = b(() => E() || !e(S).length);
+        O(G, {
           variant: "strong",
           get disabled() {
-            return e(m);
+            return e(j);
           },
-          onclick: Qt,
-          children: (x, b) => {
-            var n = F();
-            p((j) => d(n, j), [
-              () => e(R) ? i("projects.running") : i("projects.run_all")
-            ]), l(x, n);
+          onclick: Re,
+          children: (P, st) => {
+            var R = k();
+            p((B) => s(R, B), [
+              () => e(rt) ? r("projects.running") : r("projects.run_all")
+            ]), v(P, R);
           },
           $$slots: { default: !0 }
         });
       }
-      var h = s(E, 2);
+      var C = i(G, 2);
       {
-        let m = P(T);
-        rt(h, {
+        let j = b(E);
+        O(C, {
           get disabled() {
-            return e(m);
+            return e(j);
           },
-          onclick: () => Q("refresh", G),
-          children: (x, b) => {
-            var n = F();
-            p((j) => d(n, j), [() => i("projects.refresh")]), l(x, n);
+          onclick: () => U("refresh", ct),
+          children: (P, st) => {
+            var R = k();
+            p((B) => s(R, B), [() => r("projects.refresh")]), v(P, R);
           },
           $$slots: { default: !0 }
         });
       }
-      var $ = s(c, 2), X = r($);
+      var M = i($, 2), mt = a(M);
       p(
-        (m, x) => {
-          d(v, `${m ?? ""}: ${e(f) ?? ""}`), d(X, x);
+        (j, P) => {
+          s(h, `${j ?? ""}: ${e(g) ?? ""}`), s(mt, P);
         },
         [
-          () => i("projects.open_label"),
-          () => i("projects.cfg_locked_hint")
+          () => r("projects.open_label"),
+          () => r("projects.cfg_locked_hint")
         ]
-      ), l(t, a);
+      ), v(t, o);
     };
-    z(ue, (t) => {
-      e(f) ? t(me, -1) : t(fe);
+    F(ia, (t) => {
+      e(g) ? t(la, -1) : t(sa);
     });
   }
-  var ge = s(xt, 2);
+  var da = i(Ft, 2);
   {
-    var he = (t) => {
-      var a = Xe(), o = r(a), v = r(o), c = r(v), A = r(c), E = s(c, 2), h = r(E), $ = s(o, 2), X = r($);
+    var na = (t) => {
+      var o = mr(), d = Lt(o), h = a(d), $ = a(h), K = a($), G = a(K), C = i(K), M = a(C), mt = i(h, 2), j = a(mt), P = a(j), st = a(P), R = a(st), B = i(st, 2), ht = a(B), va = a(ht);
+      ht.value = ht.__value = "16:9";
+      var St = i(ht), _a = a(St);
+      St.value = St.__value = "9:16";
+      var te;
+      nt(B);
+      var ee = i(P, 2), ae = a(ee), ca = a(ae), re = i(ae, 2), oe = i(ee, 2), ie = a(oe), pa = a(ie), se = i(ie, 2), ua = i(oe, 2);
       {
-        var m = (b) => {
-          var n = Ge(), j = s(r(n)), dt = r(j), Y = s(j), vt = r(Y);
-          p(
-            (Z, lt) => {
-              d(dt, Z), d(vt, lt);
+        var ga = (l) => {
+          var _ = cr(), m = a(_), f = a(m), n = i(m, 2), y = a(n), H = a(y);
+          y.value = y.__value = "top-left";
+          var V = i(y), lt = a(V);
+          V.value = V.__value = "top-right";
+          var J = i(V), dt = a(J);
+          J.value = J.__value = "bottom-left";
+          var I = i(J), L = a(I);
+          I.value = I.__value = "bottom-right";
+          var q;
+          nt(n), p(
+            (W, bt, yt, Et, Ct) => {
+              s(f, W), s(H, bt), s(lt, yt), s(dt, Et), s(L, Ct), q !== (q = e(u).logo_position) && (n.value = (n.__value = e(u).logo_position) ?? "", vt(n, e(u).logo_position));
             },
             [
-              () => i("projects.empty_title"),
-              () => i("projects.empty_body")
+              () => r("settings.render_layout.logo_position"),
+              () => r("settings.render_layout.pos_top_left"),
+              () => r("settings.render_layout.pos_top_right"),
+              () => r("settings.render_layout.pos_bottom_left"),
+              () => r("settings.render_layout.pos_bottom_right")
             ]
-          ), l(b, n);
-        }, x = (b) => {
-          var n = We(), j = r(n), dt = r(j), Y = r(dt), vt = r(Y), Z = s(Y), lt = r(Z), xe = s(Z), be = r(xe), je = s(j);
-          Ft(je, 21, () => e(g), (M) => M.video_id, (M, q) => {
-            const K = P(() => e(L)[e(q).video_id]);
-            var Ct = Je(), qt = r(Ct), Dt = r(qt), ye = r(Dt), we = s(Dt), $e = r(we), Rt = s(qt), ke = r(Rt);
+          ), at("change", n, (W) => pt({ logo_position: W.target.value })), v(l, _);
+        };
+        F(ua, (l) => {
+          e(u).logo_path && l(ga);
+        });
+      }
+      var le = i(j, 2), de = a(le), ne = a(de), fa = a(ne), ve = i(ne, 2), ma = a(ve), ha = i(ve, 2), _e = a(ha);
+      {
+        let l = b(E);
+        O(_e, {
+          variant: "secondary",
+          get disabled() {
+            return e(l);
+          },
+          onclick: Oe,
+          children: (_, m) => {
+            var f = k();
+            p((n) => s(f, n), [() => r("settings.render_layout.upload_logo")]), v(_, f);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var ba = i(_e, 2);
+      {
+        var ya = (l) => {
+          {
+            let _ = b(E);
+            O(l, {
+              get disabled() {
+                return e(_);
+              },
+              onclick: Ne,
+              children: (m, f) => {
+                var n = k();
+                p((y) => s(n, y), [() => r("settings.render_layout.remove_logo")]), v(m, n);
+              },
+              $$slots: { default: !0 }
+            });
+          }
+        };
+        F(ba, (l) => {
+          e(u).logo_path && l(ya);
+        });
+      }
+      var ce = i(de, 2), pe = a(ce), xa = a(pe), ue = i(pe, 2), $a = a(ue), ja = i(ue, 2), ge = a(ja);
+      {
+        let l = b(E);
+        O(ge, {
+          variant: "secondary",
+          get disabled() {
+            return e(l);
+          },
+          onclick: () => Rt("intro"),
+          children: (_, m) => {
+            var f = k();
+            p((n) => s(f, n), [() => r("settings.render_layout.upload_intro")]), v(_, f);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var wa = i(ge, 2);
+      {
+        var ka = (l) => {
+          {
+            let _ = b(E);
+            O(l, {
+              get disabled() {
+                return e(_);
+              },
+              onclick: () => Vt("intro"),
+              children: (m, f) => {
+                var n = k();
+                p((y) => s(n, y), [() => r("settings.render_layout.remove_clip")]), v(m, n);
+              },
+              $$slots: { default: !0 }
+            });
+          }
+        };
+        F(wa, (l) => {
+          e(u).intro_clip_path && l(ka);
+        });
+      }
+      var Pa = i(ce, 2), fe = a(Pa), Ba = a(fe), me = i(fe, 2), Aa = a(me), Sa = i(me, 2), he = a(Sa);
+      {
+        let l = b(E);
+        O(he, {
+          variant: "secondary",
+          get disabled() {
+            return e(l);
+          },
+          onclick: () => Rt("outro"),
+          children: (_, m) => {
+            var f = k();
+            p((n) => s(f, n), [() => r("settings.render_layout.upload_outro")]), v(_, f);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var Ea = i(he, 2);
+      {
+        var Ca = (l) => {
+          {
+            let _ = b(E);
+            O(l, {
+              get disabled() {
+                return e(_);
+              },
+              onclick: () => Vt("outro"),
+              children: (m, f) => {
+                var n = k();
+                p((y) => s(n, y), [() => r("settings.render_layout.remove_clip")]), v(m, n);
+              },
+              $$slots: { default: !0 }
+            });
+          }
+        };
+        F(Ea, (l) => {
+          e(u).outro_clip_path && l(Ca);
+        });
+      }
+      var Ia = i(le, 2), La = a(Ia);
+      {
+        let l = b(E);
+        O(La, {
+          variant: "primary",
+          get disabled() {
+            return e(l);
+          },
+          onclick: Le,
+          children: (_, m) => {
+            var f = k();
+            p((n) => s(f, n), [() => r("settings.render_layout.save")]), v(_, f);
+          },
+          $$slots: { default: !0 }
+        });
+      }
+      var Oa = i(d, 2), be = a(Oa), Na = a(be), ye = a(Na), Ra = a(ye), Va = i(ye, 2), qa = a(Va), za = i(be, 2), Da = a(za);
+      {
+        var Fa = (l) => {
+          var _ = pr(), m = i(a(_)), f = a(m), n = i(m), y = a(n);
+          p(
+            (H, V) => {
+              s(f, H), s(y, V);
+            },
+            [
+              () => r("projects.empty_title"),
+              () => r("projects.empty_body")
+            ]
+          ), v(l, _);
+        }, Ua = (l) => {
+          var _ = fr(), m = a(_), f = a(m), n = a(f), y = a(n), H = i(n), V = a(H), lt = i(H), J = a(lt), dt = i(m);
+          Pe(dt, 21, () => e(S), (I) => I.video_id, (I, L) => {
+            const q = b(() => e(it)[e(L).video_id]);
+            var W = gr(), bt = a(W), yt = a(bt), Et = a(yt), Ct = i(yt), Ka = a(Ct), xe = i(bt), Ma = a(xe);
             {
-              let w = P(() => Ht(e(K)));
-              Le(ke, {
+              let z = b(() => ze(e(q)));
+              ir(Ma, {
                 get kind() {
-                  return e(w);
+                  return e(z);
                 },
-                children: (D, Ut) => {
-                  var tt = F();
-                  p((ct) => d(tt, ct), [() => V(e(K))]), l(D, tt);
+                children: (et, $e) => {
+                  var xt = k();
+                  p((It) => s(xt, It), [() => ot(e(q))]), v(et, xt);
                 },
                 $$slots: { default: !0 }
               });
             }
-            var Pe = s(Rt), Se = r(Pe);
+            var Qa = i(xe), Ta = a(Qa);
             {
-              var Ae = (w) => {
-                var D = He(), Ut = r(D);
+              var Ga = (z) => {
+                var et = ur(), $e = a(et);
                 p(
-                  (tt, ct) => {
-                    zt(D, "href", tt), d(Ut, ct);
+                  (xt, It) => {
+                    je(et, "href", xt), s($e, It);
                   },
-                  [() => Jt(e(q)), () => i("projects.open_output")]
-                ), l(w, D);
-              }, Ee = P(() => V(e(K)).includes("rendered")), Ie = (w) => {
-                var D = F("—");
-                l(w, D);
+                  [() => De(e(L)), () => r("projects.open_output")]
+                ), v(z, et);
+              }, Ha = b(() => ot(e(q)).includes("rendered")), Ja = (z) => {
+                var et = k("—");
+                v(z, et);
               };
-              z(Se, (w) => {
-                e(Ee) ? w(Ae) : w(Ie, -1);
+              F(Ta, (z) => {
+                e(Ha) ? z(Ga) : z(Ja, -1);
               });
             }
             p(
-              (w) => {
-                d(ye, e(q).video_id), d($e, `${w ?? ""}${e(q).is_long ? " · long" : ""}`);
+              (z) => {
+                s(Et, e(L).video_id), s(Ka, `${z ?? ""}${e(L).is_long ? " · long" : ""}`);
               },
-              [() => (e(q).source_path || "").split(/[\\/]/).pop()]
-            ), l(M, Ct);
+              [() => (e(L).source_path || "").split(/[\\/]/).pop()]
+            ), v(I, W);
           }), p(
-            (M, q, K) => {
-              d(vt, M), d(lt, q), d(be, K);
+            (I, L, q) => {
+              s(y, I), s(V, L), s(J, q);
             },
             [
-              () => i("projects.col_video"),
-              () => i("projects.col_status"),
-              () => i("projects.col_output")
+              () => r("projects.col_video"),
+              () => r("projects.col_status"),
+              () => r("projects.col_output")
             ]
-          ), l(b, n);
+          ), v(l, _);
         };
-        z(X, (b) => {
-          e(g).length ? b(x, -1) : b(m);
+        F(Da, (l) => {
+          e(S).length ? l(Ua, -1) : l(Fa);
         });
       }
       p(
-        (b, n) => {
-          d(A, b), d(h, n);
+        (l, _, m, f, n, y, H, V, lt, J, dt, I, L, q, W) => {
+          s(G, l), s(M, _), s(R, m), s(va, f), s(_a, n), te !== (te = e(u).aspect_ratio) && (B.value = (B.__value = e(u).aspect_ratio) ?? "", vt(B, e(u).aspect_ratio)), s(ca, `${y ?? ""} (${e(u).head_trim_sec ?? ""}s)`), we(re, e(u).head_trim_sec), s(pa, `${H ?? ""} (${e(u).tail_trim_sec ?? ""}s)`), we(se, e(u).tail_trim_sec), s(fa, V), s(ma, lt), s(xa, J), s($a, dt), s(Ba, I), s(Aa, L), s(Ra, q), s(qa, W);
         },
         [
-          () => i("projects.videos_title", { count: e(g).length }),
-          () => i("projects.progress_summary", {
-            done: e(Wt),
-            failed: e(Xt),
-            total: e(g).length
+          () => r("projects.brand_title"),
+          () => r("projects.brand_sub"),
+          () => r("settings.render_layout.aspect_ratio"),
+          () => r("settings.render_layout.aspect_16_9"),
+          () => r("settings.render_layout.aspect_9_16"),
+          () => r("settings.render_layout.head_trim"),
+          () => r("settings.render_layout.tail_trim"),
+          () => r("settings.render_layout.logo_title"),
+          () => e(u).logo_path ? Pt(e(u).logo_original_filename || e(u).logo_path) : r("settings.render_layout.no_logo"),
+          () => r("settings.render_layout.intro_clip"),
+          () => e(u).intro_clip_path ? Pt(e(u).intro_original_filename || e(u).intro_clip_path) : r("settings.render_layout.no_clip"),
+          () => r("settings.render_layout.outro_clip"),
+          () => e(u).outro_clip_path ? Pt(e(u).outro_original_filename || e(u).outro_clip_path) : r("settings.render_layout.no_clip"),
+          () => r("projects.videos_title", { count: e(S).length }),
+          () => r("projects.progress_summary", {
+            done: e(Fe),
+            failed: e(Ue),
+            total: e(S).length
           })
         ]
-      ), l(t, a);
+      ), at("change", B, (l) => pt({ aspect_ratio: l.target.value })), at("change", re, (l) => pt({ head_trim_sec: Number(l.target.value) })), at("change", se, (l) => pt({ tail_trim_sec: Number(l.target.value) })), v(t, o);
     };
-    z(ge, (t) => {
-      e(f) && t(he);
+    F(da, (t) => {
+      e(g) && t(na);
     });
   }
   p(
-    (t, a, o, v, c, A, E, h, $) => {
-      d(ee, t), d(ae, a), d(oe, o), I.disabled = !!e(f), Pt !== (Pt = u.tts_provider) && (I.value = (I.__value = u.tts_provider) ?? "", _t(I, u.tts_provider)), d(se, v), B.disabled = !!e(f), d(de, c), Et !== (Et = u.tts_voice) && (B.value = (B.__value = u.tts_voice) ?? "", _t(B, u.tts_voice)), d(ce, A), C.disabled = !!e(f), d(ne, E), d(_e, h), d(pe, $), Bt !== (Bt = u.mix_mode) && (C.value = (C.__value = u.mix_mode) ?? "", _t(C, u.mix_mode));
+    (t, o, d, h, $, K, G, C, M) => {
+      s(Te, t), s(He, o), s(We, d), Y.disabled = !!e(g), Ht !== (Ht = x.tts_provider) && (Y.value = (Y.__value = x.tts_provider) ?? "", vt(Y, x.tts_provider)), s(Xe, h), Z.disabled = !!e(g), s(Ye, $), Xt !== (Xt = x.tts_voice) && (Z.value = (Z.__value = x.tts_voice) ?? "", vt(Z, x.tts_voice)), s(ea, K), tt.disabled = !!e(g), s(aa, G), s(ra, C), s(oa, M), Zt !== (Zt = x.mix_mode) && (tt.value = (tt.__value = x.mix_mode) ?? "", vt(tt, x.mix_mode));
     },
     [
-      () => i("projects.title"),
-      () => i("projects.sub"),
-      () => i("projects.cfg_provider"),
-      () => i("projects.cfg_voice"),
-      () => i("projects.cfg_voice_default"),
-      () => i("projects.cfg_mix"),
-      () => i("settings.tts.mix_replace"),
-      () => i("settings.tts.mix_duck"),
-      () => i("settings.tts.mix_keep_music")
+      () => r("projects.title"),
+      () => r("projects.sub"),
+      () => r("projects.cfg_provider"),
+      () => r("projects.cfg_voice"),
+      () => r("projects.cfg_voice_default"),
+      () => r("projects.cfg_mix"),
+      () => r("settings.tts.mix_replace"),
+      () => r("settings.tts.mix_duck"),
+      () => r("settings.tts.mix_keep_music")
     ]
-  ), pt("change", I, (t) => u.tts_provider = t.target.value), pt("change", B, (t) => u.tts_voice = t.target.value), pt("change", C, (t) => u.mix_mode = t.target.value), l(Mt, mt), De();
+  ), at("change", Y, (t) => x.tts_provider = t.target.value), at("change", Z, (t) => x.tts_voice = t.target.value), at("change", tt, (t) => x.mix_mode = t.target.value), v(Ae, qt), Za();
 }
-Be(["change"]);
-const Lt = Me(Ze), dr = Lt.mount, vr = Lt.unmount;
+Wa(["change"]);
+const Be = sr(br), Ar = Be.mount, Sr = Be.unmount;
 export {
-  dr as mount,
-  vr as unmount
+  Ar as mount,
+  Sr as unmount
 };
 //# sourceMappingURL=projects.js.map

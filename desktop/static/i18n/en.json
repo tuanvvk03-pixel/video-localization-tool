@@ -46,7 +46,10 @@
     "col_video": "Video",
     "col_status": "Status",
     "col_output": "Output",
-    "open_output": "Open video"
+    "open_output": "Open video",
+    "brand_title": "Shared branding (logo · outro · trim)",
+    "brand_sub": "Apply logo / intro / outro / head-tail trim to ALL videos in the project at run time. Set it once here.",
+    "brand_saved": "Shared branding saved."
   },
   "topbar": {
     "eyebrow": "Dubbing & subtitles",

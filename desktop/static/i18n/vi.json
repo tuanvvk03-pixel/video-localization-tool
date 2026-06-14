@@ -46,7 +46,10 @@
     "col_video": "Video",
     "col_status": "Trạng thái",
     "col_output": "Kết quả",
-    "open_output": "Mở video"
+    "open_output": "Mở video",
+    "brand_title": "Branding chung (logo · outro · cắt)",
+    "brand_sub": "Áp logo / intro / outro / cắt đầu-cuối cho TẤT CẢ video trong dự án khi chạy. Đặt một lần ở đây.",
+    "brand_saved": "Đã lưu branding chung."
   },
   "topbar": {
     "eyebrow": "Lồng tiếng & phụ đề",

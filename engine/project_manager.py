@@ -585,6 +585,22 @@ def run_auto_phase(
         except VoiceEditError as e:
             approve_errors.append({"video_id": entry.video_id, "error": str(e)})
 
+    # F1.1 — push shared project branding (logo/outro/intro/trim) onto each
+    # video about to render, so a batch is branded consistently in one place.
+    try:
+        from engine.project_branding import apply_branding_to_video, has_project_branding
+
+        if approved and has_project_branding(project_root):
+            approved_set = set(approved)
+            for entry in state.videos:
+                if entry.video_id in approved_set:
+                    try:
+                        apply_branding_to_video(project_root, Path(entry.workspace))
+                    except OSError as e:
+                        approve_errors.append({"video_id": entry.video_id, "error": f"branding_failed: {e}"})
+    except Exception:  # noqa: BLE001 - branding is best-effort, never block rendering
+        pass
+
     r_results = run_render_phase(
         project_root,
         to_stage=to_stage,
