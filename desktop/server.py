@@ -91,6 +91,7 @@ from engine.project_manager import (  # noqa: E402
 )
 from desktop.server_project import (  # noqa: E402
     handle_add_video_to_project,
+    handle_export_project,
     handle_get_project,
     handle_init_project,
     handle_save_video_override,
@@ -1913,6 +1914,7 @@ ROUTES: dict[str, Callable[[dict[str, Any]], tuple[int, dict[str, Any]]]] = {
     "/api/save-video-override": handle_save_video_override,
     "/api/get-project": handle_get_project,
     "/api/run-project": handle_run_project,
+    "/api/export-project": handle_export_project,
     "/api/presets/list": handle_presets_list,
     "/api/presets/save": handle_presets_save,
     "/api/presets/apply": handle_presets_apply,

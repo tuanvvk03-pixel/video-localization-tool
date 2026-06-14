@@ -180,6 +180,23 @@ def handle_save_video_override(body: dict[str, Any]) -> tuple[int, dict[str, Any
     )
 
 
+def handle_export_project(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    """Collect every rendered final.mp4 in the project into one export folder."""
+    missing = _require(body, "project_root")
+    if missing:
+        return _err("missing_field", f"Missing required field: {missing}")
+    project_root = Path(str(body["project_root"])).expanduser()
+    if not project_root.is_dir():
+        return _err("project_not_found", f"Project directory not found: {project_root}")
+    from engine.project_export import export_project_renders
+
+    try:
+        result = export_project_renders(project_root, dest=(str(body.get("dest")) if body.get("dest") else None))
+    except (ProjectError, OSError, ValueError) as e:
+        return _err("export_failed", str(e))
+    return _ok(result)
+
+
 def handle_get_project(body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
     """Return full project state + per-video status snapshots."""
     missing = _require(body, "project_root")

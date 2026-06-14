@@ -585,6 +585,7 @@
                 <select class="input" value={layoutView.aspect_ratio} onchange={(e) => (s.renderLayout = H.normalizeRenderLayout({ ...s.renderLayout, aspect_ratio: (e.target as HTMLSelectElement).value }))}>
                   <option value="16:9">{t("settings.render_layout.aspect_16_9")}</option>
                   <option value="9:16">{t("settings.render_layout.aspect_9_16")}</option>
+                  <option value="1:1">{t("settings.render_layout.aspect_1_1")}</option>
                 </select>
               </div>
             </div>

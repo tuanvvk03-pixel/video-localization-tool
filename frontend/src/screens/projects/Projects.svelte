@@ -167,6 +167,13 @@
     } catch (e) { running = false; throw e; }
   });
 
+  const exportProject = () => run("export", async () => {
+    if (!projectRoot) return;
+    const d = await post<any>("/api/export-project", { project_root: projectRoot });
+    notice = t("projects.exported", { count: (d.exported || []).length, dir: d.export_dir });
+    try { await post("/api/reveal", { path: d.export_dir }); } catch { /* desktop-only convenience */ }
+  });
+
   function startPolling() {
     if (pollTimer) clearInterval(pollTimer);
     pollTimer = setInterval(async () => {
@@ -243,6 +250,7 @@
         <div class="toolbar">
           <Button variant="secondary" disabled={isBusy()} onclick={addVideos}>{t("projects.add_videos")}</Button>
           <Button variant="strong" disabled={isBusy() || !videos.length} onclick={runAll}>{running ? t("projects.running") : t("projects.run_all")}</Button>
+          <Button disabled={isBusy() || doneCount === 0} onclick={exportProject}>{t("projects.export_all")}</Button>
           <Button disabled={isBusy()} onclick={() => run("refresh", refresh)}>{t("projects.refresh")}</Button>
         </div>
         <div class="small-muted">{t("projects.cfg_locked_hint")}</div>
@@ -273,6 +281,7 @@
             <select class="input" value={bv.aspect_ratio} onchange={(e) => patchBrand({ aspect_ratio: (e.target as HTMLSelectElement).value })}>
               <option value="16:9">{t("settings.render_layout.aspect_16_9")}</option>
               <option value="9:16">{t("settings.render_layout.aspect_9_16")}</option>
+              <option value="1:1">{t("settings.render_layout.aspect_1_1")}</option>
             </select></div>
           <div class="field"><label>{t("settings.render_layout.head_trim")} ({bv.head_trim_sec}s)</label>
             <input class="input" type="number" min="0" max="600" step="0.5" value={bv.head_trim_sec} onchange={(e) => patchBrand({ head_trim_sec: Number((e.target as HTMLInputElement).value) })} /></div>

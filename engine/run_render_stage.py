@@ -63,7 +63,7 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument(
         "--aspect-ratio",
         default="",
-        choices=["", "source", "16:9", "9:16"],
+        choices=["", "source", "16:9", "9:16", "1:1"],
         help="Optional final frame aspect ratio. Empty loads per-video render settings.",
     )
     p.add_argument(
@@ -192,6 +192,9 @@ def _target_dimensions(width: int, height: int, aspect_ratio: str) -> tuple[int,
     if aspect_ratio == "9:16":
         short = min(width, height)
         return _even(short), _even(short * 16.0 / 9.0)
+    if aspect_ratio == "1:1":
+        short = min(width, height)
+        return _even(short), _even(short)
     return _even(width), _even(height)
 
 
@@ -203,8 +206,8 @@ def _resolve_layout_settings(
 ) -> tuple[dict[str, object], Path | None, Path | None, dict[str, object] | None]:
     state = load_render_settings(job_workspace) or {}
     aspect = (cli_aspect_ratio or str(state.get("aspect_ratio") or "source")).strip()
-    if aspect not in {"source", "16:9", "9:16"}:
-        raise RenderSettingsError("aspect_ratio must be one of: source, 16:9, 9:16.")
+    if aspect not in {"source", "16:9", "9:16", "1:1"}:
+        raise RenderSettingsError("aspect_ratio must be one of: source, 16:9, 9:16, 1:1.")
 
     bg_raw = (cli_background_image or str(state.get("background_path") or "")).strip()
     bg_path: Path | None = None
@@ -603,7 +606,7 @@ def main(argv: list[str] | None = None) -> int:
     source_w, source_h = source_dimensions
     aspect_ratio = str(layout_settings.get("aspect_ratio") or "source")
     target_w, target_h = _target_dimensions(source_w, source_h, aspect_ratio)
-    layout_transform = aspect_ratio in {"16:9", "9:16"} or background_image is not None
+    layout_transform = aspect_ratio in {"16:9", "9:16", "1:1"} or background_image is not None
     logo_enabled = logo_image is not None
     # A logo overlay also requires a re-encode filtergraph (can't -c:v copy).
     needs_filtergraph = layout_transform or logo_enabled

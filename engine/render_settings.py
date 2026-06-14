@@ -8,7 +8,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-ALLOWED_ASPECT_RATIOS = {"source", "16:9", "9:16"}
+ALLOWED_ASPECT_RATIOS = {"source", "16:9", "9:16", "1:1"}
 ALLOWED_BACKGROUND_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
 MAX_BACKGROUND_BYTES = 25 * 1024 * 1024
 RENDER_BACKGROUND_REL_DIR = Path("assets") / "render_background"

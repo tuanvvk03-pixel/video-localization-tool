@@ -255,7 +255,7 @@ export function normalizeRenderLayout(raw: unknown): RenderLayout {
   const aspect = String(data.aspect_ratio || "16:9").trim();
   const position = String(data.logo_position || "top-right").trim();
   return {
-    aspect_ratio: aspect === "9:16" ? "9:16" : "16:9",
+    aspect_ratio: ["source", "16:9", "9:16", "1:1"].includes(aspect) ? aspect : "16:9",
     background_path: String(data.background_path || "").trim(),
     background_original_filename: String(data.background_original_filename || "").trim(),
     logo_path: String(data.logo_path || "").trim(),

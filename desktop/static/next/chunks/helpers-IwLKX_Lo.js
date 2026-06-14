@@ -157,7 +157,7 @@ function w(t) {
 function D(t) {
   const r = t && typeof t == "object" ? t : {}, e = String(r.aspect_ratio || "16:9").trim(), n = String(r.logo_position || "top-right").trim();
   return {
-    aspect_ratio: e === "9:16" ? "9:16" : "16:9",
+    aspect_ratio: ["source", "16:9", "9:16", "1:1"].includes(e) ? e : "16:9",
     background_path: String(r.background_path || "").trim(),
     background_original_filename: String(r.background_original_filename || "").trim(),
     logo_path: String(r.logo_path || "").trim(),
@@ -242,4 +242,4 @@ export {
   J as y,
   F as z
 };
-//# sourceMappingURL=helpers-CRY6gGMH.js.map
+//# sourceMappingURL=helpers-IwLKX_Lo.js.map
