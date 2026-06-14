@@ -39,7 +39,8 @@
       bgm: null, bgmAdvancedOpen: false,
       renderLayout: { aspect_ratio: "16:9", background_path: "", background_original_filename: "",
         logo_path: "", logo_original_filename: "", logo_position: "top-right", logo_scale: 0.15, logo_opacity: 1, logo_margin: 0.03,
-        intro_clip_path: "", intro_original_filename: "", outro_clip_path: "", outro_original_filename: "", head_trim_sec: 0, tail_trim_sec: 0 },
+        intro_clip_path: "", intro_original_filename: "", outro_clip_path: "", outro_original_filename: "", head_trim_sec: 0, tail_trim_sec: 0,
+        transform_speed: 1, transform_hflip: false, transform_zoom: 1, transform_brightness: 0, transform_contrast: 1, transform_saturation: 1 },
       previewAudioRel: "", previewAudioBust: 0, previewText: loadPreviewText(),
       voiceEditGateOpen: false, openaiKeyMissing: false, runUntilEditLive: null,
     };
@@ -189,6 +190,7 @@
     if (l.outro_clip_path) { payload.outro_clip_path = l.outro_clip_path; payload.outro_original_filename = l.outro_original_filename; }
     payload.head_trim_sec = l.head_trim_sec;
     payload.tail_trim_sec = l.tail_trim_sec;
+    H.addTransformPayload(payload, l);
     return payload;
   };
   const buildImportConfigPayload = () => {
@@ -665,6 +667,21 @@
                   {#if layoutView.outro_clip_path}<Button disabled={isBusy()} onclick={() => removeClip("outro")}>{t("settings.render_layout.remove_clip")}</Button>{/if}
                 </div>
               </div>
+            </div>
+            <!-- E3: anti-dedup transforms -->
+            <div class="stack" style="gap:6px;margin-top:10px"><div class="card-title">{t("settings.render_layout.tx_title")}</div><div class="card-sub">{t("settings.render_layout.tx_sub")}</div></div>
+            <label class="checkbox-row"><input type="checkbox" checked={layoutView.transform_hflip} onchange={(e) => patchTrim({ transform_hflip: (e.target as HTMLInputElement).checked })} />{t("settings.render_layout.tx_hflip")}</label>
+            <div class="field-grid">
+              <div class="field"><label>{t("settings.render_layout.tx_speed")} ({layoutView.transform_speed.toFixed(2)}x)</label>
+                <input class="input" type="range" min="0.8" max="1.2" step="0.01" value={layoutView.transform_speed} oninput={(e) => patchTrim({ transform_speed: Number((e.target as HTMLInputElement).value) })} /></div>
+              <div class="field"><label>{t("settings.render_layout.tx_zoom")} ({Math.round((layoutView.transform_zoom - 1) * 100)}%)</label>
+                <input class="input" type="range" min="1" max="1.3" step="0.01" value={layoutView.transform_zoom} oninput={(e) => patchTrim({ transform_zoom: Number((e.target as HTMLInputElement).value) })} /></div>
+              <div class="field"><label>{t("settings.render_layout.tx_brightness")} ({layoutView.transform_brightness.toFixed(2)})</label>
+                <input class="input" type="range" min="-0.2" max="0.2" step="0.01" value={layoutView.transform_brightness} oninput={(e) => patchTrim({ transform_brightness: Number((e.target as HTMLInputElement).value) })} /></div>
+              <div class="field"><label>{t("settings.render_layout.tx_contrast")} ({layoutView.transform_contrast.toFixed(2)})</label>
+                <input class="input" type="range" min="0.7" max="1.3" step="0.01" value={layoutView.transform_contrast} oninput={(e) => patchTrim({ transform_contrast: Number((e.target as HTMLInputElement).value) })} /></div>
+              <div class="field"><label>{t("settings.render_layout.tx_saturation")} ({layoutView.transform_saturation.toFixed(2)})</label>
+                <input class="input" type="range" min="0.5" max="1.5" step="0.01" value={layoutView.transform_saturation} oninput={(e) => patchTrim({ transform_saturation: Number((e.target as HTMLInputElement).value) })} /></div>
             </div>
             <div class="toolbar"><Button variant="primary" disabled={isBusy()} onclick={saveRenderLayout}>{t("settings.render_layout.save")}</Button></div>
           </div>

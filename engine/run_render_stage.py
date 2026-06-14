@@ -28,7 +28,7 @@ from engine.input_provenance import (
     stale_final_subtitle_message,
     stale_manifest_input_provenance_message,
 )
-from engine.render_settings import RenderSettingsError, load_render_settings
+from engine.render_settings import RenderSettingsError, load_render_settings, transforms_active
 from engine.subtitle_style import (
     SubtitleStyleError,
     resolve_subtitle_style,
@@ -266,6 +266,21 @@ def _resolve_branding(job_workspace: Path) -> tuple[Path | None, Path | None, fl
     head = max(0.0, float(state.get("head_trim_sec") or 0.0))
     tail = max(0.0, float(state.get("tail_trim_sec") or 0.0))
     return intro, outro, head, tail
+
+
+def _resolve_transforms(job_workspace: Path) -> dict[str, object] | None:
+    """Resolve E3 anti-dedup transform params from render settings, or None."""
+    s = load_render_settings(job_workspace) or {}
+    if not transforms_active(s):
+        return None
+    return {
+        "speed": float(s.get("transform_speed") or 1.0),
+        "hflip": bool(s.get("transform_hflip")),
+        "zoom": float(s.get("transform_zoom") or 1.0),
+        "brightness": float(s.get("transform_brightness") or 0.0),
+        "contrast": float(s.get("transform_contrast") or 1.0),
+        "saturation": float(s.get("transform_saturation") or 1.0),
+    }
 
 
 def _sanitize_cmd(cmd: list[str]) -> str:
@@ -804,6 +819,39 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(msg, file=sys.stderr)
         return 1
+
+    # E3 — anti-dedup transforms on the localized render. Applied BEFORE the
+    # intro/outro concat so the user's own branding clips are never mirrored.
+    transforms = _resolve_transforms(job_workspace)
+    if transforms:
+        from engine.video_transform import VideoTransformError, apply_transforms
+
+        pre_tx = render_dir / "final_pretransform.mp4"
+        try:
+            if pre_tx.exists():
+                pre_tx.unlink()
+            out_path.replace(pre_tx)
+            apply_transforms(pre_tx, out_path, ffmpeg=ffmpeg, ffprobe=ffprobe, **transforms)  # type: ignore[arg-type]
+            layout_settings["transform"] = transforms
+            print(f"[render] Applied anti-dedup transforms -> {out_path}", file=sys.stderr)
+        except (VideoTransformError, OSError) as e:
+            try:
+                if not out_path.exists() and pre_tx.exists():
+                    pre_tx.replace(out_path)
+            except OSError:
+                pass
+            msg = f"Transform failed: {e}"
+            _merge_job_state(
+                job_workspace,
+                {"job_id": job_id, "job_workspace": str(job_workspace), "status": "failed",
+                 "current_stage": "render_failed", "last_error": msg},
+            )
+            _write_video_state(
+                job_workspace,
+                {"video_id": job_id, "status": "failed", "current_stage": "render_failed", "last_error": msg},
+            )
+            print(msg, file=sys.stderr)
+            return 1
 
     # E2 — optional post-render assembly: trim head/tail of the localized video
     # and concat the user's intro/outro. Output stays at out_path (final.mp4); the

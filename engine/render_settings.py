@@ -134,7 +134,40 @@ def normalize_render_settings(raw: Any) -> dict[str, Any]:
         out["head_trim_sec"] = head_trim
     if tail_trim > 0:
         out["tail_trim_sec"] = tail_trim
+
+    # E3 — anti-dedup transforms (only emitted when they differ from a no-op, so
+    # transforms_active() stays a simple presence check).
+    speed = _clamp_float(data.get("transform_speed"), lo=0.5, hi=2.0, default=1.0, field="transform_speed")
+    zoom = _clamp_float(data.get("transform_zoom"), lo=1.0, hi=1.5, default=1.0, field="transform_zoom")
+    brightness = _clamp_float(data.get("transform_brightness"), lo=-0.3, hi=0.3, default=0.0, field="transform_brightness")
+    contrast = _clamp_float(data.get("transform_contrast"), lo=0.5, hi=1.5, default=1.0, field="transform_contrast")
+    saturation = _clamp_float(data.get("transform_saturation"), lo=0.0, hi=2.0, default=1.0, field="transform_saturation")
+    if abs(speed - 1.0) > 1e-6:
+        out["transform_speed"] = speed
+    if bool(data.get("transform_hflip")):
+        out["transform_hflip"] = True
+    if abs(zoom - 1.0) > 1e-6:
+        out["transform_zoom"] = zoom
+    if abs(brightness) > 1e-6:
+        out["transform_brightness"] = brightness
+    if abs(contrast - 1.0) > 1e-6:
+        out["transform_contrast"] = contrast
+    if abs(saturation - 1.0) > 1e-6:
+        out["transform_saturation"] = saturation
     return out
+
+
+def transforms_active(settings: dict[str, Any] | None) -> bool:
+    """True when any E3 anti-dedup transform is set in the settings."""
+    if not settings:
+        return False
+    return any(
+        k in settings
+        for k in (
+            "transform_speed", "transform_hflip", "transform_zoom",
+            "transform_brightness", "transform_contrast", "transform_saturation",
+        )
+    )
 
 
 def load_render_settings(job_workspace: str | Path) -> dict[str, Any] | None:

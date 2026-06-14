@@ -2,7 +2,7 @@
   import { onDestroy } from "svelte";
   import { post, pickLocalFile, pickLocalFiles, ApiError } from "../../lib/api";
   import type { ScreenCtx } from "../../lib/screen";
-  import { normalizeRenderLayout, type RenderLayout } from "../settings/helpers";
+  import { normalizeRenderLayout, addTransformPayload, type RenderLayout } from "../settings/helpers";
   import Button from "../../lib/ui/Button.svelte";
   import StatusBadge from "../../lib/ui/StatusBadge.svelte";
 
@@ -103,6 +103,7 @@
       logo_position: l.logo_position, logo_scale: l.logo_scale, logo_opacity: l.logo_opacity, logo_margin: l.logo_margin });
     if (l.intro_clip_path) Object.assign(p, { intro_clip_path: l.intro_clip_path, intro_original_filename: l.intro_original_filename });
     if (l.outro_clip_path) Object.assign(p, { outro_clip_path: l.outro_clip_path, outro_original_filename: l.outro_original_filename });
+    addTransformPayload(p, l);
     return p;
   }
   function patchBrand(patch: Record<string, unknown>) { branding = normalizeRenderLayout({ ...(branding || {}), ...patch }); }
@@ -263,6 +264,21 @@
             <div class="small-muted">{bv.outro_clip_path ? clipName(bv.outro_original_filename || bv.outro_clip_path) : t("settings.render_layout.no_clip")}</div>
             <div class="toolbar"><Button variant="secondary" disabled={isBusy()} onclick={() => uploadBrandClip("outro")}>{t("settings.render_layout.upload_outro")}</Button>
               {#if bv.outro_clip_path}<Button disabled={isBusy()} onclick={() => removeBrandClip("outro")}>{t("settings.render_layout.remove_clip")}</Button>{/if}</div></div>
+        </div>
+
+        <div class="stack" style="gap:6px;margin-top:8px"><div class="card-title">{t("settings.render_layout.tx_title")}</div><div class="card-sub">{t("settings.render_layout.tx_sub")}</div></div>
+        <label class="checkbox-row"><input type="checkbox" checked={bv.transform_hflip} onchange={(e) => patchBrand({ transform_hflip: (e.target as HTMLInputElement).checked })} />{t("settings.render_layout.tx_hflip")}</label>
+        <div class="field-grid">
+          <div class="field"><label>{t("settings.render_layout.tx_speed")} ({bv.transform_speed.toFixed(2)}x)</label>
+            <input class="input" type="range" min="0.8" max="1.2" step="0.01" value={bv.transform_speed} oninput={(e) => patchBrand({ transform_speed: Number((e.target as HTMLInputElement).value) })} /></div>
+          <div class="field"><label>{t("settings.render_layout.tx_zoom")} ({Math.round((bv.transform_zoom - 1) * 100)}%)</label>
+            <input class="input" type="range" min="1" max="1.3" step="0.01" value={bv.transform_zoom} oninput={(e) => patchBrand({ transform_zoom: Number((e.target as HTMLInputElement).value) })} /></div>
+          <div class="field"><label>{t("settings.render_layout.tx_brightness")} ({bv.transform_brightness.toFixed(2)})</label>
+            <input class="input" type="range" min="-0.2" max="0.2" step="0.01" value={bv.transform_brightness} oninput={(e) => patchBrand({ transform_brightness: Number((e.target as HTMLInputElement).value) })} /></div>
+          <div class="field"><label>{t("settings.render_layout.tx_contrast")} ({bv.transform_contrast.toFixed(2)})</label>
+            <input class="input" type="range" min="0.7" max="1.3" step="0.01" value={bv.transform_contrast} oninput={(e) => patchBrand({ transform_contrast: Number((e.target as HTMLInputElement).value) })} /></div>
+          <div class="field"><label>{t("settings.render_layout.tx_saturation")} ({bv.transform_saturation.toFixed(2)})</label>
+            <input class="input" type="range" min="0.5" max="1.5" step="0.01" value={bv.transform_saturation} oninput={(e) => patchBrand({ transform_saturation: Number((e.target as HTMLInputElement).value) })} /></div>
         </div>
         <div class="toolbar"><Button variant="primary" disabled={isBusy()} onclick={saveBranding}>{t("settings.render_layout.save")}</Button></div>
       </div>

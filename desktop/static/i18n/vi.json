@@ -517,7 +517,15 @@
       "intro_uploaded": "Da nhap clip intro.",
       "intro_removed": "Da go clip intro.",
       "outro_uploaded": "Da nhap clip outro.",
-      "outro_removed": "Da go clip outro."
+      "outro_removed": "Da go clip outro.",
+      "tx_title": "Bien doi ne trung lap (anti-dedup)",
+      "tx_sub": "Chinh nhe video de qua mat phat hien trung lap cua nen tang ads. Ap len phan da localize (truoc khi ghep intro/outro).",
+      "tx_hflip": "Lat ngang (mirror)",
+      "tx_speed": "Toc do",
+      "tx_zoom": "Phong to (zoom)",
+      "tx_brightness": "Do sang",
+      "tx_contrast": "Tuong phan",
+      "tx_saturation": "Do bao hoa"
     }
   },
   "review": {

@@ -42,9 +42,12 @@ export interface RenderLayout {
   intro_clip_path: string; intro_original_filename: string;
   outro_clip_path: string; outro_original_filename: string;
   head_trim_sec: number; tail_trim_sec: number;
+  transform_speed: number; transform_hflip: boolean; transform_zoom: number;
+  transform_brightness: number; transform_contrast: number; transform_saturation: number;
 }
 
 export function clampTrimSec(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(600, Math.max(0, Math.round(n * 10) / 10)) : 0; }
+function clampNum(v: unknown, lo: number, hi: number, dflt: number): number { const n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : dflt; }
 
 export const LOGO_POSITIONS = ["top-left", "top-right", "bottom-left", "bottom-right"] as const;
 export function clampLogoScale(v: unknown): number { const n = Number(v); return Number.isFinite(n) ? Math.min(1, Math.max(0.02, n)) : 0.15; }
@@ -267,7 +270,23 @@ export function normalizeRenderLayout(raw: unknown): RenderLayout {
     outro_original_filename: String(data.outro_original_filename || "").trim(),
     head_trim_sec: clampTrimSec(data.head_trim_sec ?? 0),
     tail_trim_sec: clampTrimSec(data.tail_trim_sec ?? 0),
+    transform_speed: clampNum(data.transform_speed ?? 1, 0.5, 2, 1),
+    transform_hflip: !!data.transform_hflip,
+    transform_zoom: clampNum(data.transform_zoom ?? 1, 1, 1.5, 1),
+    transform_brightness: clampNum(data.transform_brightness ?? 0, -0.3, 0.3, 0),
+    transform_contrast: clampNum(data.transform_contrast ?? 1, 0.5, 1.5, 1),
+    transform_saturation: clampNum(data.transform_saturation ?? 1, 0, 2, 1),
   };
+}
+
+/** Add E3 transform fields to a render payload when they differ from no-op. */
+export function addTransformPayload(p: Record<string, unknown>, l: RenderLayout): void {
+  if (Math.abs(l.transform_speed - 1) > 1e-6) p.transform_speed = l.transform_speed;
+  if (l.transform_hflip) p.transform_hflip = true;
+  if (Math.abs(l.transform_zoom - 1) > 1e-6) p.transform_zoom = l.transform_zoom;
+  if (Math.abs(l.transform_brightness) > 1e-6) p.transform_brightness = l.transform_brightness;
+  if (Math.abs(l.transform_contrast - 1) > 1e-6) p.transform_contrast = l.transform_contrast;
+  if (Math.abs(l.transform_saturation - 1) > 1e-6) p.transform_saturation = l.transform_saturation;
 }
 
 export function formatDb(value: unknown): string {
