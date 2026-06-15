@@ -180,21 +180,29 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--width", type=int, default=1400)
     p.add_argument("--height", type=int, default=900)
     p.add_argument("--dev", action="store_true", help="open DevTools")
+    p.add_argument(
+        "--server-only",
+        action="store_true",
+        help="Run the local HTTP server without opening a native window "
+        "(headless / browser mode; also used for packaging smoke tests).",
+    )
     return p.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     ns = _parse_args(argv)
-    try:
-        import webview  # type: ignore
-    except Exception as e:  # noqa: BLE001
-        print(
-            "[desktop.native] pywebview is not installed. "
-            "Install with: pip install -r engine/requirements-desktop.txt",
-            file=sys.stderr,
-        )
-        print(f"[desktop.native] import error: {e}", file=sys.stderr)
-        return 2
+
+    if not ns.server_only:
+        try:
+            import webview  # type: ignore
+        except Exception as e:  # noqa: BLE001
+            print(
+                "[desktop.native] pywebview is not installed. "
+                "Install with: pip install -r engine/requirements-desktop.txt",
+                file=sys.stderr,
+            )
+            print(f"[desktop.native] import error: {e}", file=sys.stderr)
+            return 2
 
     host = ns.host
     port = ns.port or _pick_free_port(host)
@@ -207,6 +215,19 @@ def main(argv: list[str] | None = None) -> int:
         httpd.server_close()
         print("[desktop.native] server failed to respond to /api/ping", file=sys.stderr)
         return 3
+
+    if ns.server_only:
+        print(f"[desktop.native] server-only mode; open {url} in a browser. Ctrl+C to stop.", file=sys.stderr)
+        try:
+            _thread.join()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            httpd.shutdown()
+            httpd.server_close()
+        return 0
+
+    import webview  # type: ignore
 
     api = NativeApi()
     window = webview.create_window(

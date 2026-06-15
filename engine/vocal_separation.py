@@ -26,6 +26,14 @@ DEFAULT_MODEL = "htdemucs"
 
 
 def demucs_available(python_exe: str | None = None) -> bool:
+    # Frozen app: sys.executable is the app exe, not a Python — check the import
+    # directly (demucs is bundled) instead of spawning a child interpreter.
+    if getattr(sys, "frozen", False):
+        try:
+            import demucs  # noqa: F401
+            return True
+        except Exception:  # noqa: BLE001
+            return False
     exe = python_exe or sys.executable
     proc = subprocess.run([exe, "-c", "import demucs"], capture_output=True, text=True)
     return proc.returncode == 0
@@ -59,16 +67,29 @@ def separate_instrumental(
     shutil.rmtree(out_dir, ignore_errors=True)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    cmd = [exe, "-m", "demucs", "--two-stems", "vocals", "-n", model, "-o", str(out_dir)]
     dev = (device or "auto").strip().lower()
+    demucs_args = ["--two-stems", "vocals", "-n", model, "-o", str(out_dir)]
     if dev in ("cpu", "cuda"):
-        cmd.extend(["-d", dev])
-    cmd.append(str(src))
+        demucs_args.extend(["-d", dev])
+    demucs_args.append(str(src))
 
-    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if proc.returncode != 0:
-        tail = ((proc.stderr or "") + "\n" + (proc.stdout or ""))[-4000:]
-        raise VocalSeparationError(f"Demucs failed (exit {proc.returncode}):\n{tail}")
+    if getattr(sys, "frozen", False):
+        # Frozen app: run Demucs's CLI entrypoint in-process (no child interpreter).
+        try:
+            from demucs import separate as _demucs_separate
+
+            _demucs_separate.main(demucs_args)
+        except SystemExit as e:  # demucs may call sys.exit on argparse errors
+            if e.code not in (0, None):
+                raise VocalSeparationError(f"Demucs failed (exit {e.code}).") from e
+        except Exception as e:  # noqa: BLE001
+            raise VocalSeparationError(f"Demucs failed: {e}") from e
+    else:
+        cmd = [exe, "-m", "demucs", *demucs_args]
+        proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        if proc.returncode != 0:
+            tail = ((proc.stderr or "") + "\n" + (proc.stdout or ""))[-4000:]
+            raise VocalSeparationError(f"Demucs failed (exit {proc.returncode}):\n{tail}")
 
     # Demucs writes <out_dir>/<model>/<input_stem>/no_vocals.wav
     produced = out_dir / model / src.stem / "no_vocals.wav"

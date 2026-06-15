@@ -1088,6 +1088,31 @@ def _run_job_subprocess(
     terminates a hung run. Returns run_job's exit code, or RC_CANCELLED /
     RC_TIMEOUT when we stopped it (the handlers treat any non-zero rc as failed).
     """
+    # In a PyInstaller bundle sys.executable is the app exe (not a Python that can
+    # run `-m engine.run_job`), so spawning a child interpreter fails. Run the
+    # pipeline in-process instead (cooperative cancel still works via job_state;
+    # hard force-kill/timeout is unavailable but acceptable in the packaged app).
+    if getattr(sys, "frozen", False):
+        log_path = jw / "run.log"
+        try:
+            log_fh = open(log_path, "a", encoding="utf-8")
+        except OSError:
+            log_fh = None
+        try:
+            if log_fh is not None:
+                log_fh.write(f"\n=== run {to_stage} (frozen in-process) ===\n")
+                log_fh.flush()
+                with contextlib.redirect_stdout(_Tee(sys.stdout, log_fh)), \
+                        contextlib.redirect_stderr(_Tee(sys.stderr, log_fh)):
+                    return run_job.main(argv)
+            return run_job.main(argv)
+        finally:
+            if log_fh is not None:
+                try:
+                    log_fh.close()
+                except OSError:
+                    pass
+
     log_path = jw / "run.log"
     try:
         log_fh = open(log_path, "a", encoding="utf-8")
