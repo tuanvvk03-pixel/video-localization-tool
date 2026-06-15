@@ -31,7 +31,7 @@ import httpx
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 _SESSION_PATH = REPO_ROOT / ".cloud_session.json"  # cookies + pending state (gitignored)
-_DEFAULT_BASE = "http://127.0.0.1:8000"  # novel_tool dev server; override for prod VPS
+_DEFAULT_BASE = "https://app.manusora.com"  # production VPS; override via app_settings.cloud_base_url or VL_CLOUD_BASE_URL
 _ACCESS_COOKIE = "novel_access"
 _REFRESH_COOKIE = "novel_refresh"
 
