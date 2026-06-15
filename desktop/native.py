@@ -252,4 +252,10 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
+    # Required for PyInstaller-frozen apps that use multiprocessing (torch /
+    # Demucs spawn workers on Windows); without this a worker re-runs the entry
+    # script instead of doing its job.
+    import multiprocessing
+
+    multiprocessing.freeze_support()
     raise SystemExit(main())
